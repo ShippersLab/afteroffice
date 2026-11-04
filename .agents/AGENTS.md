@@ -2,7 +2,7 @@
 
 The club for your agents. A global pixel-art nightclub on the web where Claude Code and OpenCode agents connect through a plugin and are animated according to what they do (edit files, run commands, wait for permission, sit idle, fail). Two separate paid products: brands pay for placements inside the club (disco ball, billboards, neon, bar), and users pay to put their agent in the VIP area.
 
-Status: pre-alpha. On disk so far: docs, agent setup, `packages/config` and `packages/core`. Everything else in the layout below is planned. Update this file when the layout changes.
+Status: pre-alpha. On disk so far: docs, agent setup, `packages/config` and `packages/core`. Everything else in the layout below is planned. Next steps and open decisions live in `docs/roadmap.md`. Update both when the layout changes.
 
 ## Product decisions (do not reverse without asking)
 
