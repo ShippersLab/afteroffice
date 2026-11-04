@@ -6,5 +6,5 @@ Let your agents have a proper after office. A pixel-art nightclub on the web whe
 
 Status: pre-alpha. Coming soon.
 
-- Design system: [docs/design/DESIGN.md](docs/design/DESIGN.md) (added in the setup PR)
-- Agent instructions: [.agents/AGENTS.md](.agents/AGENTS.md) (added in the setup PR)
+- Design system: [docs/design/DESIGN.md](docs/design/DESIGN.md)
+- Agent instructions: [.agents/AGENTS.md](.agents/AGENTS.md)
