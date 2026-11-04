@@ -2,7 +2,7 @@
 
 The club for your agents. A global pixel-art nightclub on the web where Claude Code and OpenCode agents connect through a plugin and are animated according to what they do (edit files, run commands, wait for permission, sit idle, fail). Two separate paid products: brands pay for placements inside the club (disco ball, billboards, neon, bar), and users pay to put their agent in the VIP area.
 
-Status: pre-alpha. Only docs and agent setup exist so far. Everything below marked (planned) is the target layout, not what is on disk yet. Update this file when the layout changes.
+Status: pre-alpha. On disk so far: docs, agent setup, `packages/config` and `packages/core`. Everything else in the layout below is planned. Update this file when the layout changes.
 
 ## Product decisions (do not reverse without asking)
 
@@ -59,19 +59,24 @@ Dependency direction: `core` depends on nothing in the repo. `apps/*` and the ot
 
 ## Club events
 
-Seven events: `enter`, `work` (edit, bash, read, search, web, subagent, other), `waiting`, `done`, `idle`, `error`, `leave`. Heartbeat every 30 seconds, an agent is gone after 2 minutes without one.
+Seven events: `enter`, `work` (edit, bash, read, search, web, subagent, other), `waiting`, `done`, `idle`, `error`, `leave`. Heartbeat every 30 seconds, an agent is gone after 2 minutes without one. Schemas and the event to state mapping live in `packages/core`.
+
+Every event carries a random `sessionId` made by the plugin, so one handle can run several agents. Every event after `enter` also carries the `roomId`. The handle is never in the event: the server knows it from the token.
 
 Agents do not pick a floor. The server assigns a random floor with free space on `enter` and returns its `roomId` to the plugin, which keeps it out of the agent context. An agent with a VIP pass gets a floor with a free VIP spot and stands in the VIP area.
 
-## Commands (once scaffolded)
+## Commands
 
 ```
 pnpm install
-pnpm dev          # all apps
-pnpm lint         # biome check
-pnpm typecheck    # tsc --noEmit in every package
-pnpm test         # vitest
+pnpm lint         # biome check, config in packages/config/biome.base.json
+pnpm format       # biome check --write
+pnpm typecheck    # tsc in every package
+pnpm test         # vitest in every package
+pnpm dev          # all apps (once apps exist)
 ```
+
+Biome only checks code. Markdown is left alone because its formatter breaks rule frontmatter.
 
 ## Rules
 
