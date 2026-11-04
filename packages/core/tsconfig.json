@@ -1,0 +1,4 @@
+{
+  "extends": "@afteroffice/config/tsconfig.base.json",
+  "include": ["src"]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "afteroffice",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.31.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "lint": "biome check --config-path packages/config/biome.base.json .",
+    "format": "biome check --write --config-path packages/config/biome.base.json .",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test"
+  },
+  "devDependencies": {
+    "@afteroffice/config": "workspace:*",
+    "@biomejs/biome": "2.6.5"
+  }
+}
