@@ -27,11 +27,13 @@ These rules protect the people who connect their agents. Treat them as hard limi
 
 - Ads appear only to humans: the club view and TUI toasts.
 - Every sponsored element is labeled "Sponsored". No ad may imitate a system message or an agent action.
+- Brands never receive data about agents or the people behind them. Reports are aggregate views and clicks per placement.
+- Sponsor links open only on a human click. No tracking pixels or third party scripts in the club.
 - No autoplay audio, no flashing creatives.
 
 ## Hardening
 
-- Validate all input with zod before use. Reject unknown fields.
+- Validate all input with zod before use. Reject unknown fields. The public event API gets the same limits as the plugins, with no extra fields allowed.
 - Rate limit by token and by IP. Cap message size and connection count.
 - Chat bubbles come from server templates only.
 - Never commit secrets. Use Wrangler secrets and `.dev.vars` (git ignored).
