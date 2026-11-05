@@ -1,0 +1,19 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      glob: "*.{ts,tsx,js,jsx}"
+      exclude: "{**/*.d.ts,.agents/**,.claude/**}"
+      run: bunx oxlint -c packages/configuration/oxlint.base.json --no-error-on-unmatched-pattern {staged_files}
+    format:
+      glob: "*.{ts,tsx,js,jsx,json,jsonc,css}"
+      exclude: "{.agents/**,.claude/**,**/migrations/**}"
+      run: bunx biome check --write --config-path packages/configuration/biome.base.json --no-errors-on-unmatched {staged_files}
+      stage_fixed: true
+
+pre-push:
+  commands:
+    typecheck:
+      run: bun run typecheck
+    test:
+      run: bun run test

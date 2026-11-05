@@ -1,10 +1,11 @@
 {
-  "name": "@afteroffice/config",
+  "name": "@afteroffice/configuration",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "exports": {
     "./tsconfig.base.json": "./tsconfig.base.json",
-    "./biome.base.json": "./biome.base.json"
+    "./biome.base.json": "./biome.base.json",
+    "./oxlint.base.json": "./oxlint.base.json"
   }
 }
