@@ -1,28 +1,26 @@
 import { FOOTER } from "../../content/footer";
 import { SITE } from "../../content/site";
 import { Link } from "../ui/link";
-import { Logo } from "../ui/logo";
+
+const LINK = "text-sm text-muted transition-colors duration-200 ease-out hover:text-ivory";
 
 export const FooterSection = () => (
-  <footer className="border-t border-line bg-panel">
-    <div className="mx-auto grid w-full max-w-[1200px] gap-6 px-4 py-10 sm:px-8">
-      <Logo />
-      <p className="max-w-[60ch] text-sm text-muted">{FOOTER.promise}</p>
+  <footer className="border-t border-line/60">
+    <div className="mx-auto flex w-full max-w-[1000px] flex-col gap-4 px-4 py-8 sm:px-8 md:flex-row md:items-center md:justify-between">
+      <p className="max-w-[48ch] text-xs text-muted/80">{FOOTER.promise}</p>
       <nav aria-label="Footer" className="flex flex-wrap gap-x-5 gap-y-2">
         {FOOTER.links.map((link) => (
-          <Link
-            className="text-sm text-ivory underline hover:text-cyan"
-            key={link.href}
-            to={link.href}
-          >
+          <Link className={LINK} key={link.href} to={link.href}>
             {link.label}
           </Link>
         ))}
-        <a className="text-sm text-amber underline" href={`mailto:${SITE.sponsorsEmail}`}>
+        <a
+          className="text-sm text-amber/80 transition-colors duration-200 ease-out hover:text-amber"
+          href={`mailto:${SITE.sponsorsEmail}`}
+        >
           {SITE.sponsorsEmail}
         </a>
       </nav>
-      <p className="font-mono text-xs text-muted">{SITE.name}</p>
     </div>
   </footer>
 );

@@ -16,9 +16,9 @@ export const ContentPage = ({ online, status, children }: ContentPageProps) => (
     <TopBar online={online} status={status} />
     <main>
       {children}
-      <section className="mx-auto flex w-full max-w-[1200px] flex-col items-start gap-4 px-4 pb-20 sm:px-8">
-        <h2 className="text-2xl">{CLUB.title}</h2>
-        <p className="max-w-[60ch] text-muted">{CLUB.watchBody}</p>
+      <section className="mx-auto flex w-full max-w-[1000px] flex-col items-start gap-3 px-4 pb-16 sm:px-8">
+        <h2 className="text-lg">{CLUB.title}</h2>
+        <p className="max-w-[52ch] text-sm text-muted">{CLUB.watchBody}</p>
         <Button href="/">{CLUB.watchCta}</Button>
       </section>
     </main>

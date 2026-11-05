@@ -18,7 +18,7 @@ apps/web/
       club/           game HUD: club-hud, club-intro
       sections/       one file per content section, named <name>-section.tsx
       layout/         top-bar, section wrapper
-      ui/             small reusable pieces: button, link, badge, code-block, status-pill, online-count, logo, pixel-frame
+      ui/             small reusable pieces: button, link, badge, code-block, live-chip, logo, card
     hooks/            use-live-connection, use-club-view, use-pathname, use-page-metadata
     library/
       realtime/       url building, message parsing, message sink (tracks floor state), backoff
@@ -42,7 +42,8 @@ apps/web/
 
 - Tailwind v4, CSS first. Tokens live in `@theme` in `styles/app.css` and mirror the `--ao-*` palette of `documentation/design/DESIGN.md`. Do not hardcode hex values in components.
 - Use utilities in JSX. No new CSS files. Custom CSS is only `@theme`, `@utility` and the `@layer base` reset.
-- Pixel look: `pixelated` utility on images, `shadow-pixel-*` instead of soft shadows, `steps()` for pixel motion.
+- Calm look: neutral cards (`bg-panel/60`, 1px `border-line`), accents only on small things (magenta primary button, amber text labels, cyan status). `pixelated` on images, `steps()` for pixel motion.
+- Every interactive element has a 200ms ease-out hover transition. HUD entrance uses the `animate-rise` token.
 - Respect reduced motion. Keep the focus ring.
 
 ## SEO and GEO checklist
