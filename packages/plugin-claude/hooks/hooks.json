@@ -1,0 +1,96 @@
+{
+  "description": "Sends agent activity (event type and tool category only) to afteroffice.club",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afteroffice hook SessionStart >/dev/null 2>&1 || true",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afteroffice hook PreToolUse >/dev/null 2>&1 || true",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afteroffice hook PostToolUseFailure >/dev/null 2>&1 || true",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "permission_prompt|idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afteroffice hook Notification >/dev/null 2>&1 || true",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afteroffice hook Stop >/dev/null 2>&1 || true",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afteroffice hook SubagentStart >/dev/null 2>&1 || true",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afteroffice hook PreCompact >/dev/null 2>&1 || true",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afteroffice hook SessionEnd >/dev/null 2>&1 || true",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  }
+}
