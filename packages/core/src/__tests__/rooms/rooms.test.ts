@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { floorNumber, floorRoomId, RoomIdSchema } from "./rooms";
+import { floorNumber, floorRoomId, RoomIdSchema } from "../../rooms/rooms";
 
 describe("rooms", () => {
   it("builds and reads floor ids", () => {

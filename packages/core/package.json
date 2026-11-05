@@ -14,8 +14,8 @@
     "zod": "4.6.7"
   },
   "devDependencies": {
-    "@afteroffice/config": "workspace:*",
+    "@afteroffice/configuration": "workspace:*",
     "typescript": "7.0.2",
-    "vitest": "5.1.0"
+    "vitest": "5.0.5"
   }
 }
