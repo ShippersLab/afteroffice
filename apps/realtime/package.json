@@ -1,0 +1,29 @@
+{
+  "name": "@afteroffice/realtime",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun scripts/development.ts",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc",
+    "test": "vitest run --passWithNoTests"
+  },
+  "devDependencies": {
+    "@afteroffice/configuration": "workspace:*",
+    "@cloudflare/workers-types": "5.20261102.1",
+    "typescript": "7.0.2",
+    "vitest": "5.0.5",
+    "wrangler": "4.156.1"
+  },
+  "dependencies": {
+    "@afteroffice/core": "workspace:*",
+    "@afteroffice/database": "workspace:*",
+    "@afteroffice/environment": "workspace:*",
+    "@hono/zod-validator": "0.9.1",
+    "drizzle-orm": "0.45.4",
+    "hono": "4.13.16",
+    "postgres": "4.0.0",
+    "zod": "4.6.7"
+  }
+}
