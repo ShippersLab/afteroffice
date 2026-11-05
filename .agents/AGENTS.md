@@ -2,7 +2,7 @@
 
 The club for your agents. A global pixel-art nightclub on the web where Claude Code and OpenCode agents connect through a plugin and are animated according to what they do (edit files, run commands, wait for permission, sit idle, fail). Two separate paid products: brands pay for placements inside the club (disco ball, billboards, neon, bar), and users pay to put their agent in the VIP area.
 
-Status: pre-alpha. On disk so far: docs, agent setup, `packages/config` and `packages/core`. Everything else in the layout below is planned. Next steps and open decisions live in `docs/roadmap.md`. Update both when the layout changes.
+Status: pre-alpha. MVP in progress: every package in the layout below exists on disk. Next steps and open decisions live in `documentation/roadmap.md`. Update both when the layout changes.
 
 ## Product decisions (do not reverse without asking)
 
@@ -15,7 +15,7 @@ Status: pre-alpha. On disk so far: docs, agent setup, `packages/config` and `pac
 - Anonymous identity: `/club join` creates a random handle like `sleepy-otter-42`. Optional `/club claim` later. No mandatory GitHub login.
 - Agents connect through plugins (Claude Code and OpenCode first) that call a public, documented event API. Anyone may build an adapter on that API. An MCP adapter may come later and only reports presence.
 - The channel is one way: agents send events to the club. The club never talks to the agent.
-- Brand logos are always pixelated to the club palette. Placements live in `docs/design/sponsors.md`.
+- Brand logos are always pixelated to the club palette. Placements live in `documentation/design/sponsors.md`.
 - Minimal data only: event type and tool category. Never code, prompts, paths or file names.
 - Ads are shown to humans only (club view and TUI toasts), never inside an agent context.
 
@@ -32,27 +32,30 @@ Out, for later: VIP rooms as separate rooms, team rooms, takeovers, regional slo
 
 ## Stack
 
-- TypeScript (strict), pnpm workspaces, Biome for format and lint, Vitest for tests.
-- Web: Next.js on Cloudflare through OpenNext (Vite fallback), PixiJS v8 with pixi-viewport, sonner for toasts.
-- Realtime: Cloudflare Worker plus Durable Objects (WebSocket hibernation, tick about 10 per second).
-- Data: Cloudflare D1 with Drizzle. Rate limiting through the Cloudflare binding.
+- TypeScript (strict), Bun workspaces, oxlint for lint, Biome for format only, Vitest for tests.
+- Web: React with Vite, built as a static site served by Cloudflare static assets. PixiJS v8 with pixi-viewport, sonner for toasts.
+- Realtime: Cloudflare Worker plus Durable Objects with WebSocket hibernation. No server tick: the server sends state changes only, clients animate walking and idle moves locally. Must fit the Cloudflare free plan.
+- API: Hono on the Worker with @hono/zod-validator. Routes, controllers, services and middleware in subfolders.
+- Data: Supabase Postgres with Drizzle ORM (never raw SQL), reached from the Worker through Hyperdrive. Live floor state stays in Durable Objects. Rate limiting through the Cloudflare binding.
 - Validation: zod at every boundary.
-- Everything runs on Cloudflare. Vercel is not used because of WebSockets.
+- Hosting runs on Cloudflare (Workers, Durable Objects, static assets), the database on Supabase. Vercel is not used because of WebSockets.
 
-## Layout (planned)
+## Layout
 
 ```
-apps/web            Next.js: landing, club view, /@handle, sponsor panel
+apps/web            React + Vite: landing, club view, /@handle
 apps/realtime       Cloudflare Worker: public event API and one Durable Object per room
 packages/core       zod event schemas, types, event to state mapping, room ids
 packages/club-engine  PixiJS: isometric map, characters, camera
 packages/cli        local identity and event sending
 packages/plugin-claude    hooks and /club commands for Claude Code
 packages/plugin-opencode  npm package for OpenCode
-packages/db         Drizzle schema and D1 migrations
-packages/config     shared tsconfig and Biome config
+packages/database   Drizzle schema and migrations for Supabase
+packages/environment  validated environment variables (server and web), root .env
+packages/configuration  shared tsconfig, oxlint and Biome config
 assets/sprites      sprite sources
-docs/design         DESIGN.md, sponsors.md, vip.md
+assets/brand        logo and disco ball (pixel SVG)
+documentation/design  DESIGN.md, sponsors.md, vip.md
 ```
 
 Dependency direction: `core` depends on nothing in the repo. `apps/*` and the other packages may depend on `core`. Packages never import from `apps/*`.
@@ -68,15 +71,19 @@ Agents do not pick a floor. The server assigns a random floor with free space on
 ## Commands
 
 ```
-pnpm install
-pnpm lint         # biome check, config in packages/config/biome.base.json
-pnpm format       # biome check --write
-pnpm typecheck    # tsc in every package
-pnpm test         # vitest in every package
-pnpm dev          # all apps (once apps exist)
+cp .env.example .env   # then set DATABASE_URL to the Supabase project
+bun install
+bun run lint         # oxlint (packages/configuration/oxlint.base.json) then biome check (format and imports)
+bun run lint:fix     # oxlint --fix and biome check --write
+bun run format       # biome format --write
+bun run typecheck    # tsc in every package
+bun run test         # vitest in every package
+bun run dev          # realtime (localhost:8787) and web (localhost:5173) in parallel
 ```
 
-Biome only checks code. Markdown is left alone because its formatter breaks rule frontmatter.
+Biome never lints, oxlint never formats. Both only check code. Markdown is left alone because its formatter breaks rule frontmatter.
+
+Git hooks run through lefthook (`.config/lefthook.yml`): oxlint and Biome on staged files before commit, typecheck and tests before push. `bun install` sets them up.
 
 ## Rules
 
@@ -86,7 +93,10 @@ Detailed rules live in `.agents/rules/` (mirrored for Claude Code in `.claude/ru
 - `git.md`: commits, branches, pull requests.
 - `architecture.md`: layout, dependencies, realtime, data.
 - `security-privacy.md`: what data may leave a machine, ad rules, hardening.
-- `design.md`: tokens, pixel art, copy. Full spec in `docs/design/DESIGN.md`, sponsors in `docs/design/sponsors.md`.
+- `plugins.md`: layout and behavior of every plugin package.
+- `web.md`: apps/web folders, Tailwind, SEO and GEO, copy.
+- `backend.md`: apps/realtime and packages/database structure, Drizzle only, Supabase and Hyperdrive.
+- `design.md`: tokens, pixel art, copy. Full spec in `documentation/design/DESIGN.md`, sponsors in `documentation/design/sponsors.md`.
 
 ## Working agreements
 

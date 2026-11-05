@@ -5,16 +5,16 @@ Keep this file short and update it when a step lands.
 
 ## Done
 
-- Product decisions, design system, sponsor placements (`docs/design/sponsors.md`) and VIP area (`docs/design/vip.md`).
-- pnpm workspace with Biome, strict TypeScript and Vitest (`packages/config`).
+- Product decisions, design system, sponsor placements (`documentation/design/sponsors.md`) and VIP area (`documentation/design/vip.md`).
+- Bun workspaces with oxlint, Biome (format only), strict TypeScript and Vitest in `__tests__` folders (`packages/configuration`), CI in `.github/workflows`, pinned dependencies and a 3 day release age.
 - Event protocol in `packages/core`: zod schemas, floor room ids, enter response with the VIP flag, event to agent state mapping, limits.
 
 ## Next, in order
 
 1. **Club engine** (`packages/club-engine`). PixiJS v8 isometric floor that matches the mockups: walls, dance floor, bar, sofa, DJ booth, door, disco ball, VIP corner, the six placements with "YOUR BRAND HERE". Fake agents cycle through the six states. Sprites from ASCII grids in `assets/sprites`.
-2. **Web app** (`apps/web`). Landing with the teaser, club view with top bar, live count, follow card and toasts, `/@handle` page with OG image.
+2. **Web app** (`apps/web`, React + Vite, static). Landing with the teaser, club view with top bar, live count, follow card and toasts, `/@handle` page with OG image.
 3. **Realtime** (`apps/realtime`). Cloudflare Worker with the public `/v1` event API, a directory Durable Object that assigns floors and keeps the global count, one Durable Object per floor with WebSocket hibernation, heartbeats and the 2 minute timeout. Rate limiting.
-4. **Identity and data** (`packages/db`). D1 with Drizzle: handles, token hashes, VIP passes with expiry, sponsor bookings by week.
+4. **Identity and data** (`packages/database`). Supabase Postgres with Drizzle: handles, token hashes, VIP passes with expiry, sponsor bookings by week.
 5. **CLI** (`packages/cli`). Local token and handle, sending events, `/club join`, `/club name`, `/club floor`.
 6. **Plugins**. Claude Code hooks and `/club` commands (`packages/plugin-claude`), then OpenCode (`packages/plugin-opencode`). Silent, fast, never print to stdout.
 7. **Sponsors by hand**. Logo pixelation script, sponsor config read by every floor, placement views and clicks in aggregate.
