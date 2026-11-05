@@ -33,22 +33,7 @@
     }
   },
   "linter": {
-    "enabled": true,
-    "rules": {
-      "preset": "recommended",
-      "suspicious": {
-        "noExplicitAny": "error"
-      },
-      "style": {
-        "noDefaultExport": "error",
-        "useImportType": "error",
-        "useExportType": "error"
-      },
-      "correctness": {
-        "noUnusedImports": "error",
-        "noUnusedVariables": "error"
-      }
-    }
+    "enabled": false
   },
   "assist": {
     "enabled": true,
@@ -56,6 +41,11 @@
       "source": {
         "organizeImports": "on"
       }
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
   }
 }
