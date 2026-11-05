@@ -1,14 +1,28 @@
 import { Link } from "./link";
 
-export const Logo = () => (
-  <Link
-    className="inline-flex items-center gap-3 text-ivory no-underline"
-    to="/"
-    aria-label="afteroffice.club home"
-  >
-    <img className="pixelated size-8" src="/favicon.svg" alt="" width={32} height={32} />
-    <span className="font-display text-2xl font-bold">
-      afteroffice<span className="text-magenta">.club</span>
-    </span>
-  </Link>
-);
+const SIZES = {
+  sm: { image: "size-5", text: "text-base", gap: "gap-2", px: 20 },
+  md: { image: "size-7", text: "text-base sm:text-xl", gap: "gap-2", px: 28 },
+} as const;
+
+export const Logo = ({ size = "md" }: { size?: keyof typeof SIZES }) => {
+  const look = SIZES[size];
+  return (
+    <Link
+      className={`inline-flex items-center ${look.gap} text-ivory`}
+      to="/"
+      aria-label="afteroffice.club home"
+    >
+      <img
+        className={`pixelated ${look.image}`}
+        src="/favicon.svg"
+        alt=""
+        width={look.px}
+        height={look.px}
+      />
+      <span className={`font-display font-bold ${look.text}`}>
+        afteroffice<span className="text-magenta">.club</span>
+      </span>
+    </Link>
+  );
+};
