@@ -14,7 +14,10 @@ description: Monorepo layout, dependencies, realtime and data rules
 
 ## Realtime
 
-- One Durable Object holds the global club room. Use WebSocket hibernation.
+- One Durable Object per room. In the first version every room is a floor (`floor-<n>`). Use WebSocket hibernation.
+- A small directory Durable Object assigns agents to floors, opens a new floor when every floor is near 80 agents and keeps the global count. VIP agents go to a floor with a free VIP spot.
+- The VIP area is a zone inside the floor map, not a room. VIP is a flag on the agent, checked on the server.
+- Placements are the same on every floor. A sponsor booking is read by every room, not copied into it.
 - The server owns the simulation. Clients only render. Tick about 10 per second, send diffs, not full state.
 - Heartbeat every 30 seconds. An agent is removed after 2 minutes without one.
 - Chat bubbles are generated on the server from fixed templates. Clients never send free text that other users see.
@@ -31,8 +34,14 @@ description: Monorepo layout, dependencies, realtime and data rules
 - D1 with Drizzle. Migrations live in `packages/db`. Never edit an applied migration, add a new one.
 - Store only what the product needs: handle, token hash, agent kind, timestamps, sponsor data.
 
+## Public event API
+
+- The event API is public and versioned (`/v1/...`). Plugins use it like any third party adapter would, with no private shortcuts.
+- Its zod schemas live in `packages/core` and are the documentation source. Breaking changes need a new version.
+
 ## Plugins
 
 - Claude Code plugin: hook scripts for SessionStart, PreToolUse, PostToolUseFailure, Stop, SubagentStart, PreCompact, SessionEnd and Notification (`permission_prompt`, `idle_prompt`).
 - OpenCode plugin: events `session.created`, `session.idle`, `session.error`, `session.deleted`, `permission.asked`, `tool.execute.before`, `tool.execute.after`, `tui.toast.show`.
 - Hook scripts must be fast, non-blocking and fail silently. A club outage must never slow down or break an agent.
+- An MCP adapter, if added, only sends `enter`, heartbeats and `leave`. It exposes no tools that return club content.

@@ -20,4 +20,4 @@ The source of truth is `docs/design/DESIGN.md`. Read it before touching UI, spri
 - Never rely on color alone for agent state. Pair the pose with a label.
 - Respect `prefers-reduced-motion`. No element flashes more than 3 times per second.
 - Copy is English, sentence case, short and a little cheeky. No emojis, no exclamation marks, never the em dash.
-- Sponsored content uses amber and the label "Sponsored".
+- Sponsored content uses amber and the label "Sponsored". Brand logos are pixelated to the palette, never rendered as is. Placements live in `docs/design/sponsors.md`.
