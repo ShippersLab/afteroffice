@@ -35,7 +35,7 @@ export async function mountClub(
   host.appendChild(app.canvas);
 
   retainTextures();
-  const { viewport, dispose } = createViewport(app);
+  const { viewport, dispose } = createViewport(app, reducedMotion);
   const scene = buildScene();
   scene.root.position.set(WORLD_ORIGIN.x, WORLD_ORIGIN.y);
   viewport.addChild(scene.root);

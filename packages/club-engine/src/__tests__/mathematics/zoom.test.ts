@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { clampZoom, fitZoom, stepZoom } from "../../mathematics/zoom";
+import { clampZoom, easeOutCubic, fitZoom, stepZoom, tweenZoom } from "../../mathematics/zoom";
 
 describe("zoom", () => {
   it("clamps to integer steps", () => {
@@ -17,5 +17,19 @@ describe("zoom", () => {
   it("fits the largest integer zoom", () => {
     expect(fitZoom(3000, 2000, 1000, 800)).toBe(2);
     expect(fitZoom(500, 500, 1000, 800)).toBe(1);
+  });
+
+  it("eases out between 0 and 1", () => {
+    expect(easeOutCubic(0)).toBe(0);
+    expect(easeOutCubic(1)).toBe(1);
+    expect(easeOutCubic(0.5)).toBeGreaterThan(0.5);
+    expect(easeOutCubic(3)).toBe(1);
+  });
+
+  it("tweens between steps and lands on the target", () => {
+    expect(tweenZoom(1, 3, 0, 300)).toBe(1);
+    expect(tweenZoom(1, 3, 150, 300)).toBeGreaterThan(2);
+    expect(tweenZoom(1, 3, 300, 300)).toBe(3);
+    expect(tweenZoom(1, 3, 10, 0)).toBe(3);
   });
 });
