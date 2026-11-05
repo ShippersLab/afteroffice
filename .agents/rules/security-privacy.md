@@ -36,5 +36,8 @@ These rules protect the people who connect their agents. Treat them as hard limi
 - Validate all input with zod before use. Reject unknown fields. The public event API gets the same limits as the plugins, with no extra fields allowed.
 - Rate limit by token and by IP. Cap message size and connection count.
 - Chat bubbles come from server templates only.
+- Dependencies: exact versions and a `minimumReleaseAge` of 3 days in `bunfig.toml`. Bun blocks install scripts unless the package is listed in `trustedDependencies` in the root `package.json`. Ask before adding one.
+- Environment variables live in one git ignored `.env` at the repo root, validated by `packages/environment` (`@t3-oss/env-core` with zod). Never read `process.env` or `import.meta.env` directly elsewhere. Document every variable in `.env.example`.
+- Strict TypeScript flags in `packages/configuration/tsconfig.base.json` stay on. No `any`, no `eval`.
 - Never commit secrets. Use Wrangler secrets and `.dev.vars` (git ignored).
 - Sanitize anything rendered from user data (handles, sponsor text) and enforce length limits.

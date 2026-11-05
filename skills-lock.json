@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "skills": {
+    "create-opencode-plugin": {
+      "source": "igorwarzocha/opencode-workflows",
+      "sourceType": "github",
+      "skillPath": "agents/create-opencode-plugin/.opencode/skill/create-opencode-plugin/SKILL.md",
+      "computedHash": "529e5be309532437e4c444198d365f6f53904fa88e045a4de8c1c83cffc73f42"
+    },
+    "durable-objects": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/durable-objects/SKILL.md",
+      "computedHash": "55897720109876d5755ced452e069c5b6ef1010736642c937d5db49a6ddbf587"
+    },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "computedHash": "913b9d37d0d54047dd65222bb8c67b2bf04e3cb87dcad1729068d7a8b2c8c396"
+    },
+    "hook-development": {
+      "source": "anthropics/claude-plugins-official",
+      "sourceType": "github",
+      "skillPath": "plugins/plugin-dev/skills/hook-development/SKILL.md",
+      "computedHash": "7bda9057df5162ac7a141dab5d5b4876c2fa37516eb757f3efc6f7dcebe73aa2"
+    },
+    "pixijs": {
+      "source": "pixijs/pixijs-skills",
+      "sourceType": "github",
+      "skillPath": "skills/pixijs/SKILL.md",
+      "computedHash": "d62ec20ca610aeaf3ab0b84b94e218c00cfab9ef422b06e7a3779ed5840caa10"
+    },
+    "pixijs-performance": {
+      "source": "pixijs/pixijs-skills",
+      "sourceType": "github",
+      "skillPath": "skills/pixijs-performance/SKILL.md",
+      "computedHash": "7da321f498f6f3595397266989898bcc2b02a2d46e154a88efce41766e312206"
+    },
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/react-best-practices/SKILL.md",
+      "computedHash": "3219a1944e404ffc14d1d9d6aef6dd2e3855b81387ee0a044ccbfe14d34c2357"
+    },
+    "vite": {
+      "source": "antfu/skills",
+      "sourceType": "github",
+      "skillPath": "skills/vite/SKILL.md",
+      "computedHash": "88ee465fd10f711efecc76e91e96accae2b229dda371614dcf219099c264a486"
+    },
+    "vitest": {
+      "source": "antfu/skills",
+      "sourceType": "github",
+      "skillPath": "skills/vitest/SKILL.md",
+      "computedHash": "90f1cee9326269c91b46a601b3a575491505d8e771009dacff01329381d45291"
+    },
+    "web-security-review": {
+      "source": "owasp/secure-agent-playbook",
+      "sourceType": "github",
+      "skillPath": "plugins/code-security-skills/skills/web-security-review/SKILL.md",
+      "computedHash": "95f1ab16aef9b038e3fca40076a2d4d2e8da9541dae661973d5b9204a2ff4f32"
+    },
+    "wrangler": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/wrangler/SKILL.md",
+      "computedHash": "6e431b3ca4d91547e3d1a224bfd5e725e54843cff3537aca48ea455a81bf7e88"
+    }
+  }
+}

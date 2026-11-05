@@ -221,4 +221,4 @@ Headline rules for images: Pixelify Sans, ivory with one phrase in magenta, maxi
 - Source sprites live as ASCII grids that compile to merged SVG rectangles. Do not hand-draw SVG paths.
 - Export PNG at integer multiples with transparent background, and SVG for web use.
 - Name assets `ao-<kind>-<name>@<scale>x.png`, for example `ao-mark-ball@8x.png`.
-- Keep this file under 300 lines. Split a new topic into `docs/design/` if it grows.
+- Keep this file under 300 lines. Split a new topic into `documentation/design/` if it grows.
