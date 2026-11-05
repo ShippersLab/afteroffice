@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { nextAgentState, stateForTool } from "./agent-state";
-import { type ClubEvent, TOOL_CATEGORIES } from "./events";
+import { type ClubEvent, TOOL_CATEGORIES } from "../../protocol/events";
+import { nextAgentState, stateForTool } from "../../state/agent-state";
 
 const inRoom = { sessionId: "s_0123456789abcdef", roomId: "floor-1" } as const;
 

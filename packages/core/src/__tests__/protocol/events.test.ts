@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ClubEventSchema, EnterResponseSchema, HandleSchema } from "./events";
+import { ClubEventSchema, EnterResponseSchema, HandleSchema } from "../../protocol/events";
 
 const SESSION_ID = "s_0123456789abcdef";
 

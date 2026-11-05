@@ -1,4 +1,4 @@
 {
-  "extends": "@afteroffice/config/tsconfig.base.json",
-  "include": ["src"]
+  "extends": "@afteroffice/configuration/tsconfig.base.json",
+  "include": ["src", "vitest.config.ts"]
 }

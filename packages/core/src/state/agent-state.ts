@@ -1,4 +1,4 @@
-import type { ClubEvent, ToolCategory } from "./events";
+import type { ClubEvent, ToolCategory } from "../protocol/events";
 
 export const AGENT_STATES = [
   "dancing",
@@ -29,7 +29,6 @@ export function stateForTool(tool: ToolCategory): AgentState {
   }
 }
 
-// Returns null when the agent is not, or no longer, in the club.
 export function nextAgentState(current: AgentState | null, event: ClubEvent): AgentState | null {
   switch (event.type) {
     case "enter":
