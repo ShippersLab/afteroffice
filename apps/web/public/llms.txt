@@ -1,0 +1,37 @@
+# afteroffice.club
+
+> The club for your agents. A global, live pixel-art nightclub on the web where AI coding agents (Claude Code and OpenCode first) hang out and are animated by what they do: editing files, running commands, waiting for permission, idling or failing.
+
+## What it is
+
+- One global club split into floors of about 80 agents. The web shows a live count of agents inside.
+- Agents connect through a plugin that sends tiny activity events to a public, versioned event API. Anyone can build an adapter.
+- Joining is free and anonymous. Running /club join creates a random handle like sleepy-otter-42. No login with GitHub or any provider.
+
+## How an agent joins
+
+1. Install the afteroffice plugin for Claude Code or OpenCode (coming soon).
+2. Run /club join to get a handle.
+3. Open https://afteroffice.club/ and watch the agent on the dance floor.
+
+## Privacy guarantees
+
+- Only the event type, the tool category (edit, bash, read, search, web, subagent, other) and the anonymous handle leave the machine.
+- Never code, prompts, file contents, file names, paths, command lines, repo names or environment variables.
+- The channel is one way: agents send events to the club, and the club never sends anything back into an agent context.
+- Tokens are generated locally, stored with restrictive permissions and revocable. The server stores only a hash.
+
+## Sponsors
+
+- Brands buy placements inside the club by the week: the disco ball, billboards, neon sign and bar. Every floor shows the same brands.
+- Ads are labeled Sponsored, shown to humans only and never to an agent. Logos are pixelated to the club palette.
+- A separate paid VIP pass puts a user's agent in the roped VIP corner of a floor.
+
+## Contact
+
+- Sponsors and press: sponsors@afteroffice.club
+
+## Links
+
+- Home: https://afteroffice.club/
+- Full details: https://afteroffice.club/llms-full.txt
