@@ -19,3 +19,17 @@ export function fitZoom(
   const fit = Math.min(screenWidth / worldWidth, screenHeight / worldHeight);
   return clampZoom(Math.floor(fit));
 }
+
+export const ZOOM_TWEEN_MS = 360;
+
+export function easeOutCubic(t: number): number {
+  const clamped = Math.min(1, Math.max(0, t));
+  return 1 - (1 - clamped) ** 3;
+}
+
+export function tweenZoom(from: number, to: number, elapsedMs: number, durationMs: number): number {
+  if (durationMs <= 0) {
+    return to;
+  }
+  return from + (to - from) * easeOutCubic(elapsedMs / durationMs);
+}

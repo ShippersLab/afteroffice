@@ -1,6 +1,6 @@
-import type { Application } from "pixi.js";
+import type { Application, PointData, Ticker } from "pixi.js";
 import { Viewport } from "pixi-viewport";
-import { clampZoom, fitZoom, stepZoom } from "../mathematics/zoom";
+import { clampZoom, fitZoom, stepZoom, tweenZoom, ZOOM_TWEEN_MS } from "../mathematics/zoom";
 
 export const WORLD = { left: -620, right: 620, top: -230, bottom: 620 } as const;
 const WORLD_W = WORLD.right - WORLD.left;
@@ -14,13 +14,21 @@ export type ClubViewport = {
   dispose(): void;
 };
 
-function zoomAt(viewport: Viewport, zoom: number, px: number, py: number): void {
-  const before = viewport.toWorld(px, py);
+function placeAt(
+  viewport: Viewport,
+  zoom: number,
+  world: PointData,
+  px: number,
+  py: number,
+  settle: boolean,
+): void {
   viewport.scale.set(zoom);
-  viewport.position.set(Math.round(px - before.x * zoom), Math.round(py - before.y * zoom));
+  const x = px - world.x * zoom;
+  const y = py - world.y * zoom;
+  viewport.position.set(settle ? Math.round(x) : x, settle ? Math.round(y) : y);
 }
 
-export function createViewport(app: Application): ClubViewport {
+export function createViewport(app: Application, reducedMotion: boolean): ClubViewport {
   const viewport = new Viewport({
     screenWidth: app.screen.width,
     screenHeight: app.screen.height,
@@ -29,7 +37,10 @@ export function createViewport(app: Application): ClubViewport {
     events: app.renderer.events,
     ticker: app.ticker,
   });
-  viewport.drag().clamp({ left: 0, top: 0, right: WORLD_W, bottom: WORLD_H, underflow: "center" });
+  viewport
+    .drag()
+    .decelerate({ friction: 0.94 })
+    .clamp({ left: 0, top: 0, right: WORLD_W, bottom: WORLD_H, underflow: "center" });
   let userMoved = false;
   const fitToScreen = (): void => {
     viewport.setZoom(fitZoom(app.screen.width, app.screen.height, WORLD_W, WORLD_H), true);
@@ -53,6 +64,27 @@ export function createViewport(app: Application): ClubViewport {
   app.renderer.on("resize", onResize);
 
   let lastWheel = 0;
+  let targetZoom = viewport.scale.x;
+  let tween:
+    | { from: number; elapsed: number; px: number; py: number; world: PointData }
+    | undefined;
+
+  const onZoomTick = (ticker: Ticker): void => {
+    if (!tween) {
+      return;
+    }
+    tween.elapsed += ticker.deltaMS;
+    const done = tween.elapsed >= ZOOM_TWEEN_MS;
+    const zoom = done
+      ? targetZoom
+      : tweenZoom(tween.from, targetZoom, tween.elapsed, ZOOM_TWEEN_MS);
+    placeAt(viewport, zoom, tween.world, tween.px, tween.py, done);
+    if (done) {
+      tween = undefined;
+    }
+  };
+  app.ticker.add(onZoomTick);
+
   const onWheel = (event: WheelEvent): void => {
     event.preventDefault();
     const now = performance.now();
@@ -62,13 +94,15 @@ export function createViewport(app: Application): ClubViewport {
     lastWheel = now;
     userMoved = true;
     const rect = app.canvas.getBoundingClientRect();
+    const px = event.clientX - rect.left;
+    const py = event.clientY - rect.top;
     const direction = event.deltaY < 0 ? 1 : -1;
-    zoomAt(
-      viewport,
-      stepZoom(viewport.scale.x, direction),
-      event.clientX - rect.left,
-      event.clientY - rect.top,
-    );
+    targetZoom = stepZoom(tween ? targetZoom : viewport.scale.x, direction);
+    if (reducedMotion) {
+      placeAt(viewport, targetZoom, viewport.toWorld(px, py), px, py, true);
+      return;
+    }
+    tween = { from: viewport.scale.x, elapsed: 0, px, py, world: viewport.toWorld(px, py) };
   };
   app.canvas.addEventListener("wheel", onWheel, { passive: false });
 
@@ -77,6 +111,7 @@ export function createViewport(app: Application): ClubViewport {
     dispose: () => {
       app.renderer.off("resize", onResize);
       app.canvas.removeEventListener("wheel", onWheel);
+      app.ticker.remove(onZoomTick);
     },
   };
 }
