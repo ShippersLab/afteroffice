@@ -1,16 +1,16 @@
 import { PRIVACY } from "../../content/privacy";
 import { Section, type SectionHeadingProps } from "../layout/section";
-import { PixelFrame } from "../ui/pixel-frame";
+import { Card } from "../ui/card";
 
 export const PrivacySection = ({ heading }: SectionHeadingProps) => (
   <Section heading={heading} id="privacy" title={PRIVACY.title} lead={PRIVACY.lead}>
-    <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <ul className="grid gap-4 sm:grid-cols-2">
       {PRIVACY.points.map((point) => (
         <li key={point.title}>
-          <PixelFrame className="h-full" tone="cyan">
-            <h3 className="text-xl">{point.title}</h3>
-            <p className="mt-2 text-muted">{point.body}</p>
-          </PixelFrame>
+          <Card className="h-full">
+            <h3 className="text-lg">{point.title}</h3>
+            <p className="mt-2 text-sm text-muted">{point.body}</p>
+          </Card>
         </li>
       ))}
     </ul>

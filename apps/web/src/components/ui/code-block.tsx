@@ -20,12 +20,12 @@ export const CodeBlock = ({ code }: { code: string }) => {
   };
 
   return (
-    <div className="flex items-center justify-between gap-3 rounded-sm border border-line bg-ink py-2.5 pr-2.5 pl-3">
-      <code className="min-w-0 overflow-x-auto whitespace-nowrap font-mono text-[13px] text-lilac">
+    <div className="flex items-start justify-between gap-3 rounded-sm border border-line bg-ink/70 py-3 pr-3 pl-4">
+      <code className="min-w-0 flex-1 whitespace-pre-wrap break-words font-mono text-sm leading-relaxed text-lilac">
         {code}
       </code>
       <button
-        className="flex-none cursor-pointer rounded-full border border-line bg-velvet px-3 py-1 font-mono text-xs font-semibold text-ivory transition-colors duration-200 ease-out hover:border-cyan hover:text-cyan"
+        className="flex-none cursor-pointer rounded-full border border-line bg-velvet px-3 py-1 font-mono text-xs font-semibold text-ivory transition-colors duration-200 ease-out hover:border-muted hover:text-ivory"
         type="button"
         onClick={() => void copy()}
         aria-label={`Copy ${code}`}
