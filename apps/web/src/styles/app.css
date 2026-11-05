@@ -31,13 +31,9 @@
   --radius-md: 14px;
   --radius-lg: 20px;
 
-  --shadow-pixel: 4px 4px 0 0 var(--color-line);
-  --shadow-pixel-magenta: 4px 4px 0 0 var(--color-magenta);
-  --shadow-pixel-cyan: 4px 4px 0 0 var(--color-cyan);
-  --shadow-pixel-amber: 4px 4px 0 0 var(--color-amber);
-  --shadow-glow-magenta: 0 0 24px rgb(255 61 166 / 0.45);
+  --shadow-glow-magenta: 0 0 18px rgb(255 61 166 / 0.35);
   --shadow-glow-cyan: 0 0 24px rgb(44 230 255 / 0.4);
-  --shadow-glow-amber: 0 0 20px rgb(255 184 77 / 0.4);
+  --shadow-glow-amber: 0 0 16px rgb(255 184 77 / 0.3);
 
   --background-image-room: radial-gradient(
     circle at 50% 30%,
@@ -50,6 +46,18 @@
 
   --animate-blink: blink 1.6s steps(2, jump-none) infinite;
   --animate-sweep: sweep 7s ease-in-out infinite alternate;
+  --animate-rise: rise 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
   @keyframes blink {
     50% {
@@ -74,6 +82,7 @@
 
 @layer base {
   html {
+    interpolate-size: allow-keywords;
     color-scheme: dark;
     scroll-behavior: smooth;
     scroll-padding-top: 72px;
@@ -99,6 +108,18 @@
   img,
   canvas {
     image-rendering: pixelated;
+  }
+
+  details::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition:
+      block-size 250ms ease-out,
+      content-visibility 250ms ease-out allow-discrete;
+  }
+
+  details[open]::details-content {
+    block-size: auto;
   }
 
   :focus-visible {
