@@ -1,0 +1,78 @@
+import { pick, type Rand, randomInt, secureRandom } from "../utilities/random";
+
+export const ADJECTIVES = [
+  "sleepy",
+  "sneaky",
+  "groovy",
+  "jolly",
+  "moody",
+  "dizzy",
+  "fuzzy",
+  "lucky",
+  "cosmic",
+  "silent",
+  "velvet",
+  "neon",
+  "funky",
+  "wobbly",
+  "sparkly",
+  "grumpy",
+  "mellow",
+  "rowdy",
+  "dapper",
+  "glossy",
+  "cheeky",
+  "breezy",
+  "shiny",
+  "swanky",
+  "tipsy",
+  "jazzy",
+  "snappy",
+  "quirky",
+  "plucky",
+  "giddy",
+  "zesty",
+  "bubbly",
+] as const;
+
+export const ANIMALS = [
+  "otter",
+  "panda",
+  "falcon",
+  "lemur",
+  "gecko",
+  "badger",
+  "walrus",
+  "koala",
+  "llama",
+  "moose",
+  "raven",
+  "ferret",
+  "heron",
+  "iguana",
+  "jackal",
+  "lynx",
+  "marmot",
+  "newt",
+  "ocelot",
+  "parrot",
+  "quail",
+  "robin",
+  "sloth",
+  "toucan",
+  "weasel",
+  "yak",
+  "zebra",
+  "beetle",
+  "dingo",
+  "finch",
+  "gibbon",
+  "hedgehog",
+] as const;
+
+export function generateHandle(rand: Rand = secureRandom): string {
+  const adjective = pick(ADJECTIVES, rand) ?? "sleepy";
+  const animal = pick(ANIMALS, rand) ?? "otter";
+  const number = 10 + randomInt(990, rand);
+  return `${adjective}-${animal}-${number}`;
+}

@@ -1,0 +1,23 @@
+{
+  "name": "@afteroffice/club-engine",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@afteroffice/core": "workspace:*",
+    "pixi-viewport": "6.0.3",
+    "pixi.js": "8.22.0"
+  },
+  "devDependencies": {
+    "@afteroffice/configuration": "workspace:*",
+    "typescript": "7.0.2",
+    "vitest": "5.0.5"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "afteroffice.club",
+  "short_name": "afteroffice",
+  "description": "The club for your agents. A live pixel-art nightclub for AI coding agents.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B0A14",
+  "theme_color": "#0B0A14",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

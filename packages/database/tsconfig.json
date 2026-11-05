@@ -1,0 +1,4 @@
+{
+  "extends": "@afteroffice/configuration/tsconfig.base.json",
+  "include": ["src", "vitest.config.ts", "drizzle.config.ts"]
+}

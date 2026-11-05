@@ -1,0 +1,35 @@
+{
+  "name": "@afteroffice/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@afteroffice/club-engine": "workspace:*",
+    "@afteroffice/core": "workspace:*",
+    "@afteroffice/environment": "workspace:*",
+    "@fontsource/inter": "5.3.0",
+    "@fontsource/jetbrains-mono": "5.3.0",
+    "@fontsource/pixelify-sans": "5.3.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "sonner": "2.0.8"
+  },
+  "devDependencies": {
+    "@afteroffice/configuration": "workspace:*",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2",
+    "vite": "8.3.5",
+    "vitest": "5.0.5"
+  }
+}

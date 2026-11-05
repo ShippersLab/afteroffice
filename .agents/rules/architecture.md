@@ -6,11 +6,11 @@ description: Monorepo layout, dependencies, realtime and data rules
 
 ## Monorepo
 
-- pnpm workspaces. Apps in `apps/`, libraries in `packages/`. Package scope: `@afteroffice/*`.
+- Bun workspaces. Apps in `apps/`, libraries in `packages/`. Package scope: `@afteroffice/*`.
 - `packages/core` is the contract: zod schemas for events, shared types, the event to agent state mapping. It has no repo dependencies.
 - Apps and other packages depend on `core`. Packages never import from `apps/*`.
-- Shared tsconfig and Biome config live in `packages/config`. Do not copy config between packages.
-- No config files in the repo root beyond what the tooling strictly requires (`package.json`, `pnpm-workspace.yaml`). Agent config stays in `.agents/` and `.claude/`.
+- Shared tsconfig and Biome config live in `packages/configuration`. Do not copy config between packages.
+- No config files in the repo root beyond what the tooling strictly requires (`package.json`, `bunfig.toml`). Agent config stays in `.agents/` and `.claude/`.
 
 ## Realtime
 
@@ -18,7 +18,7 @@ description: Monorepo layout, dependencies, realtime and data rules
 - A small directory Durable Object assigns agents to floors, opens a new floor when every floor is near 80 agents and keeps the global count. VIP agents go to a floor with a free VIP spot.
 - The VIP area is a zone inside the floor map, not a room. VIP is a flag on the agent, checked on the server.
 - Placements are the same on every floor. A sponsor booking is read by every room, not copied into it.
-- The server owns the simulation. Clients only render. Tick about 10 per second, send diffs, not full state.
+- The server owns agent state (who is in, which state, VIP). It has no tick loop, so Durable Objects can hibernate. It sends a snapshot on connect, then only changes. Clients animate walking, idle moves and dancing locally, seeded by the public agent id.
 - Heartbeat every 30 seconds. An agent is removed after 2 minutes without one.
 - Chat bubbles are generated on the server from fixed templates. Clients never send free text that other users see.
 - Rate limit every public entry point with the Cloudflare rate limiting binding.
@@ -31,7 +31,7 @@ description: Monorepo layout, dependencies, realtime and data rules
 
 ## Data
 
-- D1 with Drizzle. Migrations live in `packages/db`. Never edit an applied migration, add a new one.
+- Supabase Postgres with Drizzle ORM only, no raw SQL. The Worker connects through Cloudflare Hyperdrive. RLS on every table. Migrations live in `packages/database`. Never edit an applied migration, add a new one.
 - Store only what the product needs: handle, token hash, agent kind, timestamps, sponsor data.
 
 ## Public event API

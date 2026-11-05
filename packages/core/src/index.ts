@@ -1,4 +1,10 @@
-export { AGENT_STATES, type AgentState, nextAgentState, stateForTool } from "./agent-state";
+export {
+  AGENT_TIMEOUT_MS,
+  FLOOR_CAPACITY,
+  HEARTBEAT_INTERVAL_MS,
+  MAX_EVENT_BYTES,
+  VIP_CAPACITY_PER_FLOOR,
+} from "./constants/limits";
 export {
   AGENT_KINDS,
   type AgentKind,
@@ -23,12 +29,22 @@ export {
   ToolCategorySchema,
   WaitingEventSchema,
   WorkEventSchema,
-} from "./events";
+} from "./protocol/events";
 export {
-  AGENT_TIMEOUT_MS,
-  FLOOR_CAPACITY,
-  HEARTBEAT_INTERVAL_MS,
-  MAX_EVENT_BYTES,
-  VIP_CAPACITY_PER_FLOOR,
-} from "./limits";
-export { floorNumber, floorRoomId, type RoomId, RoomIdSchema } from "./rooms";
+  AgentChangedMessageSchema,
+  AgentEnteredMessageSchema,
+  AgentLeftMessageSchema,
+  AgentStateSchema,
+  BubbleMessageSchema,
+  type LiveMessage,
+  LiveMessageSchema,
+  MAX_BUBBLE_LENGTH,
+  OnlineMessageSchema,
+  type PublicAgent,
+  type PublicAgentId,
+  PublicAgentIdSchema,
+  PublicAgentSchema,
+  SnapshotMessageSchema,
+} from "./protocol/live";
+export { floorNumber, floorRoomId, type RoomId, RoomIdSchema } from "./rooms/rooms";
+export { AGENT_STATES, type AgentState, nextAgentState, stateForTool } from "./state/agent-state";
