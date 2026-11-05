@@ -1,0 +1,17 @@
+export const COLOR = {
+  ink: 0x0b0a14,
+  panel: 0x140f26,
+  velvet: 0x1b1530,
+  line: 0x2e2552,
+  magenta: 0xff3da6,
+  cyan: 0x2ce6ff,
+  amber: 0xffb84d,
+  lilac: 0xc9bfff,
+  ivory: 0xf6f3ff,
+  muted: 0xa79fcb,
+  ultraviolet: 0x8a5cff,
+  laser: 0xb8ff5c,
+  coral: 0xff6b6b,
+  haze: 0x3a1d6e,
+  strobe: 0xffffff,
+} as const;

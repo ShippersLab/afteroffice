@@ -1,0 +1,6 @@
+{
+  "name": "afteroffice",
+  "version": "0.0.0",
+  "description": "Show your Claude Code agent in the afteroffice.club pixel-art nightclub. Sends only event types and tool categories.",
+  "license": "MIT"
+}

@@ -1,0 +1,142 @@
+@import "@fontsource/pixelify-sans/400.css";
+@import "@fontsource/pixelify-sans/700.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/600.css";
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0b0a14;
+  --color-panel: #140f26;
+  --color-velvet: #1b1530;
+  --color-line: #2e2552;
+  --color-magenta: #ff3da6;
+  --color-cyan: #2ce6ff;
+  --color-amber: #ffb84d;
+  --color-lilac: #c9bfff;
+  --color-ivory: #f6f3ff;
+  --color-muted: #a79fcb;
+  --color-ultraviolet: #8a5cff;
+  --color-laser: #b8ff5c;
+  --color-coral: #ff6b6b;
+  --color-haze: #3a1d6e;
+
+  --font-display: "Pixelify Sans", monospace;
+  --font-ui: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  --shadow-glow-magenta: 0 0 18px rgb(255 61 166 / 0.35);
+  --shadow-glow-cyan: 0 0 24px rgb(44 230 255 / 0.4);
+  --shadow-glow-amber: 0 0 16px rgb(255 184 77 / 0.3);
+
+  --background-image-room: radial-gradient(
+    circle at 50% 30%,
+    var(--color-haze) 0%,
+    var(--color-ink) 70%
+  );
+  --background-image-stage: radial-gradient(circle at 76% 40%, #2e1560 0%, var(--color-ink) 75%);
+  --background-image-beam-magenta: linear-gradient(180deg, rgb(255 61 166 / 0.16), transparent 85%);
+  --background-image-beam-cyan: linear-gradient(180deg, rgb(44 230 255 / 0.14), transparent 85%);
+
+  --animate-blink: blink 1.6s steps(2, jump-none) infinite;
+  --animate-sweep: sweep 7s ease-in-out infinite alternate;
+  --animate-rise: rise 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0.25;
+    }
+  }
+
+  @keyframes sweep {
+    from {
+      transform: rotate(-6deg);
+    }
+    to {
+      transform: rotate(6deg);
+    }
+  }
+}
+
+@utility pixelated {
+  image-rendering: pixelated;
+  shape-rendering: crispEdges;
+}
+
+@layer base {
+  html {
+    interpolate-size: allow-keywords;
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    scroll-padding-top: 72px;
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: var(--color-ink);
+    color: var(--color-ivory);
+    font-family: var(--font-ui);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.05;
+  }
+
+  img,
+  canvas {
+    image-rendering: pixelated;
+  }
+
+  details::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition:
+      block-size 250ms ease-out,
+      content-visibility 250ms ease-out allow-discrete;
+  }
+
+  details[open]::details-content {
+    block-size: auto;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-cyan);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}

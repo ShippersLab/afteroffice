@@ -2,18 +2,31 @@
   "name": "afteroffice",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.31.0",
+  "packageManager": "bun@1.4.2",
   "engines": {
-    "node": ">=22"
+    "bun": ">=1.4.2"
   },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "lint": "biome check --config-path packages/config/biome.base.json .",
-    "format": "biome check --write --config-path packages/config/biome.base.json .",
-    "typecheck": "pnpm -r typecheck",
-    "test": "pnpm -r test"
+    "lint": "oxlint -c packages/configuration/oxlint.base.json --ignore-pattern .agents --ignore-pattern .claude . && biome check --config-path packages/configuration/biome.base.json .",
+    "lint:fix": "oxlint -c packages/configuration/oxlint.base.json --ignore-pattern .agents --ignore-pattern .claude --fix . && biome check --write --config-path packages/configuration/biome.base.json .",
+    "format": "biome format --write --config-path packages/configuration/biome.base.json .",
+    "typecheck": "bun run --filter '*' typecheck",
+    "test": "bun run --filter '*' test",
+    "prepare": "lefthook install",
+    "dev": "bun run --filter './apps/*' dev"
   },
   "devDependencies": {
-    "@afteroffice/config": "workspace:*",
-    "@biomejs/biome": "2.6.5"
-  }
+    "@afteroffice/configuration": "workspace:*",
+    "@biomejs/biome": "2.6.5",
+    "lefthook": "2.2.2",
+    "oxlint": "1.90.0"
+  },
+  "trustedDependencies": [
+    "esbuild",
+    "workerd"
+  ]
 }

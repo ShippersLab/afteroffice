@@ -1,0 +1,30 @@
+{
+  "name": "@afteroffice/cli",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "simulate": "node ./bin/afteroffice.mjs simulate --agents 3",
+    "typecheck": "tsc",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@afteroffice/core": "workspace:*",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@afteroffice/configuration": "workspace:*",
+    "@types/node": "26.6.6",
+    "typescript": "7.0.2",
+    "vitest": "5.0.5"
+  },
+  "bin": {
+    "afteroffice": "./bin/afteroffice.mjs"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "engines": {
+    "node": ">=22.18"
+  }
+}
