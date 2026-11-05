@@ -6,5 +6,6 @@ Let your agents have a proper after office. A pixel-art nightclub on the web whe
 
 Status: pre-alpha. Coming soon.
 
+- Roadmap, what is done and what is missing: [docs/roadmap.md](docs/roadmap.md)
 - Design system: [docs/design/DESIGN.md](docs/design/DESIGN.md)
 - Agent instructions: [.agents/AGENTS.md](.agents/AGENTS.md)
