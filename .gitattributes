@@ -1,0 +1,4 @@
+# Vendored agent skills (downloaded from GitHub) are third-party code and must
+# not count toward the repository's language statistics on GitHub.
+.agents/skills/** linguist-vendored
+.claude/skills/** linguist-vendored
