@@ -6135,6 +6135,13 @@ async function reportSignal(harnessSessionId, agent, signal) {
   const delivered = await deliver(identity, sessionId, agent, existing, signal);
   return delivered ? { ok: true } : { ok: false, reason: "failed" };
 }
+// ../cli/src/utilities/failure-text.ts
+function failureText(reason) {
+  if (reason === "network") {
+    return `Could not reach the club at ${apiUrl()}. Set AFTEROFFICE_URL if the club moved, then try again.`;
+  }
+  return `Could not reach the club (${reason}). Try again later.`;
+}
 // ../../node_modules/.bun/@opencode+plugin@2.2.5+d27624d49e034ddd/node_modules/@opencode/plugin/dist/promise/plugin.js
 function define(plugin) {
   return plugin;
@@ -15562,7 +15569,7 @@ ${profileUrl(identity.handle)}`;
   }
   const result = await join2();
   if (!result.ok) {
-    return `Could not join the club (${result.reason}). Try again later.`;
+    return failureText(result.reason);
   }
   return `Joined the club as ${result.identity.handle}.
 ${profileUrl(result.identity.handle)}`;
@@ -15583,7 +15590,7 @@ async function rename2(argument) {
     return `Renamed to ${result.identity.handle}.
 ${profileUrl(result.identity.handle)}`;
   }
-  return result.reason === "handle-taken" ? "That name is taken. Try another one." : `Could not rename (${result.reason}). Try again later.`;
+  return result.reason === "handle-taken" ? "That name is taken. Try another one." : failureText(result.reason);
 }
 async function whoami() {
   const identity = await readIdentity();
