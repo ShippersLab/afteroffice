@@ -3,11 +3,11 @@ pre-commit:
   commands:
     lint:
       glob: "*.{ts,tsx,js,jsx}"
-      exclude: "{**/*.d.ts,.agents/**,.claude/**}"
+      exclude: "{**/*.d.ts,.agents/**,.claude/**,**/dist/**}"
       run: bunx oxlint -c packages/configuration/oxlint.base.json --no-error-on-unmatched-pattern {staged_files}
     format:
       glob: "*.{ts,tsx,js,jsx,json,jsonc,css}"
-      exclude: "{.agents/**,.claude/**,**/migrations/**}"
+      exclude: "{.agents/**,.claude/**,**/migrations/**,**/dist/**}"
       run: bunx biome check --write --config-path packages/configuration/biome.base.json --no-errors-on-unmatched {staged_files}
       stage_fixed: true
 

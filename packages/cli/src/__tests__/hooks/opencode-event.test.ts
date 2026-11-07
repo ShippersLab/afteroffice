@@ -13,29 +13,33 @@ function toEvent(report: ReturnType<typeof mapOpenCodeEvent>) {
 
 describe("mapOpenCodeEvent", () => {
   it("maps session events", () => {
-    const info = { id: "ses_1", title: "private title", directory: "/home/me/repo" };
-    expect(toEvent(mapOpenCodeEvent({ type: "session.created", properties: { info } })).type).toBe(
+    const created = {
+      sessionID: "ses_1",
+      title: "private title",
+      directory: "/home/me/repo",
+    };
+    expect(toEvent(mapOpenCodeEvent({ type: "session.created", data: created })).type).toBe(
       "enter",
     );
-    expect(
-      toEvent(mapOpenCodeEvent({ type: "session.idle", properties: { sessionID: "s" } })).type,
-    ).toBe("done");
+    expect(toEvent(mapOpenCodeEvent({ type: "session.idle", data: { sessionID: "s" } })).type).toBe(
+      "done",
+    );
     expect(
       toEvent(
         mapOpenCodeEvent({
-          type: "session.error",
-          properties: { sessionID: "s", error: { message: "/x" } },
+          type: "session.execution.failed",
+          data: { sessionID: "s", error: { message: "/x" } },
         }),
       ).type,
     ).toBe("error");
-    expect(toEvent(mapOpenCodeEvent({ type: "session.deleted", properties: { info } })).type).toBe(
-      "leave",
-    );
+    expect(
+      toEvent(mapOpenCodeEvent({ type: "session.deleted", data: { sessionID: "s" } })).type,
+    ).toBe("leave");
     expect(
       toEvent(
         mapOpenCodeEvent({
           type: "permission.asked",
-          properties: { sessionID: "s", pattern: "rm -rf /" },
+          data: { sessionID: "s", pattern: "rm -rf /" },
         }),
       ).type,
     ).toBe("waiting");
@@ -44,14 +48,17 @@ describe("mapOpenCodeEvent", () => {
   it("flags child sessions and skips their enter", () => {
     const report = mapOpenCodeEvent({
       type: "session.created",
-      properties: { info: { id: "child", parentID: "parent" } },
+      data: { sessionID: "child", parentID: "parent" },
     });
-    expect(report).toMatchObject({ child: true, signal: null });
+    expect(report).toMatchObject({ harnessSessionId: "child", child: true, signal: null });
   });
 
   it("ignores unknown or malformed events", () => {
-    expect(mapOpenCodeEvent({ type: "file.edited", properties: { file: "/a" } })).toBeUndefined();
-    expect(mapOpenCodeEvent({ type: "session.idle", properties: {} })).toBeUndefined();
+    expect(mapOpenCodeEvent({ type: "file.edited", data: { file: "/a" } })).toBeUndefined();
+    expect(mapOpenCodeEvent({ type: "session.idle", data: {} })).toBeUndefined();
+    expect(
+      mapOpenCodeEvent({ type: "session.idle", properties: { sessionID: "s" } }),
+    ).toBeUndefined();
     expect(mapOpenCodeEvent("nope")).toBeUndefined();
   });
 

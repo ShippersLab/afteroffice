@@ -73,10 +73,11 @@ export class Floor extends DurableObject<FloorEnv> {
   ): Promise<boolean> {
     this.store.rememberRoom(roomId);
     const now = Date.now();
-    const existing = this.store.get(sessionId);
+    let existing = this.store.get(sessionId);
     if (existing !== null && existing.agent.handle !== handle) {
-      await this.syncOnline();
-      return false;
+      this.store.rename(sessionId, existing, handle, now);
+      this.send({ type: "agent-renamed", id: existing.agent.id, handle });
+      existing = { ...existing, agent: { ...existing.agent, handle }, lastSeen: now };
     }
     if (existing === null) {
       const publicAgent: PublicAgent = {
@@ -100,11 +101,16 @@ export class Floor extends DurableObject<FloorEnv> {
   }
 
   async apply(event: ClubEvent, handle: string): Promise<boolean> {
-    const stored = this.store.get(event.sessionId);
-    if (stored === null || stored.agent.handle !== handle) {
+    let stored = this.store.get(event.sessionId);
+    if (stored === null) {
       return false;
     }
     const now = Date.now();
+    if (stored.agent.handle !== handle) {
+      this.store.rename(event.sessionId, stored, handle, now);
+      this.send({ type: "agent-renamed", id: stored.agent.id, handle });
+      stored = { ...stored, agent: { ...stored.agent, handle }, lastSeen: now };
+    }
     if (event.type === "leave") {
       this.store.remove(event.sessionId);
       this.send({ type: "agent-left", id: stored.agent.id });

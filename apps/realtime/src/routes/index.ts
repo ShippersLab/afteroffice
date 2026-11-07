@@ -3,10 +3,12 @@ import type { AppEnv } from "../configuration/env";
 import { eventsRoutes } from "./events";
 import { joinRoutes } from "./join";
 import { liveRoutes } from "./live";
+import { nameRoutes } from "./name";
 import { statsRoutes } from "./stats";
 
 export const v1Routes = new Hono<AppEnv>()
   .route("/", joinRoutes)
   .route("/", eventsRoutes)
   .route("/", liveRoutes)
+  .route("/", nameRoutes)
   .route("/", statsRoutes);

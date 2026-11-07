@@ -39,6 +39,7 @@ export class AgentView {
   private readonly figure = new Sprite();
   private readonly sleepMark = new Sprite();
   private labelTexture: Texture | null = null;
+  private labelHandle = "";
   private bubbleTexture: Texture | null = null;
   private bubbleText = "";
   private look: Appearance = { body: 0, accessory: "none" };
@@ -71,22 +72,33 @@ export class AgentView {
   bind(agent: AgentModel): void {
     this.agentId = agent.id;
     this.look = appearanceFor(agent.id);
-    this.labelTexture?.destroy(true);
-    this.labelTexture = toTexture(labelPixels(agent.handle, agent.vip));
-    this.label.texture = this.labelTexture;
+    this.labelHandle = "";
+    this.syncLabel(agent);
     this.clearBubble();
     this.body.visible = true;
     this.label.visible = true;
   }
 
+  private syncLabel(agent: AgentModel): void {
+    if (agent.handle === this.labelHandle) {
+      return;
+    }
+    this.labelHandle = agent.handle;
+    this.labelTexture?.destroy(true);
+    this.labelTexture = toTexture(labelPixels(agent.handle, agent.vip));
+    this.label.texture = this.labelTexture;
+  }
+
   release(): void {
     this.agentId = "";
+    this.labelHandle = "";
     this.body.visible = false;
     this.label.visible = false;
     this.clearBubble();
   }
 
   update(agent: AgentModel, timeMs: number, reducedMotion: boolean): void {
+    this.syncLabel(agent);
     const feet = feetPosition(agent);
     const walking = agent.path.length > 0;
     const pose: AgentPose = walking || agent.leaving ? "stand" : poseForState(agent.state);
