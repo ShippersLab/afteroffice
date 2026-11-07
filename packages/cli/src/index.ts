@@ -23,4 +23,5 @@ export { enterSession, type ReportResult, reportSignal } from "./session/session
 export { deriveSessionId } from "./session/session-id";
 export { type Identity, readIdentity } from "./storage/identity-store";
 export { webUrl } from "./storage/paths";
+export { failureText } from "./utilities/failure-text";
 export type { SessionSignal } from "./utilities/signal";

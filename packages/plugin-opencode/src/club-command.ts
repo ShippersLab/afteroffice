@@ -1,4 +1,11 @@
-import { join, leaveAllSessions, readIdentity, renameHandle, webUrl } from "@afteroffice/cli";
+import {
+  failureText,
+  join,
+  leaveAllSessions,
+  readIdentity,
+  renameHandle,
+  webUrl,
+} from "@afteroffice/cli";
 import { HandleSchema } from "@afteroffice/core";
 
 const USAGE = "Usage: /afteroffice join, name <handle>, whoami or leave.";
@@ -18,7 +25,7 @@ async function joinClub(): Promise<string> {
   }
   const result = await join();
   if (!result.ok) {
-    return `Could not join the club (${result.reason}). Try again later.`;
+    return failureText(result.reason);
   }
   return `Joined the club as ${result.identity.handle}.\n${profileUrl(result.identity.handle)}`;
 }
@@ -40,7 +47,7 @@ async function rename(argument: string | undefined): Promise<string> {
   }
   return result.reason === "handle-taken"
     ? "That name is taken. Try another one."
-    : `Could not rename (${result.reason}). Try again later.`;
+    : failureText(result.reason);
 }
 
 async function whoami(): Promise<string> {
