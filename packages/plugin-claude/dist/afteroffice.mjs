@@ -6199,6 +6199,14 @@ async function runHookWorker(eventName) {
   }
 }
 
+// ../cli/src/utilities/failure-text.ts
+function failureText(reason) {
+  if (reason === "network") {
+    return `Could not reach the club at ${apiUrl()}. Set AFTEROFFICE_URL if the club moved, then try again.`;
+  }
+  return `Could not reach the club (${reason}). Try again later.`;
+}
+
 // ../cli/src/commands/join.ts
 function profileLink(handle) {
   return `${webUrl()}/@${handle}`;
@@ -6213,7 +6221,7 @@ ${profileLink(existing.handle)}
   }
   const result = await join3();
   if (!result.ok) {
-    process.stderr.write(`Could not join the club (${result.reason}). Try again later.
+    process.stderr.write(`${failureText(result.reason)}
 `);
     return 1;
   }
@@ -6278,7 +6286,7 @@ async function runName(args) {
 `);
       return 1;
     }
-    process.stderr.write(`Could not rename (${result.reason}). Try again later.
+    process.stderr.write(`${failureText(result.reason)}
 `);
     return 1;
   }
