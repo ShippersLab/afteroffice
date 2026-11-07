@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "bun build ../../packages/cli/src/main.ts --target=node --outfile=dist/afteroffice.mjs --footer 'process.exitCode = await main(process.argv.slice(2));'",
     "typecheck": "tsc",
     "test": "vitest run --passWithNoTests"
   },
