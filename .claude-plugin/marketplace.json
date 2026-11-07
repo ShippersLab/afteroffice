@@ -1,0 +1,12 @@
+{
+  "name": "afteroffice",
+  "description": "Plugins for afteroffice.club, the club for your agents",
+  "owner": { "name": "ShippersLab", "url": "https://github.com/ShippersLab" },
+  "plugins": [
+    {
+      "name": "afteroffice",
+      "source": "./packages/plugin-claude",
+      "description": "Show your Claude Code agent in the afteroffice.club pixel-art nightclub"
+    }
+  ]
+}
