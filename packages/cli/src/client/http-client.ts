@@ -16,11 +16,15 @@ export type FailureReason =
   | "http"
   | "no-identity"
   | "invalid-response"
-  | "invalid-event";
+  | "invalid-event"
+  | "invalid-handle"
+  | "handle-taken";
 
 export type Failure = { ok: false; reason: FailureReason; status: number | null };
 
 export type JoinResult = { ok: true; identity: Identity } | Failure;
+
+export type RenameResult = { ok: true; identity: Identity } | Failure;
 
 export type SendResult = { ok: true; enter: EnterResponse | null } | Failure;
 
@@ -28,6 +32,8 @@ const JoinResponseSchema = z.object({
   handle: HandleSchema,
   token: z.string().min(16).max(256),
 });
+
+const RenameResponseSchema = z.object({ handle: HandleSchema });
 
 type PostResult = { ok: true; status: number; body: unknown } | Failure;
 
@@ -71,6 +77,24 @@ export async function join(): Promise<JoinResult> {
     await writeIdentity(result.identity);
   }
   return result;
+}
+
+export async function renameHandle(identity: Identity, handle: string): Promise<RenameResult> {
+  const checked = HandleSchema.safeParse(handle);
+  if (!checked.success) {
+    return { ok: false, reason: "invalid-handle", status: null };
+  }
+  const result = await post(identity.url, "/v1/name", { handle: checked.data }, identity.token);
+  if (!result.ok) {
+    return result.status === 409 ? { ok: false, reason: "handle-taken", status: 409 } : result;
+  }
+  const parsed = RenameResponseSchema.safeParse(result.body);
+  if (!parsed.success) {
+    return { ok: false, reason: "invalid-response", status: result.status };
+  }
+  const updated: Identity = { ...identity, handle: parsed.data.handle };
+  await writeIdentity(updated);
+  return { ok: true, identity: updated };
 }
 
 export async function sendEventAs(identity: Identity, event: ClubEvent): Promise<SendResult> {

@@ -2,16 +2,14 @@ import { z } from "zod";
 import type { SessionSignal } from "../utilities/signal";
 import { mapToolNameToCategory } from "./tool-category";
 
-const SessionInfoSchema = z.object({
-  id: z.string().min(1).max(512),
+const SessionIdDataSchema = z.object({ sessionID: z.string().min(1).max(512) });
+
+const CreatedDataSchema = z.object({
+  sessionID: z.string().min(1).max(512),
   parentID: z.string().optional(),
 });
 
-const SessionIdPropsSchema = z.object({ sessionID: z.string().min(1).max(512) });
-
-const EventSchema = z.object({ type: z.string().max(64), properties: z.unknown() });
-
-const InfoPropsSchema = z.object({ info: SessionInfoSchema });
+const EventSchema = z.object({ type: z.string().max(64), data: z.unknown() });
 
 const ToolInputSchema = z.object({
   tool: z.string().max(256),
@@ -24,20 +22,24 @@ export type OpenCodeReport = {
   child: boolean;
 };
 
-function fromSessionId(properties: unknown, signal: SessionSignal): OpenCodeReport | undefined {
-  const parsed = SessionIdPropsSchema.safeParse(properties);
+function fromSessionId(data: unknown, signal: SessionSignal): OpenCodeReport | undefined {
+  const parsed = SessionIdDataSchema.safeParse(data);
   return parsed.success
     ? { harnessSessionId: parsed.data.sessionID, signal, child: false }
     : undefined;
 }
 
-function fromInfo(properties: unknown, signal: SessionSignal): OpenCodeReport | undefined {
-  const parsed = InfoPropsSchema.safeParse(properties);
+function fromCreated(data: unknown): OpenCodeReport | undefined {
+  const parsed = CreatedDataSchema.safeParse(data);
   if (!parsed.success) {
     return undefined;
   }
-  const { id, parentID } = parsed.data.info;
-  return { harnessSessionId: id, signal, child: parentID !== undefined };
+  const child = parsed.data.parentID !== undefined;
+  return {
+    harnessSessionId: parsed.data.sessionID,
+    signal: child ? null : { type: "enter", agent: "opencode" },
+    child,
+  };
 }
 
 export function mapOpenCodeEvent(event: unknown): OpenCodeReport | undefined {
@@ -45,21 +47,18 @@ export function mapOpenCodeEvent(event: unknown): OpenCodeReport | undefined {
   if (!parsed.success) {
     return undefined;
   }
-  const { type, properties } = parsed.data;
+  const { type, data } = parsed.data;
   switch (type) {
-    case "session.created": {
-      const report = fromInfo(properties, { type: "enter", agent: "opencode" });
-      return report?.child ? { ...report, signal: null } : report;
-    }
+    case "session.created":
+      return fromCreated(data);
     case "session.idle":
-      return fromSessionId(properties, { type: "done" });
-    case "session.error":
-      return fromSessionId(properties, { type: "error" });
+      return fromSessionId(data, { type: "done" });
     case "session.deleted":
-      return fromInfo(properties, { type: "leave" });
+      return fromSessionId(data, { type: "leave" });
     case "permission.asked":
-    case "permission.updated":
-      return fromSessionId(properties, { type: "waiting" });
+      return fromSessionId(data, { type: "waiting" });
+    case "session.execution.failed":
+      return fromSessionId(data, { type: "error" });
     default:
       return undefined;
   }
