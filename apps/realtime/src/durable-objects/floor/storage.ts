@@ -42,6 +42,13 @@ export class AgentStore {
     this.kv.put(`${AGENT_PREFIX}${sessionId}`, { ...stored, lastSeen: now });
   }
 
+  rename(sessionId: string, stored: StoredAgent, handle: string, now: number): void {
+    this.kv.put(`${AGENT_PREFIX}${sessionId}`, {
+      agent: { ...stored.agent, handle },
+      lastSeen: now,
+    });
+  }
+
   remove(sessionId: string): void {
     this.kv.delete(`${AGENT_PREFIX}${sessionId}`);
   }

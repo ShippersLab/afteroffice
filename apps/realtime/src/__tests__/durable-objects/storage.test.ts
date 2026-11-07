@@ -59,6 +59,19 @@ describe("AgentStore", () => {
     store.rememberRoom("floor-2");
     expect(store.currentRoom()).toBe("floor-2");
   });
+
+  it("renames an agent in place and keeps its id", () => {
+    const store = new AgentStore(new MemoryKv());
+    store.insert("s1", agent, 100);
+    const stored = store.get("s1");
+    if (stored !== null) {
+      store.rename("s1", stored, "new-otter-42", 200);
+    }
+    const renamed = store.get("s1");
+    expect(renamed?.agent.handle).toBe("new-otter-42");
+    expect(renamed?.agent.id).toBe("abcdefghij12");
+    expect(renamed?.lastSeen).toBe(200);
+  });
 });
 
 describe("FloorCounts", () => {
