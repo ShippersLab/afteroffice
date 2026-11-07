@@ -34,6 +34,7 @@ export {
   AgentChangedMessageSchema,
   AgentEnteredMessageSchema,
   AgentLeftMessageSchema,
+  AgentRenamedMessageSchema,
   AgentStateSchema,
   BubbleMessageSchema,
   type LiveMessage,
