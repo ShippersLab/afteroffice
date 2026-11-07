@@ -32,7 +32,7 @@ describe("AfterofficePlugin", () => {
     const input = { tool: "bash", sessionID: "s1", callID: "c" };
     await hooks["tool.execute.before"]?.(input, { args: { command: "cat /etc/passwd" } });
     await hooks.event?.({
-      event: { type: "session.idle", properties: { sessionID: "s1" } } as never,
+      event: { type: "session.idle", data: { sessionID: "s1" } } as never,
     });
     await new Promise((resolve) => setTimeout(resolve, 0));
     expect(reported).toEqual([
@@ -46,7 +46,7 @@ describe("AfterofficePlugin", () => {
     await hooks.event?.({
       event: {
         type: "session.created",
-        properties: { info: { id: "kid", parentID: "p" } },
+        data: { sessionID: "kid", parentID: "p" },
       } as never,
     });
     await hooks["tool.execute.before"]?.(
