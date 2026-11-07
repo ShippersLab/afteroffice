@@ -1,23 +1,28 @@
 {
   "name": "@afteroffice/plugin-opencode",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "build": "bun build src/index.ts --target=bun --outfile=dist/index.js",
     "typecheck": "tsc",
     "test": "vitest run --passWithNoTests"
   },
-  "dependencies": {
-    "@afteroffice/cli": "workspace:*"
-  },
   "devDependencies": {
+    "@afteroffice/cli": "workspace:*",
     "@afteroffice/configuration": "workspace:*",
-    "@opencode-ai/plugin": "1.19.5",
+    "@afteroffice/core": "workspace:*",
+    "@opencode/plugin": "2.2.5",
     "@types/node": "26.6.6",
     "typescript": "7.0.2",
     "vitest": "5.0.5"
   },
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
   }
 }
