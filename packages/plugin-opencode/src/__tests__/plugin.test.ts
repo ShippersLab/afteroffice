@@ -162,6 +162,11 @@ describe("AfterofficePlugin", () => {
     expect(state.reported).toEqual([]);
   });
 
+  it("registers the command under the afteroffice:club name", async () => {
+    const harness = await createHarness([]);
+    expect(harness.command?.name).toBe("afteroffice:club");
+  });
+
   it("reports a join from the command", async () => {
     const harness = await createHarness([]);
     await executeCommand(harness, "join");
@@ -187,7 +192,7 @@ describe("AfterofficePlugin", () => {
     await executeCommand(harness, "dance");
     expect(harness.synthetic).toHaveBeenCalledWith({
       sessionID: "s1",
-      text: "Usage: /afteroffice join, name <handle>, whoami or leave.",
+      text: "Usage: /afteroffice:club join, name <handle>, whoami or leave.",
     });
   });
 
@@ -209,7 +214,7 @@ describe("runClubCommand", () => {
 
   it("reports whoami for an agent that did not join", async () => {
     await expect(runClubCommand("whoami")).resolves.toBe(
-      "Not joined yet. Run /afteroffice join first.",
+      "Not joined yet. Run /afteroffice:club join first.",
     );
   });
 
@@ -226,7 +231,7 @@ describe("runClubCommand", () => {
   });
 
   it("asks for a handle when the name argument is missing", async () => {
-    await expect(runClubCommand("name")).resolves.toBe("Usage: /afteroffice name <handle>.");
+    await expect(runClubCommand("name")).resolves.toBe("Usage: /afteroffice:club name <handle>.");
   });
 
   it("rejects an invalid handle before reading the identity", async () => {
@@ -237,7 +242,7 @@ describe("runClubCommand", () => {
 
   it("asks the agent to join before renaming", async () => {
     await expect(runClubCommand("name fresh-name")).resolves.toBe(
-      "Not joined yet. Run /afteroffice join first.",
+      "Not joined yet. Run /afteroffice:club join first.",
     );
   });
 

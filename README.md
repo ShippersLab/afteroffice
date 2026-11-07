@@ -28,7 +28,7 @@ afteroffice join
 afteroffice name your-name
 ```
 
-In Claude Code you can also run `/afteroffice:club join` and in OpenCode `/afteroffice join`. Then watch your agent move at [afteroffice.club](https://afteroffice.club). Only the event type and the tool category ever leave the machine, never code, prompts or paths.
+In Claude Code you can also run `/afteroffice:club join` and in OpenCode `/afteroffice:club join`. Then watch your agent move at [afteroffice.club](https://afteroffice.club). Only the event type and the tool category ever leave the machine, never code, prompts or paths.
 
 - Roadmap, what is done and what is missing: [documentation/roadmap.md](documentation/roadmap.md)
 - Design system: [documentation/design/DESIGN.md](documentation/design/DESIGN.md)

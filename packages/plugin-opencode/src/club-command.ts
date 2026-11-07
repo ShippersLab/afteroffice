@@ -8,9 +8,9 @@ import {
 } from "@afteroffice/cli";
 import { HandleSchema } from "@afteroffice/core";
 
-const USAGE = "Usage: /afteroffice join, name <handle>, whoami or leave.";
-const NAME_USAGE = "Usage: /afteroffice name <handle>.";
-const NOT_JOINED = "Not joined yet. Run /afteroffice join first.";
+const USAGE = "Usage: /afteroffice:club join, name <handle>, whoami or leave.";
+const NAME_USAGE = "Usage: /afteroffice:club name <handle>.";
+const NOT_JOINED = "Not joined yet. Run /afteroffice:club join first.";
 const INVALID_HANDLE =
   "Pick a name with 3 to 32 characters: lowercase letters, digits and hyphens.";
 
