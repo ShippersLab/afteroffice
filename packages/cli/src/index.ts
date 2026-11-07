@@ -24,4 +24,5 @@ export { deriveSessionId } from "./session/session-id";
 export { type Identity, readIdentity } from "./storage/identity-store";
 export { webUrl } from "./storage/paths";
 export { failureText } from "./utilities/failure-text";
+export { floorSummary } from "./utilities/floor-summary";
 export type { SessionSignal } from "./utilities/signal";

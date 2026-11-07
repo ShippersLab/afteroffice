@@ -46,7 +46,7 @@ export default Plugin.define({
       editor.add({
         name: "afteroffice:club",
         description:
-          "Join afteroffice.club, rename your agent or leave: join, name <handle>, whoami, leave",
+          "Join afteroffice.club, rename your agent or leave: join, name <handle>, whoami, floor, leave-all",
         execute: async ({ sessionID, prompt }) => {
           const text = await runClubCommand(prompt.text);
           await ctx.session.synthetic({ sessionID, text });

@@ -6142,6 +6142,24 @@ function failureText(reason) {
   }
   return `Could not reach the club (${reason}). Try again later.`;
 }
+// ../cli/src/utilities/floor-summary.ts
+async function floorSummary() {
+  const ids = await listSessionIds();
+  const sessions = await Promise.all(ids.map((id) => readSession(id)));
+  const counts = new Map;
+  for (const session of sessions) {
+    if (session !== undefined) {
+      counts.set(session.roomId, (counts.get(session.roomId) ?? 0) + 1);
+    }
+  }
+  if (counts.size === 0) {
+    return "Your agent is not on the floor yet. It shows up when it starts working.";
+  }
+  const lines = [...counts.entries()].map(([floor, count]) => `You are on ${floor} (${count} session${count === 1 ? "" : "s"})`);
+  return `${lines.join(`
+`)}
+Watch the club: ${webUrl()}`;
+}
 // ../../node_modules/.bun/@opencode+plugin@2.2.5+d27624d49e034ddd/node_modules/@opencode/plugin/dist/promise/plugin.js
 function define(plugin) {
   return plugin;
@@ -15554,7 +15572,7 @@ var Resolved = durable({
 });
 var Event17 = { Updated: Updated14, Resolved, Definitions: inventory(Updated14, Resolved) };
 // src/club-command.ts
-var USAGE = "Usage: /afteroffice:club join, name <handle>, whoami or leave.";
+var USAGE = "Usage: /afteroffice:club join, name <handle>, whoami, floor or leave-all.";
 var NAME_USAGE = "Usage: /afteroffice:club name <handle>.";
 var NOT_JOINED = "Not joined yet. Run /afteroffice:club join first.";
 var INVALID_HANDLE = "Pick a name with 3 to 32 characters: lowercase letters, digits and hyphens.";
@@ -15597,7 +15615,11 @@ async function whoami() {
   return identity === undefined ? NOT_JOINED : `${identity.handle}
 ${profileUrl(identity.handle)}`;
 }
-async function leave() {
+async function floor() {
+  const identity = await readIdentity();
+  return identity === undefined ? NOT_JOINED : floorSummary();
+}
+async function leaveAll() {
   const identity = await readIdentity();
   if (identity === undefined) {
     return NOT_JOINED;
@@ -15618,8 +15640,11 @@ async function runClubCommand(text) {
     if (verb === "whoami") {
       return await whoami();
     }
-    if (verb === "leave") {
-      return await leave();
+    if (verb === "floor") {
+      return await floor();
+    }
+    if (verb === "leave-all") {
+      return await leaveAll();
     }
     return USAGE;
   } catch {
@@ -15673,7 +15698,7 @@ var src_default = define({
     await ctx.command.transform((editor) => {
       editor.add({
         name: "afteroffice:club",
-        description: "Join afteroffice.club, rename your agent or leave: join, name <handle>, whoami, leave",
+        description: "Join afteroffice.club, rename your agent or leave: join, name <handle>, whoami, floor, leave-all",
         execute: async ({ sessionID, prompt }) => {
           const text = await runClubCommand(prompt.text);
           await ctx.session.synthetic({ sessionID, text });

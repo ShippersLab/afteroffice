@@ -1,5 +1,6 @@
 import {
   failureText,
+  floorSummary,
   join,
   leaveAllSessions,
   readIdentity,
@@ -8,7 +9,7 @@ import {
 } from "@afteroffice/cli";
 import { HandleSchema } from "@afteroffice/core";
 
-const USAGE = "Usage: /afteroffice:club join, name <handle>, whoami or leave.";
+const USAGE = "Usage: /afteroffice:club join, name <handle>, whoami, floor or leave-all.";
 const NAME_USAGE = "Usage: /afteroffice:club name <handle>.";
 const NOT_JOINED = "Not joined yet. Run /afteroffice:club join first.";
 const INVALID_HANDLE =
@@ -23,6 +24,7 @@ async function joinClub(): Promise<string> {
   if (identity !== undefined) {
     return `Already joined the club as ${identity.handle}.\n${profileUrl(identity.handle)}`;
   }
+
   const result = await join();
   if (!result.ok) {
     return failureText(result.reason);
@@ -55,7 +57,12 @@ async function whoami(): Promise<string> {
   return identity === undefined ? NOT_JOINED : `${identity.handle}\n${profileUrl(identity.handle)}`;
 }
 
-async function leave(): Promise<string> {
+async function floor(): Promise<string> {
+  const identity = await readIdentity();
+  return identity === undefined ? NOT_JOINED : floorSummary();
+}
+
+async function leaveAll(): Promise<string> {
   const identity = await readIdentity();
   if (identity === undefined) {
     return NOT_JOINED;
@@ -80,8 +87,11 @@ export async function runClubCommand(text: string): Promise<string> {
     if (verb === "whoami") {
       return await whoami();
     }
-    if (verb === "leave") {
-      return await leave();
+    if (verb === "floor") {
+      return await floor();
+    }
+    if (verb === "leave-all") {
+      return await leaveAll();
     }
     return USAGE;
   } catch {
