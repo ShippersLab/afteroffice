@@ -21,6 +21,28 @@ export async function findHandle(db: () => Database, tokenHash: string): Promise
   return handle;
 }
 
+export async function renameAccount(
+  db: () => Database,
+  tokenHash: string,
+  handle: string,
+): Promise<boolean> {
+  let rows: { handle: string }[];
+  try {
+    rows = await db()
+      .update(accounts)
+      .set({ handle })
+      .where(eq(accounts.tokenHash, tokenHash))
+      .returning({ handle: accounts.handle });
+  } catch {
+    return false;
+  }
+  if (rows[0] === undefined) {
+    return false;
+  }
+  cacheHandle(tokenHash, handle);
+  return true;
+}
+
 async function insertAccount(
   db: () => Database,
   tokenHash: string,

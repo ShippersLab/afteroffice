@@ -29,6 +29,11 @@ const track = (floor: Floor | undefined, message: LiveMessage): Floor | undefine
     case "agent-left":
       floor?.agents.delete(message.id);
       return floor;
+    case "agent-renamed": {
+      const agent = floor?.agents.get(message.id);
+      if (agent) floor?.agents.set(message.id, { ...agent, handle: message.handle });
+      return floor;
+    }
     case "online":
       if (floor) floor.online = message.online;
       return floor;

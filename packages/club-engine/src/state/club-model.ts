@@ -16,7 +16,7 @@ export type Bubble = { readonly text: string; ttl: number };
 
 export type AgentModel = {
   readonly id: string;
-  readonly handle: string;
+  handle: string;
   readonly vip: boolean;
   readonly rng: Rng;
   state: AgentState;
@@ -125,6 +125,13 @@ export function applyMessage(model: ClubModel, message: LiveMessage): void {
       if (agent && !agent.leaving) {
         agent.leaving = true;
         walkTo(agent, DOOR_TILE);
+      }
+      return;
+    }
+    case "agent-renamed": {
+      const agent = model.agents.get(message.id);
+      if (agent) {
+        agent.handle = message.handle;
       }
       return;
     }
