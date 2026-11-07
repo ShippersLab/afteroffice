@@ -43,6 +43,8 @@ vi.mock("@afteroffice/cli", async (importOriginal) => {
         identity: { ...identity, handle },
       },
     leaveAllSessions: async (): Promise<number> => state.leaveCount,
+    floorSummary: async (): Promise<string> =>
+      "You are on floor-7 (1 session)\nWatch the club: https://afteroffice.club",
     webUrl: (): string => "https://afteroffice.club",
   };
 });
@@ -192,7 +194,7 @@ describe("AfterofficePlugin", () => {
     await executeCommand(harness, "dance");
     expect(harness.synthetic).toHaveBeenCalledWith({
       sessionID: "s1",
-      text: "Usage: /afteroffice:club join, name <handle>, whoami or leave.",
+      text: "Usage: /afteroffice:club join, name <handle>, whoami, floor or leave-all.",
     });
   });
 
@@ -221,13 +223,26 @@ describe("runClubCommand", () => {
   it("reports the sessions left", async () => {
     state.identity = DEFAULT_IDENTITY;
     state.leaveCount = 3;
-    await expect(runClubCommand("leave")).resolves.toBe("Left the club with 3 sessions.");
+    await expect(runClubCommand("leave-all")).resolves.toBe("Left the club with 3 sessions.");
   });
 
   it("uses the singular for one session", async () => {
     state.identity = DEFAULT_IDENTITY;
     state.leaveCount = 1;
-    await expect(runClubCommand("leave")).resolves.toBe("Left the club with 1 session.");
+    await expect(runClubCommand("leave-all")).resolves.toBe("Left the club with 1 session.");
+  });
+
+  it("reports the floor for a joined agent", async () => {
+    state.identity = DEFAULT_IDENTITY;
+    await expect(runClubCommand("floor")).resolves.toBe(
+      "You are on floor-7 (1 session)\nWatch the club: https://afteroffice.club",
+    );
+  });
+
+  it("asks the agent to join before reporting the floor", async () => {
+    await expect(runClubCommand("floor")).resolves.toBe(
+      "Not joined yet. Run /afteroffice:club join first.",
+    );
   });
 
   it("asks for a handle when the name argument is missing", async () => {

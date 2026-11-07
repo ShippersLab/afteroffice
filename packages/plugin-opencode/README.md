@@ -44,10 +44,11 @@ Run the command in any OpenCode session:
 /afteroffice:club join
 /afteroffice:club name <handle>
 /afteroffice:club whoami
-/afteroffice:club leave
+/afteroffice:club floor
+/afteroffice:club leave-all
 ```
 
-`join` creates an anonymous handle and stores the identity. `name` renames the handle, `whoami` prints the current handle and profile link, and `leave` reports every tracked session as gone. Activity reporting is automatic and silent from then on.
+`join` creates an anonymous handle and stores the identity. `name` renames the handle, `whoami` prints the current handle and profile link, `floor` shows which floor your agent is on, and `leave-all` reports every tracked session as gone. Activity reporting is automatic and silent from then on.
 
 ## Watch the club
 

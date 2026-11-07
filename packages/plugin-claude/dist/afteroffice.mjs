@@ -1,6 +1,5 @@
-// ../cli/src/session/session-store.ts
-import { readdir, readFile, rm, stat } from "node:fs/promises";
-import { join as join2 } from "node:path";
+// ../cli/src/storage/identity-store.ts
+import { readFile, rm } from "node:fs/promises";
 
 // ../core/src/constants/limits.ts
 var HEARTBEAT_INTERVAL_MS = 30000;
@@ -5773,7 +5772,28 @@ async function writePrivateJson(path, value) {
   await rename(temp, path);
 }
 
+// ../cli/src/storage/identity-store.ts
+var IdentitySchema = strictObject({
+  handle: HandleSchema,
+  token: string2().min(16).max(256),
+  url: url({ protocol: /^https?$/ })
+});
+async function readIdentity() {
+  try {
+    const raw = JSON.parse(await readFile(identityPath(), "utf8"));
+    const parsed = IdentitySchema.safeParse(raw);
+    return parsed.success ? parsed.data : undefined;
+  } catch {
+    return;
+  }
+}
+async function writeIdentity(identity) {
+  await writePrivateJson(identityPath(), IdentitySchema.parse(identity));
+}
+
 // ../cli/src/session/session-store.ts
+import { readdir, readFile as readFile2, rm as rm2, stat } from "node:fs/promises";
+import { join as join2 } from "node:path";
 var MAX_SESSION_AGE_MS = 24 * 60 * 60 * 1000;
 var JSON_SUFFIX = ".json";
 var SessionRecordSchema = strictObject({
@@ -5787,7 +5807,7 @@ function sessionPath(sessionId) {
 }
 async function readSession(sessionId) {
   try {
-    const raw = JSON.parse(await readFile(sessionPath(sessionId), "utf8"));
+    const raw = JSON.parse(await readFile2(sessionPath(sessionId), "utf8"));
     const parsed = SessionRecordSchema.safeParse(raw);
     return parsed.success ? parsed.data : undefined;
   } catch {
@@ -5798,7 +5818,7 @@ async function writeSession(sessionId, record) {
   await writePrivateJson(sessionPath(sessionId), SessionRecordSchema.parse(record));
 }
 async function removeSession(sessionId) {
-  await rm(sessionPath(sessionId), { force: true });
+  await rm2(sessionPath(sessionId), { force: true });
 }
 async function listSessionIds() {
   try {
@@ -5825,29 +5845,26 @@ async function pruneSessions(now) {
   }));
 }
 
-// ../cli/src/storage/identity-store.ts
-import { readFile as readFile2, rm as rm2 } from "node:fs/promises";
-var IdentitySchema = strictObject({
-  handle: HandleSchema,
-  token: string2().min(16).max(256),
-  url: url({ protocol: /^https?$/ })
-});
-async function readIdentity() {
-  try {
-    const raw = JSON.parse(await readFile2(identityPath(), "utf8"));
-    const parsed = IdentitySchema.safeParse(raw);
-    return parsed.success ? parsed.data : undefined;
-  } catch {
-    return;
+// ../cli/src/utilities/floor-summary.ts
+async function floorSummary() {
+  const ids = await listSessionIds();
+  const sessions = await Promise.all(ids.map((id) => readSession(id)));
+  const counts = new Map;
+  for (const session of sessions) {
+    if (session !== undefined) {
+      counts.set(session.roomId, (counts.get(session.roomId) ?? 0) + 1);
+    }
   }
-}
-async function writeIdentity(identity) {
-  await writePrivateJson(identityPath(), IdentitySchema.parse(identity));
+  if (counts.size === 0) {
+    return "Your agent is not on the floor yet. It shows up when it starts working.";
+  }
+  const lines = [...counts.entries()].map(([floor, count]) => `You are on ${floor} (${count} session${count === 1 ? "" : "s"})`);
+  return `${lines.join(`
+`)}
+Watch the club: ${webUrl()}`;
 }
 
 // ../cli/src/commands/floor.ts
-var NO_SESSIONS_MESSAGE = `Your agent is not on the floor yet. It shows up when it starts working.
-`;
 async function runFloor() {
   const identity = await readIdentity();
   if (identity === undefined) {
@@ -5855,22 +5872,7 @@ async function runFloor() {
 `);
     return 1;
   }
-  const ids = await listSessionIds();
-  const sessions = await Promise.all(ids.map((id) => readSession(id)));
-  const counts = new Map;
-  for (const session of sessions) {
-    if (session === undefined) {
-      continue;
-    }
-    counts.set(session.roomId, (counts.get(session.roomId) ?? 0) + 1);
-  }
-  if (counts.size === 0) {
-    process.stdout.write(NO_SESSIONS_MESSAGE);
-    return 0;
-  }
-  const lines = [...counts.entries()].map(([floor, count]) => `You are on ${floor} (${count} session${count === 1 ? "" : "s"})
-`);
-  process.stdout.write(`${lines.join("")}Watch the club: ${webUrl()}
+  process.stdout.write(`${await floorSummary()}
 `);
   return 0;
 }
