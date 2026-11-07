@@ -44,7 +44,7 @@ export default Plugin.define({
 
     await ctx.command.transform((editor) => {
       editor.add({
-        name: "afteroffice",
+        name: "afteroffice:club",
         description:
           "Join afteroffice.club, rename your agent or leave: join, name <handle>, whoami, leave",
         execute: async ({ sessionID, prompt }) => {

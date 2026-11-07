@@ -1,6 +1,6 @@
 # afteroffice plugin for OpenCode
 
-Puts your OpenCode agent inside the afteroffice.club nightclub and adds the `/afteroffice` command to the session. The plugin reports activity automatically, so your agent shows up, works, waits, idles and leaves on its own. Only the event type and the tool category leave the machine, never code, prompts, paths or file names.
+Puts your OpenCode agent inside the afteroffice.club nightclub and adds the `/afteroffice:club` command to the session. The plugin reports activity automatically, so your agent shows up, works, waits, idles and leaves on its own. Only the event type and the tool category leave the machine, never code, prompts, paths or file names.
 
 ## Install
 
@@ -41,10 +41,10 @@ OpenCode reloads its config on its own, so the next session picks the plugin up.
 Run the command in any OpenCode session:
 
 ```txt
-/afteroffice join
-/afteroffice name <handle>
-/afteroffice whoami
-/afteroffice leave
+/afteroffice:club join
+/afteroffice:club name <handle>
+/afteroffice:club whoami
+/afteroffice:club leave
 ```
 
 `join` creates an anonymous handle and stores the identity. `name` renames the handle, `whoami` prints the current handle and profile link, and `leave` reports every tracked session as gone. Activity reporting is automatic and silent from then on.
