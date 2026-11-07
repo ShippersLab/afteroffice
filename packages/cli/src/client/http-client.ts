@@ -11,6 +11,8 @@ import { apiUrl } from "../storage/paths";
 
 export const REQUEST_TIMEOUT_MS = 1500;
 
+export const COMMAND_TIMEOUT_MS = 10_000;
+
 export type FailureReason =
   | "network"
   | "http"
@@ -37,7 +39,13 @@ const RenameResponseSchema = z.object({ handle: HandleSchema });
 
 type PostResult = { ok: true; status: number; body: unknown } | Failure;
 
-async function post(url: string, path: string, body: unknown, token?: string): Promise<PostResult> {
+async function post(
+  url: string,
+  path: string,
+  body: unknown,
+  token?: string,
+  timeoutMs: number = REQUEST_TIMEOUT_MS,
+): Promise<PostResult> {
   try {
     const response = await fetch(`${url}${path}`, {
       method: "POST",
@@ -46,7 +54,7 @@ async function post(url: string, path: string, body: unknown, token?: string): P
         ...(token === undefined ? {} : { authorization: `Bearer ${token}` }),
       },
       body: JSON.stringify(body),
-      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+      signal: AbortSignal.timeout(timeoutMs),
     });
     if (!response.ok) {
       return { ok: false, reason: "http", status: response.status };
@@ -60,7 +68,7 @@ async function post(url: string, path: string, body: unknown, token?: string): P
 }
 
 export async function requestJoin(url: string = apiUrl()): Promise<JoinResult> {
-  const result = await post(url, "/v1/join", {});
+  const result = await post(url, "/v1/join", {}, undefined, COMMAND_TIMEOUT_MS);
   if (!result.ok) {
     return result;
   }
@@ -84,7 +92,13 @@ export async function renameHandle(identity: Identity, handle: string): Promise<
   if (!checked.success) {
     return { ok: false, reason: "invalid-handle", status: null };
   }
-  const result = await post(identity.url, "/v1/name", { handle: checked.data }, identity.token);
+  const result = await post(
+    identity.url,
+    "/v1/name",
+    { handle: checked.data },
+    identity.token,
+    COMMAND_TIMEOUT_MS,
+  );
   if (!result.ok) {
     return result.status === 409 ? { ok: false, reason: "handle-taken", status: 409 } : result;
   }
