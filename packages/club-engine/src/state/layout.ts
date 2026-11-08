@@ -21,7 +21,7 @@ export function rectTiles(rect: Rect): Tile[] {
   return tiles;
 }
 
-export const DANCE_RECT: Rect = { x: 5, y: 6, w: 8, h: 7 };
+export const DANCE_RECT: Rect = { x: 4, y: 5, w: 9, h: 8 };
 export const VIP_RECT: Rect = { x: 14, y: 1, w: 3, h: 4 };
 
 // Fixed furniture that agents path around. Each rect matches a piece built in
@@ -30,11 +30,11 @@ export const BLOCKED_RECTS: readonly Rect[] = [
   // VIP sofa against the back wall
   { x: 14, y: 0, w: 3, h: 1 },
   // left speaker
-  { x: 3, y: 1, w: 1, h: 1 },
+  { x: 1, y: 1, w: 1, h: 1 },
   // DJ booth counter
-  { x: 4, y: 1, w: 5, h: 1 },
+  { x: 2, y: 1, w: 4, h: 1 },
   // right speaker
-  { x: 9, y: 1, w: 1, h: 1 },
+  { x: 6, y: 1, w: 1, h: 1 },
   // bar counter
   { x: 9, y: 2, w: 5, h: 1 },
   // lounge sofa A
@@ -79,7 +79,7 @@ export function isDanceTile(tile: Tile): boolean {
 
 export const ZONE_RECTS = {
   dance: [DANCE_RECT],
-  dj: [{ x: 4, y: 0, w: 5, h: 1 }],
+  dj: [{ x: 2, y: 0, w: 4, h: 1 }],
   bar: [{ x: 9, y: 3, w: 5, h: 1 }],
   sofa: [
     { x: 1, y: 6, w: 1, h: 3 },
@@ -88,11 +88,11 @@ export const ZONE_RECTS = {
   door: [{ x: 1, y: 15, w: 2, h: 2 }],
   spill: [
     // aisle behind the dance floor
-    { x: 5, y: 4, w: 8, h: 2 },
+    { x: 5, y: 4, w: 8, h: 1 },
     // aisle along the right of the dance floor
     { x: 13, y: 5, w: 1, h: 8 },
     // aisle along the left of the dance floor
-    { x: 3, y: 6, w: 2, h: 7 },
+    { x: 3, y: 5, w: 1, h: 8 },
     // aisle in front of the dance floor
     { x: 4, y: 13, w: 9, h: 1 },
     // pool and arcade corner
