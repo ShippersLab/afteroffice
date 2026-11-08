@@ -34,8 +34,22 @@ export async function mountClub(
   });
   host.appendChild(app.canvas);
 
+  // The HUD and intro are pointer-events-auto siblings of the canvas host, so
+  // lock the whole club root against page pan, pinch and overscroll gestures.
+  const wheelScope = host.parentElement ?? host;
+  const restoreScrollStyles = [...new Set([host, wheelScope])].map((element) => {
+    const touchAction = element.style.touchAction;
+    const overscrollBehavior = element.style.overscrollBehavior;
+    element.style.touchAction = "none";
+    element.style.overscrollBehavior = "none";
+    return () => {
+      element.style.touchAction = touchAction;
+      element.style.overscrollBehavior = overscrollBehavior;
+    };
+  });
+
   retainTextures();
-  const { viewport, dispose } = createViewport(app, reducedMotion);
+  const { viewport, dispose } = createViewport(app, reducedMotion, wheelScope);
   const scene = buildScene();
   scene.root.position.set(WORLD_ORIGIN.x, WORLD_ORIGIN.y);
   viewport.addChild(scene.root);
@@ -68,6 +82,9 @@ export async function mountClub(
       destroyed = true;
       app.ticker.remove(onTick);
       dispose();
+      for (const restoreScrollStyle of restoreScrollStyles) {
+        restoreScrollStyle();
+      }
       layer.destroy();
       app.destroy({ removeView: true, releaseGlobalResources: true }, { children: true });
       releaseTextures();
