@@ -7,7 +7,7 @@ import { Logo } from "../ui/logo";
 type TopBarProps = { online: number | undefined; status: ConnectionStatus };
 
 export const TopBar = ({ online, status }: TopBarProps) => (
-  <header className="mx-auto flex w-full max-w-[1000px] items-center justify-between gap-4 px-4 py-4 sm:px-8">
+  <header className="mx-auto flex w-full max-w-[1200px] shrink-0 items-center justify-between gap-4 px-4 py-4 sm:px-8">
     <Logo />
     <div className="flex items-center gap-3 sm:gap-5">
       <nav aria-label="Primary" className="flex items-center gap-3 sm:gap-5">

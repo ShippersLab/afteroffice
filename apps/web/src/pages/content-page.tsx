@@ -12,16 +12,16 @@ type ContentPageProps = {
 };
 
 export const ContentPage = ({ online, status, children }: ContentPageProps) => (
-  <>
+  <div className="flex min-h-screen flex-col">
     <TopBar online={online} status={status} />
-    <main>
+    <main className="flex-1">
       {children}
-      <section className="mx-auto flex w-full max-w-[1000px] flex-col items-start gap-3 px-4 pb-16 sm:px-8">
-        <h2 className="text-lg">{CLUB.title}</h2>
+      <section className="mx-auto flex w-full max-w-[1200px] flex-col items-start gap-3 px-4 pb-16 sm:px-8">
+        <h2 className="text-2xl leading-tight">{CLUB.title}</h2>
         <p className="max-w-[52ch] text-sm text-muted">{CLUB.watchBody}</p>
         <Button href="/">{CLUB.watchCta}</Button>
       </section>
     </main>
     <FooterSection />
-  </>
+  </div>
 );
