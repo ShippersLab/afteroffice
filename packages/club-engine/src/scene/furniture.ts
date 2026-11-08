@@ -118,7 +118,7 @@ export function furnitureItems(): FurnitureItem[] {
     boxItem("booth", 4, 1, { w: 5, d: 1, h: 30 }, BOOTH, feetDepth(4, 1), decorateBooth),
     boxItem("speaker", 3, 1, { w: 1, d: 1, h: 40 }, SPEAKER, feetDepth(3, 1), decorateSpeaker),
     boxItem("speaker", 9, 1, { w: 1, d: 1, h: 40 }, SPEAKER, feetDepth(9, 1), decorateSpeaker),
-    boxItem("bar", 7, 2, { w: 6, d: 1, h: 30 }, WOOD, feetDepth(7, 2), decorateBar),
+    boxItem("bar", 9, 2, { w: 5, d: 1, h: 30 }, WOOD, feetDepth(9, 2), decorateBar),
     ...sofaItems("sofa-a", 0, 6, 3, feetDepth(0, 6)),
     ...sofaItems("sofa-b", 0, 10, 3, feetDepth(0, 10)),
     boxItem("vip-sofa", 14, 0, { w: 2, d: 1, h: 36 }, SOFA, feetDepth(14, 0)),
