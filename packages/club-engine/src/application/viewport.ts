@@ -27,6 +27,13 @@ export type ClubViewport = {
   dispose(): void;
 };
 
+function clampPosition(anchored: number, screen: number, world: number): number {
+  if (world <= screen) {
+    return (screen - world) / 2;
+  }
+  return Math.min(0, Math.max(screen - world, anchored));
+}
+
 function placeAt(
   viewport: Viewport,
   zoom: number,
@@ -36,8 +43,13 @@ function placeAt(
   settle: boolean,
 ): void {
   viewport.scale.set(zoom);
-  const x = px - world.x * zoom;
-  const y = py - world.y * zoom;
+  const worldW = WORLD_W * zoom;
+  const worldH = WORLD_H * zoom;
+  // Anchor the cursor's world point, then keep the view inside the world.
+  // Centering when the world is smaller than the screen happens inside the
+  // tween, so zooming out from a corner eases to center instead of snapping.
+  const x = clampPosition(px - world.x * zoom, viewport.screenWidth, worldW);
+  const y = clampPosition(py - world.y * zoom, viewport.screenHeight, worldH);
   viewport.position.set(settle ? Math.round(x) : x, settle ? Math.round(y) : y);
 }
 
