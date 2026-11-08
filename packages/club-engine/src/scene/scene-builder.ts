@@ -4,7 +4,16 @@ import { pillPixels } from "../sprites/label-art";
 import { COLOR } from "../sprites/palette";
 import { scaled } from "../sprites/pixels";
 import { cachedTexture } from "../sprites/textures";
-import { GRID_SIZE, isDanceTile, isVipTile, rectTiles, ZONE_RECTS } from "../state/layout";
+import {
+  DOOR_TILE,
+  GRID_SIZE,
+  isDanceTile,
+  isVipTile,
+  rectTiles,
+  VIP_GAP_ROW,
+  VIP_RECT,
+  ZONE_RECTS,
+} from "../state/layout";
 import { discoBallPixels } from "./disco-ball-art";
 import { discPixels, floorTile, glowTile, WALL_H, WALL_SPAN, wallStrip } from "./floor-art";
 import { furnitureItems } from "./furniture";
@@ -106,11 +115,12 @@ function buildWalls(back: Container): void {
   back.addChild(sprite(right, 0, -WALL_H));
   back.addChild(sprite(left, -WALL_SPAN, -WALL_H));
   wallDecal(back, "right", 6, 45, "billboard");
-  wallDecal(back, "right", 10.5, 70, "neon");
+  wallDecal(back, "right", 12, 70, "neon");
   wallDecal(back, "left", 5.5, 40, "sponsor-slot");
-  wallDecal(back, "left", 10, 45, "poster");
+  wallDecal(back, "left", 11, 45, "poster");
   const door = cachedTexture("door", () => scaled(doorPixels(), 3, -0.5));
-  back.addChild(sprite(door, -12.7 * 40, 12.7 * 20 - 51 - 4, 0.5, 0.5));
+  const doorU = DOOR_TILE.y + 0.7;
+  back.addChild(sprite(door, -doorU * 40, doorU * 20 - 51 - 4, 0.5, 0.5));
 }
 
 function buildFurniture(things: Container): void {
@@ -120,16 +130,20 @@ function buildFurniture(things: Container): void {
     piece.zIndex = item.z;
     things.addChild(piece);
   }
-  const barSign = sponsoredLabel(340, 150 + 95, 1);
-  barSign.zIndex = 201;
+  const barRect = ZONE_RECTS.bar[0];
+  const barTop = tileToScreen(barRect.x + barRect.w / 2, barRect.y - 0.5);
+  const barSign = sponsoredLabel(barTop.x, barTop.y, 1);
+  barSign.zIndex = feetDepth(barRect.x, barRect.y) + 5;
   things.addChild(barSign);
   const stool = cachedTexture("stool", stoolPixels);
-  for (const tile of rectTiles(ZONE_RECTS.bar[0])) {
-    const center = tileCenter(tile.x, tile.y);
-    const piece = sprite(stool, center.x, center.y + 8, 0.5, 1);
-    piece.scale.set(3);
-    piece.zIndex = feetDepth(tile.x, tile.y) - 1;
-    things.addChild(piece);
+  for (const rect of ZONE_RECTS.bar) {
+    for (const tile of rectTiles(rect)) {
+      const center = tileCenter(tile.x, tile.y);
+      const piece = sprite(stool, center.x, center.y + 8, 0.5, 1);
+      piece.scale.set(3);
+      piece.zIndex = feetDepth(tile.x, tile.y) - 1;
+      things.addChild(piece);
+    }
   }
 }
 
@@ -137,10 +151,16 @@ function buildVipRopes(things: Container): void {
   const post = cachedTexture("post", postPixels);
   const ropeRight = cachedTexture("rope-dr", () => ropePixels("down-right"));
   const ropeLeft = cachedTexture("rope-dl", () => ropePixels("down-left"));
-  const vertices = [
-    ...[10, 11, 12, 13, 14].map((y) => ({ x: 10, y })),
-    ...[11, 12, 13, 14].map((x) => ({ x, y: 10 })),
-  ];
+  const left = VIP_RECT.x;
+  const right = VIP_RECT.x + VIP_RECT.w;
+  const front = VIP_RECT.y + VIP_RECT.h;
+  const vertices: { x: number; y: number }[] = [];
+  for (let y = VIP_RECT.y; y <= front; y += 1) {
+    vertices.push({ x: left, y });
+  }
+  for (let x = left + 1; x <= right; x += 1) {
+    vertices.push({ x, y: front });
+  }
   for (const v of vertices) {
     const p = tileToScreen(v.x, v.y);
     const piece = sprite(post, p.x, p.y, 0.5, 1);
@@ -148,16 +168,19 @@ function buildVipRopes(things: Container): void {
     piece.zIndex = (v.x + v.y) * 20;
     things.addChild(piece);
   }
-  for (const x of [10, 11, 12, 13]) {
-    const p = tileToScreen(x, 10);
+  for (let x = left; x < right; x += 1) {
+    const p = tileToScreen(x, front);
     const piece = sprite(ropeRight, p.x, p.y - 18);
-    piece.zIndex = (x + 11) * 20 - 1;
+    piece.zIndex = (x + front + 1) * 20 - 1;
     things.addChild(piece);
   }
-  for (const y of [10, 11, 13]) {
-    const p = tileToScreen(10, y + 1);
+  for (let y = VIP_RECT.y; y < front; y += 1) {
+    if (y === VIP_GAP_ROW) {
+      continue;
+    }
+    const p = tileToScreen(left, y + 1);
     const piece = sprite(ropeLeft, p.x, p.y - 18 - 20);
-    piece.zIndex = (11 + y) * 20 - 1;
+    piece.zIndex = (left + y + 1) * 20 - 1;
     things.addChild(piece);
   }
 }
