@@ -153,9 +153,9 @@ function buildFurniture(things: Container): void {
     things.addChild(piece);
   }
   const barRect = ZONE_RECTS.bar[0];
-  const barTop = tileToScreen(barRect.x + barRect.w / 2, barRect.y - 0.5);
-  const barSign = sponsoredLabel(barTop.x, barTop.y, 1);
-  barSign.zIndex = feetDepth(barRect.x, barRect.y) + 5;
+  const sign = tileToScreen(barRect.x + barRect.w / 2, barRect.y - 2);
+  const barSign = sponsoredLabel(sign.x, sign.y - 24, 1);
+  barSign.zIndex = feetDepth(barRect.x, barRect.y) - 30;
   things.addChild(barSign);
   const stool = cachedTexture("stool", stoolPixels);
   for (const rect of ZONE_RECTS.bar) {

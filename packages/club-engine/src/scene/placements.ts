@@ -43,7 +43,7 @@ export function placeholderPixels(spec: PlacementSpec): Pixels {
 
 export function sponsorSignPixels(name: string, spec: PlacementSpec, logo?: Pixels): Pixels {
   const pixels = new Pixels(spec.gridW, spec.gridH);
-  pixels.fillRect(0, 0, spec.gridW, spec.gridH, COLOR.amber);
+  pixels.fillRect(0, 0, spec.gridW, spec.gridH, COLOR.accent);
   if (logo) {
     const x = Math.floor((spec.gridW - logo.width) / 2);
     const y = Math.floor((spec.gridH - logo.height) / 2);
