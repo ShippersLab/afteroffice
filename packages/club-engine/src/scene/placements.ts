@@ -41,9 +41,15 @@ export function placeholderPixels(spec: PlacementSpec): Pixels {
   return pixels;
 }
 
-export function sponsorSignPixels(name: string, spec: PlacementSpec): Pixels {
+export function sponsorSignPixels(name: string, spec: PlacementSpec, logo?: Pixels): Pixels {
   const pixels = new Pixels(spec.gridW, spec.gridH);
   pixels.fillRect(0, 0, spec.gridW, spec.gridH, COLOR.amber);
+  if (logo) {
+    const x = Math.floor((spec.gridW - logo.width) / 2);
+    const y = Math.floor((spec.gridH - logo.height) / 2);
+    pixels.blit(logo, x, y);
+    return pixels;
+  }
   const text = name.toUpperCase();
   const x = Math.floor((spec.gridW - textWidth(text)) / 2);
   const y = Math.floor((spec.gridH - GLYPH_H) / 2);
@@ -51,7 +57,12 @@ export function sponsorSignPixels(name: string, spec: PlacementSpec): Pixels {
   return pixels;
 }
 
-export function signTexturePixels(spec: PlacementSpec, shear: number, name: string): Pixels {
-  const base = name.length > 0 ? sponsorSignPixels(name, spec) : placeholderPixels(spec);
+export function signTexturePixels(
+  spec: PlacementSpec,
+  shear: number,
+  name: string,
+  logo?: Pixels,
+): Pixels {
+  const base = name.length > 0 ? sponsorSignPixels(name, spec, logo) : placeholderPixels(spec);
   return scaled(base, spec.scale, shear);
 }
