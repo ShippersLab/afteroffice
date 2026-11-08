@@ -21,7 +21,7 @@ export const CodeBlock = ({ code }: { code: string }) => {
 
   return (
     <div className="flex items-start justify-between gap-3 rounded-sm border border-line bg-ink/70 py-3 pr-3 pl-4">
-      <code className="min-w-0 flex-1 whitespace-pre-wrap break-words font-mono text-sm leading-relaxed text-lilac">
+      <code className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap font-mono text-xs leading-relaxed text-lilac">
         {code}
       </code>
       <button
