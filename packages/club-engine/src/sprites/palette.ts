@@ -6,6 +6,7 @@ export const COLOR = {
   magenta: 0xff3da6,
   cyan: 0x2ce6ff,
   amber: 0xffb84d,
+  accent: 0xfe5634,
   lilac: 0xc9bfff,
   ivory: 0xf6f3ff,
   muted: 0xa79fcb,
