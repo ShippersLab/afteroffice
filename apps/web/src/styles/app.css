@@ -1,8 +1,9 @@
-@import "@fontsource/pixelify-sans/400.css";
-@import "@fontsource/pixelify-sans/700.css";
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/inter/600.css";
+@import "@fontsource/silkscreen/400.css";
+@import "@fontsource/silkscreen/700.css";
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-grotesk/700.css";
 @import "@fontsource/jetbrains-mono/400.css";
 @import "@fontsource/jetbrains-mono/600.css";
 @import "tailwindcss";
@@ -23,8 +24,8 @@
   --color-coral: #ff6b6b;
   --color-haze: #3a1d6e;
 
-  --font-display: "Pixelify Sans", monospace;
-  --font-ui: "Inter", system-ui, sans-serif;
+  --font-display: "Silkscreen", monospace;
+  --font-ui: "Space Grotesk", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   --radius-sm: 8px;
@@ -98,11 +99,16 @@
   }
 
   h1,
-  h2,
-  h3 {
+  h2 {
     font-family: var(--font-display);
     font-weight: 700;
     line-height: 1.05;
+  }
+
+  h3 {
+    font-family: var(--font-ui);
+    font-weight: 600;
+    line-height: 1.25;
   }
 
   img,

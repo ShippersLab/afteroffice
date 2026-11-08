@@ -25,7 +25,7 @@ export const CodeBlock = ({ code }: { code: string }) => {
         {code}
       </code>
       <button
-        className="flex-none cursor-pointer rounded-full border border-line bg-velvet px-3 py-1 font-mono text-xs font-semibold text-ivory transition-colors duration-200 ease-out hover:border-muted hover:text-ivory"
+        className="flex-none cursor-pointer rounded-full border border-line bg-velvet px-3 py-1 font-mono text-xs font-semibold text-ivory transition-[color,border-color,transform] duration-200 ease-out hover:border-muted hover:text-ivory active:scale-[0.96] active:duration-150"
         type="button"
         onClick={() => void copy()}
         aria-label={`Copy ${code}`}
