@@ -10,7 +10,7 @@ describe("resolveRoute", () => {
   });
 
   it("ignores a trailing slash", () => {
-    expect(resolveRoute("/faq/")?.path).toBe("/faq");
+    expect(resolveRoute("/join/")?.path).toBe("/join");
     expect(normalizePathname("/")).toBe("/");
   });
 
@@ -22,7 +22,7 @@ describe("resolveRoute", () => {
 describe("canonicalUrl", () => {
   it("builds absolute urls on the site origin", () => {
     expect(canonicalUrl("/")).toBe("https://afteroffice.club/");
-    expect(canonicalUrl("/faq")).toBe("https://afteroffice.club/faq");
+    expect(canonicalUrl("/join")).toBe("https://afteroffice.club/join");
   });
 });
 
