@@ -1,4 +1,3 @@
-import { CLUB } from "../../content/club";
 import { HERO } from "../../content/hero";
 import { HOW_IT_WORKS } from "../../content/how-it-works";
 import { Button } from "../ui/button";
@@ -13,10 +12,9 @@ export const ClubIntro = () => (
       <Button href="/join" size="md">
         {HERO.cta}
       </Button>
-      <Button href="/how-it-works" size="sm" variant="secondary">
+      <Button href="/how-it-works" size="md" variant="secondary">
         {HOW_IT_WORKS.title}
       </Button>
     </div>
-    <p className="mt-3 font-mono text-[10px] leading-relaxed text-muted/70">{CLUB.hint}</p>
   </aside>
 );
