@@ -13,7 +13,10 @@ export type ClubView = {
   destroy(): void;
 };
 
-export type MountClubOptions = { reducedMotion?: boolean };
+export type MountClubOptions = {
+  reducedMotion?: boolean;
+  onNavigate?: (href: string) => void;
+};
 
 const MAX_FRAME_MS = 100;
 
@@ -50,7 +53,7 @@ export async function mountClub(
 
   retainTextures();
   const { viewport, dispose } = createViewport(app, reducedMotion, wheelScope);
-  const scene = buildScene();
+  const scene = buildScene(options.onNavigate);
   scene.root.position.set(WORLD_ORIGIN.x, WORLD_ORIGIN.y);
   viewport.addChild(scene.root);
   app.stage.addChild(viewport);

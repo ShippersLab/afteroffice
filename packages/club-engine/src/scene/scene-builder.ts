@@ -1,5 +1,6 @@
 import { Container, Graphics, Sprite, type Texture } from "pixi.js";
 import { feetDepth, tileCenter, tileToScreen } from "../mathematics/iso";
+import { sponsorFor } from "../sponsors";
 import { pillPixels } from "../sprites/label-art";
 import { COLOR } from "../sprites/palette";
 import { scaled } from "../sprites/pixels";
@@ -17,7 +18,7 @@ import {
 import { discoBallPixels } from "./disco-ball-art";
 import { discPixels, floorTile, glowTile, WALL_H, WALL_SPAN, wallStrip } from "./floor-art";
 import { furnitureItems } from "./furniture";
-import { PLACEMENTS, type PlacementId, placementTexturePixels } from "./placements";
+import { PLACEMENTS, type PlacementId, signTexturePixels } from "./placements";
 import { doorPixels, postPixels, ropePixels, stoolPixels } from "./props";
 import { BALL_POSITION, type GlowTile, SceneFx } from "./scene-fx";
 
@@ -33,6 +34,17 @@ function sprite(texture: Texture, x: number, y: number, ax = 0, ay = 0): Sprite 
   result.anchor.set(ax, ay);
   result.position.set(Math.round(x), Math.round(y));
   return result;
+}
+
+function makeClickable(
+  sign: Sprite,
+  href: string,
+  onNavigate: ((href: string) => void) | undefined,
+): void {
+  if (!onNavigate) return;
+  sign.eventMode = "static";
+  sign.cursor = "pointer";
+  sign.on("pointertap", () => onNavigate(href));
 }
 
 function buildFloor(floor: Container, glow: Container): GlowTile[] {
@@ -89,16 +101,20 @@ function wallDecal(
   u: number,
   lift: number,
   id: PlacementId,
+  onNavigate: ((href: string) => void) | undefined,
 ): void {
   const spec = PLACEMENTS[id];
+  const sponsor = sponsorFor(id);
   const shear = side === "right" ? 0.5 : -0.5;
-  const texture = cachedTexture(`placement-${id}-${side}`, () =>
-    placementTexturePixels(spec, shear),
+  const texture = cachedTexture(`placement-${id}-${side}-${sponsor.name || "empty"}`, () =>
+    signTexturePixels(spec, shear, sponsor.name),
   );
   const baseX = side === "right" ? u * 40 : -u * 40;
   const baseY = u * 20;
   const height = spec.gridH * spec.scale;
-  back.addChild(sprite(texture, baseX, baseY - lift - height / 2, 0.5, 0.5));
+  const sign = sprite(texture, baseX, baseY - lift - height / 2, 0.5, 0.5);
+  makeClickable(sign, sponsor.href, onNavigate);
+  back.addChild(sign);
   back.addChild(sponsoredLabel(baseX, baseY - lift + 14, 2));
 }
 
@@ -109,15 +125,15 @@ function sponsoredLabel(x: number, y: number, scale: number): Sprite {
   return sprite(texture, x, y, 0.5, 0.5);
 }
 
-function buildWalls(back: Container): void {
+function buildWalls(back: Container, onNavigate: ((href: string) => void) | undefined): void {
   const right = cachedTexture("wall-right", () => wallStrip("right"));
   const left = cachedTexture("wall-left", () => wallStrip("left"));
   back.addChild(sprite(right, 0, -WALL_H));
   back.addChild(sprite(left, -WALL_SPAN, -WALL_H));
-  wallDecal(back, "right", 6, 45, "billboard");
-  wallDecal(back, "right", 12, 70, "neon");
-  wallDecal(back, "left", 5.5, 40, "sponsor-slot");
-  wallDecal(back, "left", 11, 45, "poster");
+  wallDecal(back, "right", 6, 45, "billboard", onNavigate);
+  wallDecal(back, "right", 12, 70, "neon", onNavigate);
+  wallDecal(back, "left", 5.5, 40, "sponsor-slot", onNavigate);
+  wallDecal(back, "left", 11, 45, "poster", onNavigate);
   const door = cachedTexture("door", () => scaled(doorPixels(), 3, -0.5));
   const doorU = DOOR_TILE.y + 0.7;
   back.addChild(sprite(door, -doorU * 40, doorU * 20 - 51 - 4, 0.5, 0.5));
@@ -185,7 +201,7 @@ function buildVipRopes(things: Container): void {
   }
 }
 
-export function buildScene(): ClubScene {
+export function buildScene(onNavigate?: (href: string) => void): ClubScene {
   const root = new Container();
   const back = new Container();
   const floor = new Container();
@@ -194,11 +210,15 @@ export function buildScene(): ClubScene {
   const top = new Container();
   const overlay = new Container();
   things.sortableChildren = true;
+  back.interactiveChildren = true;
+  top.interactiveChildren = true;
   for (const layer of [back, floor, glow, things, top, overlay]) {
-    layer.interactiveChildren = false;
     root.addChild(layer);
   }
-  buildWalls(back);
+  for (const layer of [floor, glow, things, overlay]) {
+    layer.interactiveChildren = false;
+  }
+  buildWalls(back, onNavigate);
   const glowTiles = buildFloor(floor, glow);
   buildFurniture(things);
   buildVipRopes(things);
@@ -224,8 +244,13 @@ export function buildScene(): ClubScene {
   ball.scale.set(4);
   top.addChild(cord, ball);
   const ballSpec = PLACEMENTS.ball;
-  const pill = cachedTexture("placement-ball", () => placementTexturePixels(ballSpec, 0));
-  top.addChild(sprite(pill, 0, BALL_POSITION.y + 46, 0.5, 0.5));
+  const ballSponsor = sponsorFor("ball");
+  const pill = cachedTexture(`placement-ball-${ballSponsor.name || "empty"}`, () =>
+    signTexturePixels(ballSpec, 0, ballSponsor.name),
+  );
+  const pillSprite = sprite(pill, 0, BALL_POSITION.y + 46, 0.5, 0.5);
+  makeClickable(pillSprite, ballSponsor.href, onNavigate);
+  top.addChild(pillSprite);
   top.addChild(sponsoredLabel(0, BALL_POSITION.y + 70, 2));
   return { root, things, overlay, fx: new SceneFx({ glowTiles, spots, beams, ball, ballFrames }) };
 }

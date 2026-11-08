@@ -1,5 +1,5 @@
 import { COLOR } from "../sprites/palette";
-import { drawText, textWidth } from "../sprites/pixel-font";
+import { drawText, GLYPH_H, textWidth } from "../sprites/pixel-font";
 import { Pixels, scaled } from "../sprites/pixels";
 
 export type PlacementId = "ball" | "billboard" | "sponsor-slot" | "poster" | "neon" | "bar";
@@ -41,6 +41,17 @@ export function placeholderPixels(spec: PlacementSpec): Pixels {
   return pixels;
 }
 
-export function placementTexturePixels(spec: PlacementSpec, shear: number): Pixels {
-  return scaled(placeholderPixels(spec), spec.scale, shear);
+export function sponsorSignPixels(name: string, spec: PlacementSpec): Pixels {
+  const pixels = new Pixels(spec.gridW, spec.gridH);
+  pixels.fillRect(0, 0, spec.gridW, spec.gridH, COLOR.amber);
+  const text = name.toUpperCase();
+  const x = Math.floor((spec.gridW - textWidth(text)) / 2);
+  const y = Math.floor((spec.gridH - GLYPH_H) / 2);
+  drawText(pixels, text, x, y, COLOR.ink);
+  return pixels;
+}
+
+export function signTexturePixels(spec: PlacementSpec, shear: number, name: string): Pixels {
+  const base = name.length > 0 ? sponsorSignPixels(name, spec) : placeholderPixels(spec);
+  return scaled(base, spec.scale, shear);
 }
