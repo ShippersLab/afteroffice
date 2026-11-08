@@ -59,7 +59,9 @@ export const App = () => {
         <ClubPage sink={sink} online={online} status={status} />
       ) : (
         <ContentPage online={online} status={status}>
-          <ContentRoute path={route?.path} />
+          <div key={route?.path ?? "not-found"} className="animate-page">
+            <ContentRoute path={route?.path} />
+          </div>
         </ContentPage>
       )}
       <Toaster
