@@ -1,6 +1,7 @@
 import type { LiveMessage } from "@afteroffice/core";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { Toaster, toast } from "sonner";
+import { ClubToast } from "./components/ui/club-toast";
 import { NOT_FOUND } from "./content/routes";
 import { useLiveConnection } from "./hooks/use-live-connection";
 import { usePageMetadata } from "./hooks/use-page-metadata";
@@ -17,12 +18,28 @@ const TOAST_INTERVAL_MS = 4000;
 export const App = () => {
   const sink = useMemo(createMessageSink, []);
   const canToast = useMemo(() => createThrottle(TOAST_INTERVAL_MS), []);
+  const handles = useRef<Map<string, string>>(new Map());
 
   const onMessage = useCallback(
     (message: LiveMessage) => {
       sink.push(message);
-      if (message.type === "agent-entered" && canToast(Date.now())) {
-        toast(`${message.agent.handle} just walked in`);
+      if (message.type === "snapshot") {
+        handles.current = new Map(message.agents.map((agent) => [agent.id, agent.handle] as const));
+        return;
+      }
+      if (message.type === "agent-entered") {
+        handles.current.set(message.agent.id, message.agent.handle);
+        if (canToast(Date.now())) {
+          toast(<ClubToast handle={message.agent.handle} variant="enter" />);
+        }
+        return;
+      }
+      if (message.type === "agent-left") {
+        const handle = handles.current.get(message.id);
+        handles.current.delete(message.id);
+        if (handle && canToast(Date.now())) {
+          toast(<ClubToast handle={handle} variant="leave" />);
+        }
       }
     },
     [sink, canToast],
@@ -45,7 +62,13 @@ export const App = () => {
           <ContentRoute path={route?.path} />
         </ContentPage>
       )}
-      <Toaster position="bottom-right" theme="dark" duration={3000} visibleToasts={3} />
+      <Toaster
+        position="bottom-right"
+        theme="dark"
+        duration={3200}
+        visibleToasts={3}
+        toastOptions={{ unstyled: true }}
+      />
     </>
   );
 };
