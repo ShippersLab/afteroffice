@@ -1,8 +1,8 @@
 import { Link } from "./link";
 
 const SIZES = {
-  sm: { image: "size-5", text: "hidden text-xl sm:inline", gap: "gap-2", px: 20 },
-  md: { image: "size-7", text: "hidden text-xl sm:inline", gap: "gap-2", px: 28 },
+  sm: { image: "size-4", text: "hidden text-sm sm:inline", gap: "gap-1.5", px: 16 },
+  md: { image: "size-7", text: "hidden text-base sm:inline", gap: "gap-2", px: 28 },
 } as const;
 
 export const Logo = ({ size = "md" }: { size?: keyof typeof SIZES }) => {
@@ -20,7 +20,7 @@ export const Logo = ({ size = "md" }: { size?: keyof typeof SIZES }) => {
         width={look.px}
         height={look.px}
       />
-      <span className={`font-display font-bold ${look.text}`}>
+      <span className={`font-display font-bold tracking-[-0.02em] ${look.text}`}>
         afteroffice<span className="text-magenta">.club</span>
       </span>
     </Link>
