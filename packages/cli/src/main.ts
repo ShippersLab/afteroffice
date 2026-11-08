@@ -1,11 +1,11 @@
 import { runHook } from "./commands/hook";
 import { runHookWorker } from "./commands/hook-run";
 import { runJoin } from "./commands/join";
-import { runLeaveAll } from "./commands/leave-all";
+import { runLeave } from "./commands/leave";
 import { runSimulate } from "./commands/simulate/simulate";
 import { runWhoami } from "./commands/whoami";
 
-const USAGE = "Usage: afteroffice <join|whoami|leave-all|hook <event>|simulate --agents N>\n";
+const USAGE = "Usage: afteroffice <join|whoami|leave|hook <event>|simulate --agents N>\n";
 
 async function dispatch(command: string | undefined, args: readonly string[]): Promise<number> {
   switch (command) {
@@ -19,8 +19,8 @@ async function dispatch(command: string | undefined, args: readonly string[]): P
       return runJoin();
     case "whoami":
       return runWhoami();
-    case "leave-all":
-      return runLeaveAll();
+    case "leave":
+      return runLeave();
     case "simulate":
       return runSimulate(args);
     default:
