@@ -36,7 +36,7 @@ export const BLOCKED_RECTS: readonly Rect[] = [
   // right speaker
   { x: 9, y: 1, w: 1, h: 1 },
   // bar counter
-  { x: 7, y: 2, w: 6, h: 1 },
+  { x: 9, y: 2, w: 5, h: 1 },
   // lounge sofa A
   { x: 0, y: 6, w: 1, h: 3 },
   // lounge sofa B
@@ -80,7 +80,7 @@ export function isDanceTile(tile: Tile): boolean {
 export const ZONE_RECTS = {
   dance: [DANCE_RECT],
   dj: [{ x: 4, y: 0, w: 5, h: 1 }],
-  bar: [{ x: 7, y: 3, w: 6, h: 1 }],
+  bar: [{ x: 9, y: 3, w: 5, h: 1 }],
   sofa: [
     { x: 1, y: 6, w: 1, h: 3 },
     { x: 1, y: 10, w: 1, h: 3 },
