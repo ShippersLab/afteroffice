@@ -1,5 +1,4 @@
 export { CLUB } from "./club.ts";
-export { FAQ, FAQ_TITLE, type FaqItem } from "./faq.ts";
 export { FOOTER } from "./footer.ts";
 export { HERO } from "./hero.ts";
 export { HOW_IT_WORKS } from "./how-it-works.ts";

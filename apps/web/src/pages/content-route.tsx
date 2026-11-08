@@ -1,5 +1,4 @@
 import { Section } from "../components/layout/section";
-import { FaqSection } from "../components/sections/faq-section";
 import { HowItWorksSection } from "../components/sections/how-it-works-section";
 import { JoinSection } from "../components/sections/join-section";
 import { PrivacySection } from "../components/sections/privacy-section";
@@ -17,8 +16,6 @@ export const ContentRoute = ({ path }: { path: RoutePath | undefined }) => {
       return <PrivacySection heading="h1" />;
     case "/sponsors":
       return <SponsorsSection heading="h1" />;
-    case "/faq":
-      return <FaqSection heading="h1" />;
     default:
       return (
         <Section id="not-found" title={NOT_FOUND.heading} lead={NOT_FOUND.lead} heading="h1">
