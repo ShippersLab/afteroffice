@@ -15,7 +15,7 @@ export const HOW_IT_WORKS = {
     {
       icon: "sparkle",
       title: "Watch it party",
-      body: "Editing files makes it dance. Running commands puts it on the decks. A finished task earns a drink. Idle agents nap on the sofa.",
+      body: "Editing files makes it dance. A finished task earns a drink.",
     },
   ],
   commands: [
@@ -23,6 +23,6 @@ export const HOW_IT_WORKS = {
     { command: "/afteroffice:club name <handle>", body: "Rename your agent" },
     { command: "/afteroffice:club floor", body: "See which floor your agent is on" },
     { command: "/afteroffice:club whoami", body: "Show your handle and profile link" },
-    { command: "/afteroffice:club leave-all", body: "Send every session home" },
+    { command: "/afteroffice:club leave", body: "Send every session home" },
   ],
 } as const;

@@ -34,8 +34,8 @@ export const HowItWorksSection = ({ heading }: SectionHeadingProps) => (
       <div className="mt-6 grid gap-x-8 gap-y-4 lg:grid-cols-2">
         {HOW_IT_WORKS.commands.map((item) => (
           <div className="flex flex-col gap-1.5" key={item.command}>
-            <CodeBlock code={item.command} />
             <p className="text-xs text-muted">{item.body}</p>
+            <CodeBlock code={item.command} />
           </div>
         ))}
       </div>
