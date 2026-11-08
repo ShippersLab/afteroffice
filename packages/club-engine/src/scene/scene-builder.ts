@@ -3,7 +3,7 @@ import { feetDepth, tileCenter, tileToScreen } from "../mathematics/iso";
 import { sponsorFor } from "../sponsors";
 import { pillPixels } from "../sprites/label-art";
 import { COLOR } from "../sprites/palette";
-import { scaled } from "../sprites/pixels";
+import { type Pixels, scaled } from "../sprites/pixels";
 import { cachedTexture } from "../sprites/textures";
 import {
   DOOR_TILE,
@@ -102,12 +102,14 @@ function wallDecal(
   lift: number,
   id: PlacementId,
   onNavigate: ((href: string) => void) | undefined,
+  logos: ReadonlyMap<string, Pixels> | undefined,
 ): void {
   const spec = PLACEMENTS[id];
   const sponsor = sponsorFor(id);
+  const logo = logos?.get(id);
   const shear = side === "right" ? 0.5 : -0.5;
   const texture = cachedTexture(`placement-${id}-${side}-${sponsor.name || "empty"}`, () =>
-    signTexturePixels(spec, shear, sponsor.name),
+    signTexturePixels(spec, shear, sponsor.name, logo),
   );
   const baseX = side === "right" ? u * 40 : -u * 40;
   const baseY = u * 20;
@@ -125,15 +127,19 @@ function sponsoredLabel(x: number, y: number, scale: number): Sprite {
   return sprite(texture, x, y, 0.5, 0.5);
 }
 
-function buildWalls(back: Container, onNavigate: ((href: string) => void) | undefined): void {
+function buildWalls(
+  back: Container,
+  onNavigate: ((href: string) => void) | undefined,
+  logos: ReadonlyMap<string, Pixels> | undefined,
+): void {
   const right = cachedTexture("wall-right", () => wallStrip("right"));
   const left = cachedTexture("wall-left", () => wallStrip("left"));
   back.addChild(sprite(right, 0, -WALL_H));
   back.addChild(sprite(left, -WALL_SPAN, -WALL_H));
-  wallDecal(back, "right", 6, 45, "billboard", onNavigate);
-  wallDecal(back, "right", 12, 70, "neon", onNavigate);
-  wallDecal(back, "left", 5.5, 40, "sponsor-slot", onNavigate);
-  wallDecal(back, "left", 11, 45, "poster", onNavigate);
+  wallDecal(back, "right", 6, 45, "billboard", onNavigate, logos);
+  wallDecal(back, "right", 12, 70, "neon", onNavigate, logos);
+  wallDecal(back, "left", 5.5, 40, "sponsor-slot", onNavigate, logos);
+  wallDecal(back, "left", 11, 45, "poster", onNavigate, logos);
   const door = cachedTexture("door", () => scaled(doorPixels(), 3, -0.5));
   const doorU = DOOR_TILE.y + 0.7;
   back.addChild(sprite(door, -doorU * 40, doorU * 20 - 51 - 4, 0.5, 0.5));
@@ -201,7 +207,10 @@ function buildVipRopes(things: Container): void {
   }
 }
 
-export function buildScene(onNavigate?: (href: string) => void): ClubScene {
+export function buildScene(
+  onNavigate?: (href: string) => void,
+  logos?: ReadonlyMap<string, Pixels>,
+): ClubScene {
   const root = new Container();
   const back = new Container();
   const floor = new Container();
@@ -218,7 +227,7 @@ export function buildScene(onNavigate?: (href: string) => void): ClubScene {
   for (const layer of [floor, glow, things, overlay]) {
     layer.interactiveChildren = false;
   }
-  buildWalls(back, onNavigate);
+  buildWalls(back, onNavigate, logos);
   const glowTiles = buildFloor(floor, glow);
   buildFurniture(things);
   buildVipRopes(things);
@@ -245,8 +254,9 @@ export function buildScene(onNavigate?: (href: string) => void): ClubScene {
   top.addChild(cord, ball);
   const ballSpec = PLACEMENTS.ball;
   const ballSponsor = sponsorFor("ball");
+  const ballLogo = logos?.get("ball");
   const pill = cachedTexture(`placement-ball-${ballSponsor.name || "empty"}`, () =>
-    signTexturePixels(ballSpec, 0, ballSponsor.name),
+    signTexturePixels(ballSpec, 0, ballSponsor.name, ballLogo),
   );
   const pillSprite = sprite(pill, 0, BALL_POSITION.y + 46, 0.5, 0.5);
   makeClickable(pillSprite, ballSponsor.href, onNavigate);

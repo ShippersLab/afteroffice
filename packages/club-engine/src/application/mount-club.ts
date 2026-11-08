@@ -3,6 +3,7 @@ import { Application, type Ticker } from "pixi.js";
 import "pixi.js/unsafe-eval";
 import { AgentLayer } from "../agents/agent-layer";
 import { buildScene } from "../scene/scene-builder";
+import { loadSponsorLogos } from "../scene/sponsor-logo";
 import { COLOR } from "../sprites/palette";
 import { releaseTextures, retainTextures } from "../sprites/textures";
 import { applyMessage, createModel, tickModel } from "../state/club-model";
@@ -53,7 +54,8 @@ export async function mountClub(
 
   retainTextures();
   const { viewport, dispose } = createViewport(app, reducedMotion, wheelScope);
-  const scene = buildScene(options.onNavigate);
+  const logos = await loadSponsorLogos();
+  const scene = buildScene(options.onNavigate, logos);
   scene.root.position.set(WORLD_ORIGIN.x, WORLD_ORIGIN.y);
   viewport.addChild(scene.root);
   app.stage.addChild(viewport);
