@@ -1,7 +1,7 @@
 import { leaveAllSessions } from "../session/leave";
 import { readIdentity } from "../storage/identity-store";
 
-export async function runLeaveAll(): Promise<number> {
+export async function runLeave(): Promise<number> {
   const identity = await readIdentity();
   if (identity === undefined) {
     process.stdout.write("Not joined yet. Run: afteroffice join\n");

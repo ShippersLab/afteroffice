@@ -9,7 +9,7 @@ import {
 } from "@afteroffice/cli";
 import { HandleSchema } from "@afteroffice/core";
 
-const USAGE = "Usage: /afteroffice:club join, name <handle>, whoami, floor or leave-all.";
+const USAGE = "Usage: /afteroffice:club join, name <handle>, whoami, floor or leave.";
 const NAME_USAGE = "Usage: /afteroffice:club name <handle>.";
 const NOT_JOINED = "Not joined yet. Run /afteroffice:club join first.";
 const INVALID_HANDLE =
@@ -90,7 +90,7 @@ export async function runClubCommand(text: string): Promise<string> {
     if (verb === "floor") {
       return await floor();
     }
-    if (verb === "leave-all") {
+    if (verb === "leave") {
       return await leaveAll();
     }
     return USAGE;

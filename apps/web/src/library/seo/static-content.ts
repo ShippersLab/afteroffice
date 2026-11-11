@@ -1,4 +1,3 @@
-import { FAQ, FAQ_TITLE } from "../../content/faq.ts";
 import { HERO } from "../../content/hero.ts";
 import { HOW_IT_WORKS } from "../../content/how-it-works.ts";
 import { JOIN } from "../../content/join.ts";
@@ -36,7 +35,5 @@ export const renderStaticContent = (): string =>
     list(PRIVACY.points.map((point) => `${point.title}. ${point.body}`)),
     tag("h2", SPONSORS.title),
     tag("p", `${SPONSORS.lead} Contact ${SITE.sponsorsEmail}.`),
-    tag("h2", FAQ_TITLE),
-    FAQ.map((item) => tag("h3", item.question) + tag("p", item.answer)).join(""),
     "</noscript>",
   ].join("");

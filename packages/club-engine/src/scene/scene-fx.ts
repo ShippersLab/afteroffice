@@ -1,8 +1,16 @@
 import type { Graphics, Sprite, Texture } from "pixi.js";
+import { TILE_H } from "../mathematics/iso";
 import { COLOR } from "../sprites/palette";
+import { GRID_SIZE } from "../state/layout";
 
-export const FLOOR_CENTER = { x: 0, y: 280 };
-export const BALL_POSITION = { x: 0, y: 100 };
+const FLOOR_Y = ((GRID_SIZE - 1) * TILE_H) / 2;
+const SPOT_X = 260;
+const SPOT_Y = 120;
+const BEAM_X = 340;
+const BEAM_Y = 180;
+
+export const FLOOR_CENTER = { x: 0, y: FLOOR_Y };
+export const BALL_POSITION = { x: 0, y: FLOOR_Y - 180 };
 
 export type GlowTile = { readonly sprite: Sprite; readonly parity: number };
 
@@ -45,8 +53,8 @@ export class SceneFx {
   private updateSpots(t: number): void {
     this.parts.spots.forEach((spot, index) => {
       const phase = index * 2.1;
-      spot.x = FLOOR_CENTER.x + Math.sin(t / 2300 + phase) * 170;
-      spot.y = FLOOR_CENTER.y + Math.sin(t / 1700 + phase * 1.7) * 70;
+      spot.x = FLOOR_CENTER.x + Math.sin(t / 2300 + phase) * SPOT_X;
+      spot.y = FLOOR_CENTER.y + Math.sin(t / 1700 + phase * 1.7) * SPOT_Y;
     });
   }
 
@@ -72,8 +80,8 @@ export class SceneFx {
 
   private floorPoint(angle: number): { x: number; y: number } {
     return {
-      x: Math.round(FLOOR_CENTER.x + Math.cos(angle) * 220),
-      y: Math.round(FLOOR_CENTER.y + Math.sin(angle) * 110),
+      x: Math.round(FLOOR_CENTER.x + Math.cos(angle) * BEAM_X),
+      y: Math.round(FLOOR_CENTER.y + Math.sin(angle) * BEAM_Y),
     };
   }
 }

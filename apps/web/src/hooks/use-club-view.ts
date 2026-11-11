@@ -1,6 +1,7 @@
 import type { ClubView } from "@afteroffice/club-engine";
 import { type RefObject, useEffect, useState } from "react";
 import type { MessageSink } from "../library/realtime/message-sink";
+import { navigate } from "../library/routing/navigation";
 import { prefersReducedMotion } from "../utilities/reduced-motion";
 
 export type ClubViewState = "loading" | "ready" | "failed";
@@ -21,7 +22,16 @@ export const useClubView = (
       try {
         const engine = await import("@afteroffice/club-engine");
         if (cancelled) return;
-        const mounted = await engine.mountClub(element, { reducedMotion: prefersReducedMotion() });
+        const mounted = await engine.mountClub(element, {
+          reducedMotion: prefersReducedMotion(),
+          onNavigate: (href) => {
+            if (href.startsWith("http")) {
+              window.open(href, "_blank", "noopener");
+            } else {
+              navigate(href);
+            }
+          },
+        });
         if (cancelled) {
           mounted.destroy();
           return;

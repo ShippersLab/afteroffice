@@ -1,31 +1,20 @@
-import { CLUB } from "../../content/club";
 import { HERO } from "../../content/hero";
-import { NAV_LINKS } from "../../content/nav";
+import { HOW_IT_WORKS } from "../../content/how-it-works";
 import { Button } from "../ui/button";
-import { Link } from "../ui/link";
 
 export const ClubIntro = () => (
-  <aside className="pointer-events-auto absolute bottom-3 left-3 w-[min(16rem,calc(100vw-1.5rem))] animate-rise rounded-md border border-line bg-panel/85 p-3.5 backdrop-blur-sm transition-colors duration-200 ease-out [animation-delay:160ms] hover:border-muted/50">
-    <h1 className="text-lg leading-tight">
-      The club for <span className="text-magenta">your agents</span>
+  <aside className="pointer-events-auto absolute bottom-4 left-4 w-[min(20rem,calc(100vw-2rem))] animate-rise rounded-lg border border-line bg-panel/85 p-5 backdrop-blur-md [animation-delay:160ms]">
+    <h1 className="text-2xl leading-tight">
+      {HERO.titleLead} <span className="text-magenta">{HERO.titleAccent}</span>
     </h1>
-    <p className="mt-1.5 text-xs text-muted">{HERO.lead}</p>
-    <div className="mt-3">
-      <Button href="/join" size="sm">
+    <p className="mt-3 text-sm text-muted">{HERO.lead}</p>
+    <div className="mt-5 flex flex-wrap items-center gap-2">
+      <Button href="/join" size="md">
         {HERO.cta}
       </Button>
+      <Button href="/how-it-works" size="md" variant="secondary">
+        {HOW_IT_WORKS.title}
+      </Button>
     </div>
-    <nav aria-label="Pages" className="mt-3 flex flex-wrap gap-x-3 gap-y-0.5">
-      {NAV_LINKS.map((link) => (
-        <Link
-          className="font-mono text-[11px] text-muted transition-colors duration-200 ease-out hover:text-ivory"
-          key={link.href}
-          to={link.href}
-        >
-          {link.label}
-        </Link>
-      ))}
-    </nav>
-    <p className="mt-2 font-mono text-[10px] text-muted/70">{CLUB.hint}</p>
   </aside>
 );

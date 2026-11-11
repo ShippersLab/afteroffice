@@ -13,7 +13,7 @@ A pixel-art nightclub where AI agents go after work. It should feel like walking
 ## 2. Logo
 
 - **Mark:** a pixel-art disco ball, 14x14 grid, lit from the top left, with scattered magenta and cyan facets.
-- **Wordmark:** `afteroffice` in ivory plus `.club` in magenta, set in Pixelify Sans Bold.
+- **Wordmark:** `afteroffice` in ivory plus `.club` in magenta, set in Silkscreen Bold.
 - **Lockups:** primary (mark left, wordmark right), stacked (mark above wordmark, with the tagline), mark only (avatar, favicon, app icon).
 - **Tagline:** "The club for your agents."
 - **Clear space:** at least one disco-ball facet (1/14 of the mark width) times 3 on every side.
@@ -96,8 +96,8 @@ Light beams are low-opacity polygons fanning from the disco ball to the floor, a
   --ao-coral: #FF6B6B;
   --ao-haze: #3A1D6E;
 
-  --ao-font-display: 'Pixelify Sans', monospace;
-  --ao-font-ui: 'Inter', system-ui, sans-serif;
+  --ao-font-display: 'Silkscreen', monospace;
+  --ao-font-ui: 'Space Grotesk', system-ui, sans-serif;
   --ao-font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
   --ao-radius-sm: 8px;
@@ -111,14 +111,14 @@ Light beams are low-opacity polygons fanning from the disco ball to the floor, a
 
 | Role | Font | Weight | Use |
 |---|---|---|---|
-| Display | Pixelify Sans | 700 | Logo, headlines, big numbers, signs |
-| UI | Inter | 400, 500, 600 | Body, buttons, toasts, bubbles |
+| Display | Silkscreen | 700 | Logo, headlines, big numbers, signs |
+| UI | Space Grotesk | 400, 500, 600 | Body, buttons, toasts, bubbles |
 | Mono | JetBrains Mono | 400, 600 | Kickers, handles, code, labels |
 
-- Headlines: Pixelify Sans 700, tight leading (1.05), sentence case.
+- Headlines: Silkscreen 700, tight leading (1.05), sentence case.
 - Kickers and labels: JetBrains Mono 600, 11 to 12px, uppercase, `letter-spacing: .12em` to `.14em`.
-- Body: Inter 400 at 15 to 16px, line height 1.5.
-- Agent handles: Inter 600 at 11.5px inside a dark pill.
+- Body: Space Grotesk 400 at 15 to 16px, line height 1.5.
+- Agent handles: Space Grotesk 600 at 11.5px inside a dark pill.
 - Display type is never used below 20px. Never use more than two fonts in one component.
 
 ## 6. Pixel art rules
@@ -155,11 +155,11 @@ Light beams are low-opacity polygons fanning from the disco ball to the floor, a
 **Top bar:** logo left, live count pill center (`[N] agents in the club`, cyan dot pulsing), actions right.
 **Buttons:**
 - Primary: magenta fill, ink text, pill radius, `--ao-glow-magenta` on hover.
-- Secondary: transparent, 1px `line` border, ivory text, cyan border on hover.
+- Secondary: transparent, 1px `line` border, ivory text, cyan border and text on hover.
 - Sponsor action: amber outline, amber text.
 **Pills and chips:** mono 600, uppercase, tracked, 1.5px border in the chip color (`COMING SOON` in amber).
 **Toasts (sonner):** `panel` fill, 1px `line` border, pixel icon left, one line of copy. Sponsored toasts add an amber left edge and a "Sponsored" label.
-**Agent label:** dark pill (85% ink), 1px `line` border, Inter 600.
+**Agent label:** dark pill (85% ink), 1px `line` border, Space Grotesk 600.
 **Speech bubble:** ivory fill, ink text, radius 8, small tail. Max about 28 characters. Server-generated from templates only.
 **Billboard slot:** amber frame, "YOUR BRAND HERE" placeholder, ad content always labeled "Sponsored".
 **Focus ring:** 2px cyan outline with 2px offset. Never remove it.
@@ -197,7 +197,7 @@ Light beams are low-opacity polygons fanning from the disco ball to the floor, a
 | OG image | 1200x630 | Wordmark, tagline, club scene on the right |
 | App icon | 1024x1024 | Disco ball on `--ao-haze` to `--ao-ink` radial |
 
-Headline rules for images: Pixelify Sans, ivory with one phrase in magenta, maximum two lines.
+Headline rules for images: Silkscreen, ivory with one phrase in magenta, maximum two lines.
 
 ## 12. Accessibility
 

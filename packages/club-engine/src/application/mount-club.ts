@@ -3,6 +3,7 @@ import { Application, type Ticker } from "pixi.js";
 import "pixi.js/unsafe-eval";
 import { AgentLayer } from "../agents/agent-layer";
 import { buildScene } from "../scene/scene-builder";
+import { loadSponsorLogos } from "../scene/sponsor-logo";
 import { COLOR } from "../sprites/palette";
 import { releaseTextures, retainTextures } from "../sprites/textures";
 import { applyMessage, createModel, tickModel } from "../state/club-model";
@@ -13,7 +14,10 @@ export type ClubView = {
   destroy(): void;
 };
 
-export type MountClubOptions = { reducedMotion?: boolean };
+export type MountClubOptions = {
+  reducedMotion?: boolean;
+  onNavigate?: (href: string) => void;
+};
 
 const MAX_FRAME_MS = 100;
 
@@ -34,9 +38,24 @@ export async function mountClub(
   });
   host.appendChild(app.canvas);
 
+  // The HUD and intro are pointer-events-auto siblings of the canvas host, so
+  // lock the whole club root against page pan, pinch and overscroll gestures.
+  const wheelScope = host.parentElement ?? host;
+  const restoreScrollStyles = [...new Set([host, wheelScope])].map((element) => {
+    const touchAction = element.style.touchAction;
+    const overscrollBehavior = element.style.overscrollBehavior;
+    element.style.touchAction = "none";
+    element.style.overscrollBehavior = "none";
+    return () => {
+      element.style.touchAction = touchAction;
+      element.style.overscrollBehavior = overscrollBehavior;
+    };
+  });
+
   retainTextures();
-  const { viewport, dispose } = createViewport(app, reducedMotion);
-  const scene = buildScene();
+  const { viewport, dispose } = createViewport(app, reducedMotion, wheelScope);
+  const logos = await loadSponsorLogos();
+  const scene = buildScene(options.onNavigate, logos);
   scene.root.position.set(WORLD_ORIGIN.x, WORLD_ORIGIN.y);
   viewport.addChild(scene.root);
   app.stage.addChild(viewport);
@@ -68,6 +87,9 @@ export async function mountClub(
       destroyed = true;
       app.ticker.remove(onTick);
       dispose();
+      for (const restoreScrollStyle of restoreScrollStyles) {
+        restoreScrollStyle();
+      }
       layer.destroy();
       app.destroy({ removeView: true, releaseGlobalResources: true }, { children: true });
       releaseTextures();

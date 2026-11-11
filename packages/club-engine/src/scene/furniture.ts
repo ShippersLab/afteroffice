@@ -1,7 +1,7 @@
-import { TILE_H, TILE_W, tileToScreen } from "../mathematics/iso";
+import { feetDepth, TILE_H, TILE_W, tileToScreen } from "../mathematics/iso";
 import { COLOR } from "../sprites/palette";
-import type { Pixels } from "../sprites/pixels";
-import { discPixels } from "./floor-art";
+import { type Pixels, scaled } from "../sprites/pixels";
+import { discPixels, floorTile } from "./floor-art";
 import { type BoxColors, isoBox } from "./iso-box";
 import { PLACEMENTS, placeholderPixels } from "./placements";
 
@@ -80,7 +80,7 @@ function decorateBar(box: Pixels): void {
     box.fillRect(p.x - 1, p.y - 12, 2, 3, color);
     box.fillRect(p.x - 2, p.y - 9, 1, 8, COLOR.ink);
   });
-  box.blit(placeholderPixels(PLACEMENTS.bar), 56, 50, { scale: 2, shear: 0.5 });
+  box.blit(placeholderPixels(PLACEMENTS.bar), 72, 50, { scale: 2, shear: 0.5 });
 }
 
 function decorateVipBar(box: Pixels): void {
@@ -88,6 +88,22 @@ function decorateVipBar(box: Pixels): void {
     const p = topPoint(1, index + 0.5, 0.5);
     box.fillRect(p.x - 2, p.y - 8, 3, 7, color);
   }
+}
+
+function decoratePool(box: Pixels): void {
+  const center = topPoint(2, 1.5, 1);
+  const felt = scaled(floorTile(COLOR.laser, COLOR.laser), 2);
+  box.blit(felt, center.x - felt.width / 2, center.y - felt.height / 2);
+  box.fillRect(center.x - 2, center.y - 2, 4, 4, COLOR.ivory);
+  box.fillRect(center.x + 10, center.y + 4, 4, 4, COLOR.cyan);
+  box.fillRect(center.x - 14, center.y + 8, 4, 4, COLOR.amber);
+}
+
+function decorateArcade(box: Pixels): void {
+  box.blit(discPixels(16, 11, COLOR.ink), 11, 20, { scale: 2, shear: 0.5 });
+  box.blit(discPixels(11, 7, COLOR.cyan), 16, 23, { scale: 2, shear: 0.5 });
+  box.fillRect(53, 47, 10, 2, COLOR.magenta);
+  box.fillRect(54, 52, 8, 2, COLOR.cyan);
 }
 
 function sofaItems(prefix: string, tx: number, ty: number, d: number, z: number): FurnitureItem[] {
@@ -98,17 +114,16 @@ function sofaItems(prefix: string, tx: number, ty: number, d: number, z: number)
 }
 
 export function furnitureItems(): FurnitureItem[] {
-  const vipBack = boxItem("vip-sofa-back", 13.6, 10, { w: 0.4, d: 2, h: 40 }, SOFA, 499);
-  const vipSeat = boxItem("vip-sofa-seat", 13, 10, { w: 0.6, d: 2, h: 22 }, SOFA, 500);
   return [
-    boxItem("booth", 2, 1, { w: 3, d: 1, h: 26 }, BOOTH, 120, decorateBooth),
-    boxItem("speaker", 1, 1, { w: 1, d: 1, h: 40 }, SPEAKER, 60, decorateSpeaker),
-    boxItem("speaker", 5, 1, { w: 1, d: 1, h: 40 }, SPEAKER, 140, decorateSpeaker),
-    boxItem("bar", 8, 1, { w: 5, d: 1, h: 30 }, WOOD, 200, decorateBar),
-    ...sofaItems("sofa-a", 0, 2, 3, 50),
-    ...sofaItems("sofa-b", 0, 6, 3, 50),
-    vipBack,
-    vipSeat,
-    boxItem("vip-bar", 10, 13, { w: 2, d: 1, h: 26 }, WOOD, 500, decorateVipBar),
+    boxItem("booth", 2, 1, { w: 4, d: 1, h: 30 }, BOOTH, feetDepth(2, 1), decorateBooth),
+    boxItem("speaker", 1, 1, { w: 1, d: 1, h: 40 }, SPEAKER, feetDepth(1, 1), decorateSpeaker),
+    boxItem("speaker", 6, 1, { w: 1, d: 1, h: 40 }, SPEAKER, feetDepth(6, 1), decorateSpeaker),
+    boxItem("bar", 9, 2, { w: 5, d: 1, h: 30 }, WOOD, feetDepth(9, 2), decorateBar),
+    ...sofaItems("sofa-a", 0, 6, 3, feetDepth(0, 6)),
+    ...sofaItems("sofa-b", 0, 10, 3, feetDepth(0, 10)),
+    boxItem("vip-sofa", 14, 0, { w: 2, d: 1, h: 36 }, SOFA, feetDepth(14, 0)),
+    boxItem("vip-bar", 16, 0, { w: 1, d: 1, h: 26 }, WOOD, feetDepth(16, 0), decorateVipBar),
+    boxItem("pool-table", 13, 13, { w: 3, d: 2, h: 22 }, WOOD, feetDepth(13, 13), decoratePool),
+    boxItem("arcade", 16, 13, { w: 1, d: 1, h: 44 }, BOOTH, feetDepth(16, 13), decorateArcade),
   ];
 }

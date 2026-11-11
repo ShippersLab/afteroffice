@@ -1,14 +1,24 @@
 import { Container, Graphics, Sprite, type Texture } from "pixi.js";
 import { feetDepth, tileCenter, tileToScreen } from "../mathematics/iso";
+import { sponsorFor } from "../sponsors";
 import { pillPixels } from "../sprites/label-art";
 import { COLOR } from "../sprites/palette";
-import { scaled } from "../sprites/pixels";
+import { type Pixels, scaled } from "../sprites/pixels";
 import { cachedTexture } from "../sprites/textures";
-import { GRID_SIZE, isDanceTile, isVipTile, rectTiles, ZONE_RECTS } from "../state/layout";
+import {
+  DOOR_TILE,
+  GRID_SIZE,
+  isDanceTile,
+  isVipTile,
+  rectTiles,
+  VIP_GAP_ROW,
+  VIP_RECT,
+  ZONE_RECTS,
+} from "../state/layout";
 import { discoBallPixels } from "./disco-ball-art";
 import { discPixels, floorTile, glowTile, WALL_H, WALL_SPAN, wallStrip } from "./floor-art";
 import { furnitureItems } from "./furniture";
-import { PLACEMENTS, type PlacementId, placementTexturePixels } from "./placements";
+import { PLACEMENTS, type PlacementId, signTexturePixels } from "./placements";
 import { doorPixels, postPixels, ropePixels, stoolPixels } from "./props";
 import { BALL_POSITION, type GlowTile, SceneFx } from "./scene-fx";
 
@@ -24,6 +34,17 @@ function sprite(texture: Texture, x: number, y: number, ax = 0, ay = 0): Sprite 
   result.anchor.set(ax, ay);
   result.position.set(Math.round(x), Math.round(y));
   return result;
+}
+
+function makeClickable(
+  sign: Sprite,
+  href: string,
+  onNavigate: ((href: string) => void) | undefined,
+): void {
+  if (!onNavigate) return;
+  sign.eventMode = "static";
+  sign.cursor = "pointer";
+  sign.on("pointertap", () => onNavigate(href));
 }
 
 function buildFloor(floor: Container, glow: Container): GlowTile[] {
@@ -80,16 +101,22 @@ function wallDecal(
   u: number,
   lift: number,
   id: PlacementId,
+  onNavigate: ((href: string) => void) | undefined,
+  logos: ReadonlyMap<string, Pixels> | undefined,
 ): void {
   const spec = PLACEMENTS[id];
+  const sponsor = sponsorFor(id);
+  const logo = logos?.get(id);
   const shear = side === "right" ? 0.5 : -0.5;
-  const texture = cachedTexture(`placement-${id}-${side}`, () =>
-    placementTexturePixels(spec, shear),
+  const texture = cachedTexture(`placement-${id}-${side}-${sponsor.name || "empty"}`, () =>
+    signTexturePixels(spec, shear, sponsor.name, logo),
   );
   const baseX = side === "right" ? u * 40 : -u * 40;
   const baseY = u * 20;
   const height = spec.gridH * spec.scale;
-  back.addChild(sprite(texture, baseX, baseY - lift - height / 2, 0.5, 0.5));
+  const sign = sprite(texture, baseX, baseY - lift - height / 2, 0.5, 0.5);
+  makeClickable(sign, sponsor.href, onNavigate);
+  back.addChild(sign);
   back.addChild(sponsoredLabel(baseX, baseY - lift + 14, 2));
 }
 
@@ -100,17 +127,22 @@ function sponsoredLabel(x: number, y: number, scale: number): Sprite {
   return sprite(texture, x, y, 0.5, 0.5);
 }
 
-function buildWalls(back: Container): void {
+function buildWalls(
+  back: Container,
+  onNavigate: ((href: string) => void) | undefined,
+  logos: ReadonlyMap<string, Pixels> | undefined,
+): void {
   const right = cachedTexture("wall-right", () => wallStrip("right"));
   const left = cachedTexture("wall-left", () => wallStrip("left"));
   back.addChild(sprite(right, 0, -WALL_H));
   back.addChild(sprite(left, -WALL_SPAN, -WALL_H));
-  wallDecal(back, "right", 6, 45, "billboard");
-  wallDecal(back, "right", 10.5, 70, "neon");
-  wallDecal(back, "left", 5.5, 40, "sponsor-slot");
-  wallDecal(back, "left", 10, 45, "poster");
+  wallDecal(back, "right", 6, 45, "billboard", onNavigate, logos);
+  wallDecal(back, "right", 12, 70, "neon", onNavigate, logos);
+  wallDecal(back, "left", 5.5, 40, "sponsor-slot", onNavigate, logos);
+  wallDecal(back, "left", 11, 45, "poster", onNavigate, logos);
   const door = cachedTexture("door", () => scaled(doorPixels(), 3, -0.5));
-  back.addChild(sprite(door, -12.7 * 40, 12.7 * 20 - 51 - 4, 0.5, 0.5));
+  const doorU = DOOR_TILE.y + 0.7;
+  back.addChild(sprite(door, -doorU * 40, doorU * 20 - 51 - 4, 0.5, 0.5));
 }
 
 function buildFurniture(things: Container): void {
@@ -120,16 +152,20 @@ function buildFurniture(things: Container): void {
     piece.zIndex = item.z;
     things.addChild(piece);
   }
-  const barSign = sponsoredLabel(340, 150 + 95, 1);
-  barSign.zIndex = 201;
+  const barRect = ZONE_RECTS.bar[0];
+  const sign = tileToScreen(barRect.x + barRect.w / 2, barRect.y - 2);
+  const barSign = sponsoredLabel(sign.x, sign.y - 24, 1);
+  barSign.zIndex = feetDepth(barRect.x, barRect.y) - 30;
   things.addChild(barSign);
   const stool = cachedTexture("stool", stoolPixels);
-  for (const tile of rectTiles(ZONE_RECTS.bar[0])) {
-    const center = tileCenter(tile.x, tile.y);
-    const piece = sprite(stool, center.x, center.y + 8, 0.5, 1);
-    piece.scale.set(3);
-    piece.zIndex = feetDepth(tile.x, tile.y) - 1;
-    things.addChild(piece);
+  for (const rect of ZONE_RECTS.bar) {
+    for (const tile of rectTiles(rect)) {
+      const center = tileCenter(tile.x, tile.y);
+      const piece = sprite(stool, center.x, center.y + 8, 0.5, 1);
+      piece.scale.set(3);
+      piece.zIndex = feetDepth(tile.x, tile.y) - 1;
+      things.addChild(piece);
+    }
   }
 }
 
@@ -137,10 +173,16 @@ function buildVipRopes(things: Container): void {
   const post = cachedTexture("post", postPixels);
   const ropeRight = cachedTexture("rope-dr", () => ropePixels("down-right"));
   const ropeLeft = cachedTexture("rope-dl", () => ropePixels("down-left"));
-  const vertices = [
-    ...[10, 11, 12, 13, 14].map((y) => ({ x: 10, y })),
-    ...[11, 12, 13, 14].map((x) => ({ x, y: 10 })),
-  ];
+  const left = VIP_RECT.x;
+  const right = VIP_RECT.x + VIP_RECT.w;
+  const front = VIP_RECT.y + VIP_RECT.h;
+  const vertices: { x: number; y: number }[] = [];
+  for (let y = VIP_RECT.y; y <= front; y += 1) {
+    vertices.push({ x: left, y });
+  }
+  for (let x = left + 1; x <= right; x += 1) {
+    vertices.push({ x, y: front });
+  }
   for (const v of vertices) {
     const p = tileToScreen(v.x, v.y);
     const piece = sprite(post, p.x, p.y, 0.5, 1);
@@ -148,21 +190,27 @@ function buildVipRopes(things: Container): void {
     piece.zIndex = (v.x + v.y) * 20;
     things.addChild(piece);
   }
-  for (const x of [10, 11, 12, 13]) {
-    const p = tileToScreen(x, 10);
+  for (let x = left; x < right; x += 1) {
+    const p = tileToScreen(x, front);
     const piece = sprite(ropeRight, p.x, p.y - 18);
-    piece.zIndex = (x + 11) * 20 - 1;
+    piece.zIndex = (x + front + 1) * 20 - 1;
     things.addChild(piece);
   }
-  for (const y of [10, 11, 13]) {
-    const p = tileToScreen(10, y + 1);
+  for (let y = VIP_RECT.y; y < front; y += 1) {
+    if (y === VIP_GAP_ROW) {
+      continue;
+    }
+    const p = tileToScreen(left, y + 1);
     const piece = sprite(ropeLeft, p.x, p.y - 18 - 20);
-    piece.zIndex = (11 + y) * 20 - 1;
+    piece.zIndex = (left + y + 1) * 20 - 1;
     things.addChild(piece);
   }
 }
 
-export function buildScene(): ClubScene {
+export function buildScene(
+  onNavigate?: (href: string) => void,
+  logos?: ReadonlyMap<string, Pixels>,
+): ClubScene {
   const root = new Container();
   const back = new Container();
   const floor = new Container();
@@ -171,11 +219,15 @@ export function buildScene(): ClubScene {
   const top = new Container();
   const overlay = new Container();
   things.sortableChildren = true;
+  back.interactiveChildren = true;
+  top.interactiveChildren = true;
   for (const layer of [back, floor, glow, things, top, overlay]) {
-    layer.interactiveChildren = false;
     root.addChild(layer);
   }
-  buildWalls(back);
+  for (const layer of [floor, glow, things, overlay]) {
+    layer.interactiveChildren = false;
+  }
+  buildWalls(back, onNavigate, logos);
   const glowTiles = buildFloor(floor, glow);
   buildFurniture(things);
   buildVipRopes(things);
@@ -201,8 +253,14 @@ export function buildScene(): ClubScene {
   ball.scale.set(4);
   top.addChild(cord, ball);
   const ballSpec = PLACEMENTS.ball;
-  const pill = cachedTexture("placement-ball", () => placementTexturePixels(ballSpec, 0));
-  top.addChild(sprite(pill, 0, BALL_POSITION.y + 46, 0.5, 0.5));
+  const ballSponsor = sponsorFor("ball");
+  const ballLogo = logos?.get("ball");
+  const pill = cachedTexture(`placement-ball-${ballSponsor.name || "empty"}`, () =>
+    signTexturePixels(ballSpec, 0, ballSponsor.name, ballLogo),
+  );
+  const pillSprite = sprite(pill, 0, BALL_POSITION.y + 46, 0.5, 0.5);
+  makeClickable(pillSprite, ballSponsor.href, onNavigate);
+  top.addChild(pillSprite);
   top.addChild(sponsoredLabel(0, BALL_POSITION.y + 70, 2));
   return { root, things, overlay, fx: new SceneFx({ glowTiles, spots, beams, ball, ballFrames }) };
 }

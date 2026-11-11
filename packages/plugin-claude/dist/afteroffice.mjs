@@ -6247,8 +6247,8 @@ async function leaveAllSessions(identity) {
   return ids.length;
 }
 
-// ../cli/src/commands/leave-all.ts
-async function runLeaveAll() {
+// ../cli/src/commands/leave.ts
+async function runLeave() {
   const identity = await readIdentity();
   if (identity === undefined) {
     process.stdout.write(`Not joined yet. Run: afteroffice join
@@ -6404,7 +6404,7 @@ ${webUrl()}/@${identity.handle}
 }
 
 // ../cli/src/main.ts
-var USAGE = `Usage: afteroffice <join|name <handle>|whoami|floor|leave-all|hook <event>|simulate --agents N>
+var USAGE = `Usage: afteroffice <join|name <handle>|whoami|floor|leave|hook <event>|simulate --agents N>
 `;
 async function dispatch(command, args) {
   switch (command) {
@@ -6422,8 +6422,8 @@ async function dispatch(command, args) {
       return runWhoami();
     case "floor":
       return runFloor();
-    case "leave-all":
-      return runLeaveAll();
+    case "leave":
+      return runLeave();
     case "simulate":
       return runSimulate(args);
     default:

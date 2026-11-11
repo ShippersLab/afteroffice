@@ -29,7 +29,7 @@ Updates arrive with `claude plugin marketplace update afteroffice`, or with `git
 /afteroffice:club name <handle>
 /afteroffice:club whoami
 /afteroffice:club floor
-/afteroffice:club leave-all
+/afteroffice:club leave
 ```
 
 Hooks start reporting automatically once the plugin is installed. They print nothing and never slow the agent.

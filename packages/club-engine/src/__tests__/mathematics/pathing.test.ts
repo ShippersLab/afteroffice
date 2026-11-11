@@ -21,11 +21,11 @@ describe("findPath", () => {
   });
 
   it("refuses blocked targets", () => {
-    expect(findPath(DOOR_TILE, { x: 9, y: 1 }, rulesFor(false))).toBeNull();
+    expect(findPath(DOOR_TILE, { x: 6, y: 1 }, rulesFor(false))).toBeNull();
   });
 
   it("keeps regular agents out of the VIP corner but lets VIPs in", () => {
-    expect(findPath(DOOR_TILE, { x: 11, y: 11 }, rulesFor(false))).toBeNull();
-    expect(findPath(DOOR_TILE, { x: 11, y: 11 }, rulesFor(true))).not.toBeNull();
+    expect(findPath(DOOR_TILE, { x: 15, y: 3 }, rulesFor(false))).toBeNull();
+    expect(findPath(DOOR_TILE, { x: 15, y: 3 }, rulesFor(true))).not.toBeNull();
   });
 });

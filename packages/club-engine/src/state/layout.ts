@@ -1,8 +1,8 @@
 import { type Tile, tileKey } from "../mathematics/iso";
 
-export const GRID_SIZE = 14;
-export const DOOR_TILE: Tile = { x: 0, y: 12 };
-export const VIP_GAP_ROW = 12;
+export const GRID_SIZE = 18;
+export const DOOR_TILE: Tile = { x: 0, y: 16 };
+export const VIP_GAP_ROW = 4;
 
 export type Rect = {
   readonly x: number;
@@ -21,14 +21,30 @@ export function rectTiles(rect: Rect): Tile[] {
   return tiles;
 }
 
-export const DANCE_RECT: Rect = { x: 4, y: 4, w: 6, h: 6 };
-export const VIP_RECT: Rect = { x: 10, y: 10, w: 4, h: 4 };
+export const DANCE_RECT: Rect = { x: 4, y: 5, w: 9, h: 8 };
+export const VIP_RECT: Rect = { x: 14, y: 1, w: 3, h: 4 };
 
+// Fixed furniture that agents path around. Each rect matches a piece built in
+// scene/furniture.ts so the walkable grid and the visuals never drift.
 export const BLOCKED_RECTS: readonly Rect[] = [
-  { x: 1, y: 1, w: 5, h: 1 },
-  { x: 8, y: 0, w: 5, h: 2 },
-  { x: 13, y: 10, w: 1, h: 2 },
-  { x: 10, y: 13, w: 2, h: 1 },
+  // VIP sofa against the back wall
+  { x: 14, y: 0, w: 3, h: 1 },
+  // left speaker
+  { x: 1, y: 1, w: 1, h: 1 },
+  // DJ booth counter
+  { x: 2, y: 1, w: 4, h: 1 },
+  // right speaker
+  { x: 6, y: 1, w: 1, h: 1 },
+  // bar counter
+  { x: 9, y: 2, w: 5, h: 1 },
+  // lounge sofa A
+  { x: 0, y: 6, w: 1, h: 3 },
+  // lounge sofa B
+  { x: 0, y: 10, w: 1, h: 3 },
+  // pool table
+  { x: 13, y: 13, w: 3, h: 2 },
+  // arcade cabinet
+  { x: 16, y: 13, w: 1, h: 1 },
 ];
 
 const BLOCKED_KEYS: ReadonlySet<string> = new Set(
@@ -63,13 +79,24 @@ export function isDanceTile(tile: Tile): boolean {
 
 export const ZONE_RECTS = {
   dance: [DANCE_RECT],
-  dj: [{ x: 2, y: 0, w: 3, h: 1 }],
-  bar: [{ x: 8, y: 2, w: 5, h: 1 }],
+  dj: [{ x: 2, y: 0, w: 4, h: 1 }],
+  bar: [{ x: 9, y: 3, w: 5, h: 1 }],
   sofa: [
-    { x: 0, y: 2, w: 1, h: 3 },
-    { x: 0, y: 6, w: 1, h: 3 },
+    { x: 1, y: 6, w: 1, h: 3 },
+    { x: 1, y: 10, w: 1, h: 3 },
   ],
-  door: [{ x: 1, y: 10, w: 2, h: 4 }],
-  spill: [{ x: 7, y: 3, w: 6, h: 1 }],
+  door: [{ x: 1, y: 15, w: 2, h: 2 }],
+  spill: [
+    // aisle behind the dance floor
+    { x: 5, y: 4, w: 8, h: 1 },
+    // aisle along the right of the dance floor
+    { x: 13, y: 5, w: 1, h: 8 },
+    // aisle along the left of the dance floor
+    { x: 3, y: 5, w: 1, h: 8 },
+    // aisle in front of the dance floor
+    { x: 4, y: 13, w: 9, h: 1 },
+    // pool and arcade corner
+    { x: 13, y: 13, w: 4, h: 4 },
+  ],
   vip: [VIP_RECT],
 } as const satisfies Record<string, readonly Rect[]>;

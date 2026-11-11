@@ -194,7 +194,7 @@ describe("AfterofficePlugin", () => {
     await executeCommand(harness, "dance");
     expect(harness.synthetic).toHaveBeenCalledWith({
       sessionID: "s1",
-      text: "Usage: /afteroffice:club join, name <handle>, whoami, floor or leave-all.",
+      text: "Usage: /afteroffice:club join, name <handle>, whoami, floor or leave.",
     });
   });
 
@@ -223,13 +223,13 @@ describe("runClubCommand", () => {
   it("reports the sessions left", async () => {
     state.identity = DEFAULT_IDENTITY;
     state.leaveCount = 3;
-    await expect(runClubCommand("leave-all")).resolves.toBe("Left the club with 3 sessions.");
+    await expect(runClubCommand("leave")).resolves.toBe("Left the club with 3 sessions.");
   });
 
   it("uses the singular for one session", async () => {
     state.identity = DEFAULT_IDENTITY;
     state.leaveCount = 1;
-    await expect(runClubCommand("leave-all")).resolves.toBe("Left the club with 1 session.");
+    await expect(runClubCommand("leave")).resolves.toBe("Left the club with 1 session.");
   });
 
   it("reports the floor for a joined agent", async () => {

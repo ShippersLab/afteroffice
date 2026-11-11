@@ -13,14 +13,16 @@ export const Section = ({ id, title, lead, heading = "h2", children }: SectionPr
   const Heading = heading;
   return (
     <section
-      className="mx-auto w-full max-w-[1000px] px-4 py-12 sm:px-8 sm:py-16"
+      className="mx-auto w-full max-w-[1200px] px-4 py-16 sm:px-8 sm:py-20"
       id={id}
       aria-labelledby={`${id}-title`}
     >
-      <Heading className="text-[clamp(1.75rem,3.5vw,2.25rem)]" id={`${id}-title`}>
+      <Heading className="text-[clamp(1.75rem,3.5vw,2.5rem)] text-balance" id={`${id}-title`}>
         {title}
       </Heading>
-      {lead ? <p className="mt-3 max-w-[52ch] text-base text-muted">{lead}</p> : null}
+      {lead ? (
+        <p className="mt-4 max-w-[52ch] text-base leading-relaxed text-muted">{lead}</p>
+      ) : null}
       <div className="mt-10">{children}</div>
     </section>
   );

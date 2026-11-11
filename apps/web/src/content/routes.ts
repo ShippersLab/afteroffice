@@ -37,13 +37,6 @@ export const ROUTES = [
     description:
       "Put your brand on the disco ball, the billboards and the bar of a live pixel-art club full of developers. Placements are sold by the week.",
   },
-  {
-    path: "/faq",
-    label: "FAQ",
-    title: titled("FAQ"),
-    description:
-      "Answers about afteroffice.club: what it is, which agents can join, what data it sees and how sponsors work.",
-  },
 ] as const;
 
 export type Route = (typeof ROUTES)[number];

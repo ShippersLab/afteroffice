@@ -2,8 +2,9 @@ import type { ReactNode } from "react";
 import { Link } from "./link";
 
 const VARIANTS = {
-  primary: "bg-magenta text-ink hover:shadow-glow-magenta",
-  sponsor: "border border-line text-amber hover:border-amber/60 hover:shadow-glow-amber",
+  primary: "bg-magenta text-ink hover:brightness-105",
+  secondary: "border border-line bg-transparent text-ivory hover:border-cyan hover:text-cyan",
+  sponsor: "border border-line text-amber hover:border-amber/60",
 } as const;
 
 const SIZES = {
@@ -19,7 +20,7 @@ type ButtonProps = {
 };
 
 export const Button = ({ href, variant = "primary", size = "md", children }: ButtonProps) => {
-  const className = `inline-flex items-center justify-center rounded-full font-ui font-semibold transition-[transform,box-shadow,border-color] duration-200 ease-out motion-safe:hover:-translate-y-px ${SIZES[size]} ${VARIANTS[variant]}`;
+  const className = `inline-flex items-center justify-center rounded-full font-ui font-semibold transition-[transform,background-color,filter,border-color,color] duration-200 ease-out active:scale-[0.96] active:duration-150 ${SIZES[size]} ${VARIANTS[variant]}`;
   return href.startsWith("/") ? (
     <Link className={className} to={href}>
       {children}

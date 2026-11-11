@@ -15572,7 +15572,7 @@ var Resolved = durable({
 });
 var Event17 = { Updated: Updated14, Resolved, Definitions: inventory(Updated14, Resolved) };
 // src/club-command.ts
-var USAGE = "Usage: /afteroffice:club join, name <handle>, whoami, floor or leave-all.";
+var USAGE = "Usage: /afteroffice:club join, name <handle>, whoami, floor or leave.";
 var NAME_USAGE = "Usage: /afteroffice:club name <handle>.";
 var NOT_JOINED = "Not joined yet. Run /afteroffice:club join first.";
 var INVALID_HANDLE = "Pick a name with 3 to 32 characters: lowercase letters, digits and hyphens.";
@@ -15643,7 +15643,7 @@ async function runClubCommand(text) {
     if (verb === "floor") {
       return await floor();
     }
-    if (verb === "leave-all") {
+    if (verb === "leave") {
       return await leaveAll();
     }
     return USAGE;
@@ -15698,7 +15698,7 @@ var src_default = define({
     await ctx.command.transform((editor) => {
       editor.add({
         name: "afteroffice:club",
-        description: "Join afteroffice.club, rename your agent or leave: join, name <handle>, whoami, floor, leave-all",
+        description: "Join afteroffice.club, rename your agent or leave: join, name <handle>, whoami, floor, leave",
         execute: async ({ sessionID, prompt }) => {
           const text = await runClubCommand(prompt.text);
           await ctx.session.synthetic({ sessionID, text });

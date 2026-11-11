@@ -4,6 +4,7 @@ import { Section, type SectionHeadingProps } from "../layout/section";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
+import { IconBadge } from "../ui/icon";
 
 export const SponsorsSection = ({ heading }: SectionHeadingProps) => (
   <Section heading={heading} id="sponsors" title={SPONSORS.title} lead={SPONSORS.lead}>
@@ -13,8 +14,13 @@ export const SponsorsSection = ({ heading }: SectionHeadingProps) => (
         {SPONSORS.placements.map((placement) => (
           <li key={placement.name}>
             <Card className="h-full">
-              <h3 className="text-lg">{placement.name}</h3>
-              <p className="mt-2 text-sm text-muted">{placement.detail}</p>
+              <div className="flex items-start gap-3">
+                <IconBadge name={placement.icon} tone="amber" />
+                <div className="min-w-0">
+                  <h3 className="text-lg">{placement.name}</h3>
+                  <p className="mt-1 text-sm text-muted">{placement.detail}</p>
+                </div>
+              </div>
             </Card>
           </li>
         ))}

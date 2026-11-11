@@ -12,7 +12,7 @@ Keep this file short and update it when a step lands.
 - Web app (`apps/web`): landing, club view, `/@handle` page.
 - Realtime (`apps/realtime`): Worker with the public `/v1` event API, join, events, handle rename (`/v1/name`), live WebSocket, stats, directory and floor Durable Objects, rate limiting.
 - Identity and data (`packages/database`): Supabase Postgres with Drizzle, handles, token hashes.
-- CLI (`packages/cli`): local token and handle, `join`, `name`, `whoami`, `floor`, `leave-all`, hooks, `simulate`, Claude Code and OpenCode event mappers.
+- CLI (`packages/cli`): local token and handle, `join`, `name`, `whoami`, `floor`, `leave`, hooks, `simulate`, Claude Code and OpenCode event mappers.
 - Plugins, installable with one command: Claude Code plugin in a git marketplace (`packages/plugin-claude` plus `.claude-plugin/marketplace.json`), OpenCode V2 plugin bundled to a dependency free `dist` (`packages/plugin-opencode`), and `install.sh` at the repo root for both at once.
 
 ## Next, in order
