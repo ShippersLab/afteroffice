@@ -57,5 +57,5 @@ apps/web/
 ## Copy
 
 - English, sentence case, punchy and a little cheeky. No exclamation marks, no emojis, never the em dash (a test checks it).
-- Plugins are not shipped yet: install commands carry an amber "Coming soon" badge until they are.
+- Plugins are live. Only harnesses without a plugin yet (the "Codex and more" card) carry the amber "Coming soon" badge. Never present the club as only for one or two agents.
 - Never promise what the product does not do. Privacy claims must match `.agents/rules/security-privacy.md`.
