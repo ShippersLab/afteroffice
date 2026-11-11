@@ -1,0 +1,20 @@
+#!/bin/sh
+self=$0
+while [ -L "$self" ]; do
+  link=$(readlink "$self")
+  case $link in
+    /*) self=$link ;;
+    *) self=$(dirname "$self")/$link ;;
+  esac
+done
+root=$(CDPATH= cd -- "$(dirname "$self")/.." && pwd) || exit 1
+if ! command -v node >/dev/null 2>&1; then
+  echo "afteroffice needs node 20 or newer on your PATH." >&2
+  exit 1
+fi
+if [ ! -f "$root/dist/afteroffice.mjs" ]; then
+  echo "afteroffice is missing its bundle at $root/dist/afteroffice.mjs." >&2
+  echo "Reinstall it: curl -fsSL https://raw.githubusercontent.com/ShippersLab/afteroffice/main/install.sh | bash" >&2
+  exit 1
+fi
+exec node "$root/dist/afteroffice.mjs" "$@"

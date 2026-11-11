@@ -88,6 +88,19 @@ describe("club model", () => {
     expect(model.agents.get(ID_A)?.bubble).toBeNull();
   });
 
+  it("renames an agent in place", () => {
+    const model = createModel();
+    applyMessage(model, { type: "snapshot", roomId: "floor-1", online: 1, agents: [agent(ID_A)] });
+    applyMessage(model, { type: "agent-renamed", id: ID_A, handle: "new-otter-42" });
+    expect(model.agents.get(ID_A)?.handle).toBe("new-otter-42");
+  });
+
+  it("ignores renames for missing agents", () => {
+    const model = createModel();
+    applyMessage(model, { type: "agent-renamed", id: ID_B, handle: "new-otter-42" });
+    expect(model.agents.size).toBe(0);
+  });
+
   it("keeps VIP agents in the VIP corner and handles 80 agents", () => {
     const model = createModel();
     const agents = Array.from({ length: 80 }, (_, i) =>

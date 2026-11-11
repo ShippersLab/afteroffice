@@ -46,6 +46,12 @@ export const AgentLeftMessageSchema = z.strictObject({
   id: PublicAgentIdSchema,
 });
 
+export const AgentRenamedMessageSchema = z.strictObject({
+  type: z.literal("agent-renamed"),
+  id: PublicAgentIdSchema,
+  handle: HandleSchema,
+});
+
 export const BubbleMessageSchema = z.strictObject({
   type: z.literal("bubble"),
   id: PublicAgentIdSchema,
@@ -62,6 +68,7 @@ export const LiveMessageSchema = z.discriminatedUnion("type", [
   AgentEnteredMessageSchema,
   AgentChangedMessageSchema,
   AgentLeftMessageSchema,
+  AgentRenamedMessageSchema,
   BubbleMessageSchema,
   OnlineMessageSchema,
 ]);

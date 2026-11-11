@@ -1,38 +1,77 @@
 # afteroffice plugin for Claude Code
 
-Shows your Claude Code agent in the afteroffice.club nightclub. Only the event type, the tool category and an anonymous handle leave your machine. Hooks print nothing, so nothing from the club enters the agent context.
+## What it does
 
-## Local install
+Shows your Claude Code agent in the afteroffice.club pixel-art nightclub and animates it from Claude Code hooks. Each session enters the club, reacts to the work it does and leaves when it ends. Privacy is built in: only the event type and the tool category leave the machine. Code, prompts and paths never do.
 
-Needs Node 22.18 or newer.
+## Install
 
-1. Put the CLI on your PATH:
+Add the marketplace and install the plugin:
 
-   ```
-   ln -s "$PWD/packages/cli/bin/afteroffice.mjs" ~/.local/bin/afteroffice
-   ```
+```
+claude plugin marketplace add ShippersLab/afteroffice
+claude plugin install afteroffice@afteroffice
+```
 
-2. Start the realtime server (default `http://localhost:8787`, override with `AFTEROFFICE_URL`).
-3. Run Claude Code with the plugin:
+For a local clone, point the marketplace at the repo root and run the same install command:
 
-   ```
-   claude --plugin-dir packages/plugin-claude
-   ```
+```
+claude plugin marketplace add /path/to/afteroffice
+claude plugin install afteroffice@afteroffice
+```
 
-4. Inside Claude Code run `/afteroffice:club join`, or run `afteroffice join` in a shell.
+Updates arrive with `claude plugin marketplace update afteroffice`, or with `git pull` when the marketplace is a local clone. The plugin needs node 20 or newer on your PATH.
 
-Hooks are loaded at session start, so restart Claude Code after changing `hooks/hooks.json`.
+## Use
+
+```
+/afteroffice:club join
+/afteroffice:club name <handle>
+/afteroffice:club whoami
+/afteroffice:club floor
+/afteroffice:club leave
+```
+
+Hooks start reporting automatically once the plugin is installed. They print nothing and never slow the agent.
+
+## Watch the club
+
+Open the web app at https://afteroffice.club, or set `AFTEROFFICE_WEB_URL` to another address. The club server defaults to `http://localhost:8787` and can be overridden with `AFTEROFFICE_URL`.
 
 ## Hook mapping
 
 | Claude Code hook | Club event |
 | --- | --- |
 | SessionStart | enter |
-| PreToolUse | work (tool category) |
+| PreToolUse | work |
 | PostToolUseFailure | error |
-| Notification permission_prompt | waiting |
-| Notification idle_prompt | idle |
+| Notification permission_prompt or idle_prompt | waiting or idle |
 | Stop | done |
-| SubagentStart | work (subagent) |
+| SubagentStart | work subagent |
 | PreCompact | idle |
 | SessionEnd | leave |
+
+## Local development
+
+Clone the repo and install the workspace:
+
+```
+bun install
+bun run dev
+```
+
+The realtime server runs on port 8787 and the web app on port 5173. Load the plugin directly from the repo:
+
+```
+claude --plugin-dir packages/plugin-claude
+```
+
+After changing the CLI, rebuild the bundled entry point inside `packages/plugin-claude`:
+
+```
+bun run build
+```
+
+## Data and privacy
+
+The plugin sends the event type, the tool category and an anonymous session id to the club API. It never sends code, prompts, file names, file paths or tool output. The channel is one way: the club never sends anything into the agent context. Hooks are silent, so a club outage cannot break or slow your session.

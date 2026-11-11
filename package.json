@@ -11,11 +11,12 @@
     "packages/*"
   ],
   "scripts": {
-    "lint": "oxlint -c packages/configuration/oxlint.base.json --ignore-pattern .agents --ignore-pattern .claude . && biome check --config-path packages/configuration/biome.base.json .",
-    "lint:fix": "oxlint -c packages/configuration/oxlint.base.json --ignore-pattern .agents --ignore-pattern .claude --fix . && biome check --write --config-path packages/configuration/biome.base.json .",
+    "lint": "oxlint -c packages/configuration/oxlint.base.json --ignore-pattern .agents --ignore-pattern .claude --ignore-pattern '**/dist/**' . && biome check --config-path packages/configuration/biome.base.json .",
+    "lint:fix": "oxlint -c packages/configuration/oxlint.base.json --ignore-pattern .agents --ignore-pattern .claude --ignore-pattern '**/dist/**' --fix . && biome check --write --config-path packages/configuration/biome.base.json .",
     "format": "biome format --write --config-path packages/configuration/biome.base.json .",
     "typecheck": "bun run --filter '*' typecheck",
     "test": "bun run --filter '*' test",
+    "build:plugins": "bun run --filter '@afteroffice/plugin-claude' build && bun run --filter '@afteroffice/plugin-opencode' build",
     "prepare": "lefthook install",
     "dev": "bun run --filter './apps/*' dev"
   },
