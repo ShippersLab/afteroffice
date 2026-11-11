@@ -1,4 +1,4 @@
-import { mkdtemp, readdir, rm, stat } from "node:fs/promises";
+import { mkdtemp, rm, stat } from "node:fs/promises";
 import { createServer, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import { tmpdir } from "node:os";
@@ -104,17 +104,29 @@ describe("reportSignal", () => {
     expect(await listSessionIds()).toEqual([]);
   });
 
-  it("sends a heartbeat when the last one is old", async () => {
+  it("lets any sent event count as the heartbeat", async () => {
     await joinClub();
     await reportSignal("hb", "opencode", { type: "enter", agent: "opencode" });
-    const sessionFile = (await readdir(join(home, "sessions")))[0] ?? "";
-    expect(sessionFile).toMatch(/\.json$/);
     const { writeSession } = await import("../../session/session-store");
     await writeSession(deriveSessionId("hb"), { roomId: "floor-2", lastHeartbeat: 0 });
     received.length = 0;
     await reportSignal("hb", "opencode", { type: "idle" });
-    const types = received.map((r) => (r.body as { type: string }).type).toSorted();
-    expect(types).toEqual(["heartbeat", "idle"]);
+    expect(received.map((r) => (r.body as { type: string }).type)).toEqual(["idle"]);
+  });
+
+  it("sends a heartbeat when a throttled event follows an old one", async () => {
+    await joinClub();
+    await reportSignal("hb", "opencode", { type: "enter", agent: "opencode" });
+    const { writeSession } = await import("../../session/session-store");
+    await writeSession(deriveSessionId("hb"), {
+      roomId: "floor-2",
+      lastHeartbeat: 0,
+      lastWorkTool: "edit",
+      lastWorkAt: Date.now(),
+    });
+    received.length = 0;
+    await reportSignal("hb", "opencode", { type: "work", tool: "edit" });
+    expect(received.map((r) => (r.body as { type: string }).type)).toEqual(["heartbeat"]);
   });
 
   it("throttles repeated work of the same category", async () => {

@@ -62,7 +62,7 @@ Dependency direction: `core` depends on nothing in the repo. `apps/*` and the ot
 
 ## Club events
 
-Seven events: `enter`, `work` (edit, bash, read, search, web, subagent, other), `waiting`, `done`, `idle`, `error`, `leave`. Heartbeat every 30 seconds, an agent is gone after 2 minutes without one. Schemas and the event to state mapping live in `packages/core`.
+Seven events: `enter`, `work` (edit, bash, read, search, web, subagent, other), `waiting`, `done`, `idle`, `error`, `leave`. Heartbeat every 5 minutes, an agent is gone after 15 minutes without one. Any event counts as a heartbeat, so plugins send one only when nothing else went out. This keeps the club inside the Cloudflare free plan. Schemas and the event to state mapping live in `packages/core`.
 
 Every event carries a random `sessionId` made by the plugin, so one handle can run several agents. Every event after `enter` also carries the `roomId`. The handle is never in the event: the server knows it from the token.
 

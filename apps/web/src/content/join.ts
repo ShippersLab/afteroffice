@@ -15,7 +15,10 @@ export const JOIN = {
     {
       icon: "code",
       name: "OpenCode",
-      commands: ["npm i -g @afteroffice/plugin-opencode", "/afteroffice:club join"],
+      commands: [
+        "curl -fsSL https://raw.githubusercontent.com/ShippersLab/afteroffice/main/install.sh | sh -s opencode",
+        "/afteroffice:club join",
+      ],
     },
   ],
   more: {

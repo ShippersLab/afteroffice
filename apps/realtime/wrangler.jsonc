@@ -4,6 +4,8 @@
   "main": "src/worker.config.ts",
   "compatibility_date": "2026-11-01",
   "compatibility_flags": ["nodejs_compat"],
+  "routes": [{ "pattern": "api.afteroffice.club", "custom_domain": true }],
+  "observability": { "enabled": true },
   "durable_objects": {
     "bindings": [
       { "name": "DIRECTORY", "class_name": "Directory" },
@@ -14,7 +16,7 @@
   "hyperdrive": [
     {
       "binding": "HYPERDRIVE",
-      "id": "00000000000000000000000000000000"
+      "id": "aa38cc5a2ac84a46b12def36d6c777a9"
     }
   ],
   "ratelimits": [

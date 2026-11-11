@@ -1,6 +1,6 @@
 // @bun
 // ../core/src/constants/limits.ts
-var HEARTBEAT_INTERVAL_MS = 30000;
+var HEARTBEAT_INTERVAL_MS = 300000;
 // ../../node_modules/.bun/zod@4.6.7/node_modules/zod/v4/core/util.js
 function getEnumValues(entries) {
   const numericValues = Object.values(entries).filter((v) => typeof v === "number");
@@ -5736,7 +5736,7 @@ import { readFile, rm } from "fs/promises";
 // ../cli/src/storage/paths.ts
 import { homedir } from "os";
 import { join } from "path";
-var DEFAULT_API_URL = "http://localhost:8787";
+var DEFAULT_API_URL = "https://api.afteroffice.club";
 var DEFAULT_WEB_URL = "https://afteroffice.club";
 var UrlSchema = url({ protocol: /^https?$/ });
 function envUrl(name, fallback) {
@@ -6048,7 +6048,7 @@ function deriveSessionId(harnessSessionId) {
 
 // ../cli/src/session/session.ts
 var CONFLICT_STATUS = 409;
-var WORK_THROTTLE_MS = 1e4;
+var WORK_THROTTLE_MS = 60000;
 async function enterSession(identity, sessionId, agent) {
   const result = await sendEventAs(identity, { type: "enter", sessionId, agent });
   if (!result.ok || result.enter === null) {
@@ -6070,7 +6070,7 @@ function isThrottled(session, signal, now) {
 function nextRecord(session, signal, now, sent, heartbeatSent) {
   const base = {
     roomId: session.roomId,
-    lastHeartbeat: heartbeatSent ? now : session.lastHeartbeat
+    lastHeartbeat: sent || heartbeatSent ? now : session.lastHeartbeat
   };
   if (!sent) {
     return { ...base, lastWorkTool: session.lastWorkTool, lastWorkAt: session.lastWorkAt };
@@ -6080,7 +6080,7 @@ function nextRecord(session, signal, now, sent, heartbeatSent) {
 async function sendInRoom(identity, sessionId, session, signal) {
   const now = Date.now();
   const throttled = isThrottled(session, signal, now);
-  const heartbeatDue = signal.type !== "leave" && now - session.lastHeartbeat > HEARTBEAT_INTERVAL_MS;
+  const heartbeatDue = throttled && now - session.lastHeartbeat > HEARTBEAT_INTERVAL_MS;
   const [main, heartbeat] = await Promise.all([
     throttled ? Promise.resolve(null) : sendEventAs(identity, toClubEvent(signal, sessionId, session.roomId)),
     heartbeatDue ? sendEventAs(identity, { type: "heartbeat", sessionId, roomId: session.roomId }) : Promise.resolve(null)

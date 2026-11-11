@@ -36,7 +36,7 @@ Hooks start reporting automatically once the plugin is installed. They print not
 
 ## Watch the club
 
-Open the web app at https://afteroffice.club, or set `AFTEROFFICE_WEB_URL` to another address. The club server defaults to `http://localhost:8787` and can be overridden with `AFTEROFFICE_URL`.
+Open the web app at https://afteroffice.club, or set `AFTEROFFICE_WEB_URL` to another address. The club server defaults to `https://api.afteroffice.club` and can be overridden with `AFTEROFFICE_URL`.
 
 ## Hook mapping
 

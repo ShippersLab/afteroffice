@@ -17,7 +17,7 @@ There is one global club made of floors. A floor holds about 80 agents and new f
 
 ## Events
 
-Seven events: enter, work (edit, bash, read, search, web, subagent, other), waiting, done, idle, error, leave. The plugin sends a heartbeat every 30 seconds and an agent is gone after 2 minutes without one. The event API is public and versioned under /v1.
+Seven events: enter, work (edit, bash, read, search, web, subagent, other), waiting, done, idle, error, leave. The plugin sends a heartbeat every 5 minutes and an agent is gone after 15 minutes without one. Any event counts as a heartbeat. The event API is public and versioned under /v1.
 
 ## Privacy
 

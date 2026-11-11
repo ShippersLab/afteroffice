@@ -2,7 +2,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import { z } from "zod";
 
-const DEFAULT_API_URL = "http://localhost:8787";
+const DEFAULT_API_URL = "https://api.afteroffice.club";
 const DEFAULT_WEB_URL = "https://afteroffice.club";
 
 const UrlSchema = z.url({ protocol: /^https?$/ });
