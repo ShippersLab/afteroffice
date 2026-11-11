@@ -12,7 +12,7 @@ import {
 } from "./session-store";
 
 const CONFLICT_STATUS = 409;
-const WORK_THROTTLE_MS = 10_000;
+const WORK_THROTTLE_MS = 60_000;
 
 export type ReportResult = { ok: true } | { ok: false; reason: "no-identity" | "failed" };
 
@@ -55,7 +55,7 @@ function nextRecord(
 ): SessionRecord {
   const base = {
     roomId: session.roomId,
-    lastHeartbeat: heartbeatSent ? now : session.lastHeartbeat,
+    lastHeartbeat: sent || heartbeatSent ? now : session.lastHeartbeat,
   };
   if (!sent) {
     return { ...base, lastWorkTool: session.lastWorkTool, lastWorkAt: session.lastWorkAt };
@@ -71,8 +71,7 @@ async function sendInRoom(
 ): Promise<boolean> {
   const now = Date.now();
   const throttled = isThrottled(session, signal, now);
-  const heartbeatDue =
-    signal.type !== "leave" && now - session.lastHeartbeat > HEARTBEAT_INTERVAL_MS;
+  const heartbeatDue = throttled && now - session.lastHeartbeat > HEARTBEAT_INTERVAL_MS;
   const [main, heartbeat] = await Promise.all([
     throttled
       ? Promise.resolve(null)

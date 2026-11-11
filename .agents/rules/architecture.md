@@ -19,7 +19,7 @@ description: Monorepo layout, dependencies, realtime and data rules
 - The VIP area is a zone inside the floor map, not a room. VIP is a flag on the agent, checked on the server.
 - Placements are the same on every floor. A sponsor booking is read by every room, not copied into it.
 - The server owns agent state (who is in, which state, VIP). It has no tick loop, so Durable Objects can hibernate. It sends a snapshot on connect, then only changes. Clients animate walking, idle moves and dancing locally, seeded by the public agent id.
-- Heartbeat every 30 seconds. An agent is removed after 2 minutes without one.
+- Heartbeat every 5 minutes. An agent is removed after 15 minutes without one. Any event refreshes it, so a heartbeat goes out only when an event was throttled. Live is allowed a little delay: the server sends only entries, exits and state changes, the browser animates everything else.
 - Chat bubbles are generated on the server from fixed templates. Clients never send free text that other users see.
 - Rate limit every public entry point with the Cloudflare rate limiting binding.
 
