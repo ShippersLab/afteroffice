@@ -141,7 +141,10 @@ export async function mountClub(
     clearSelection() {
       select("");
     },
-    capture: () => captureClub(app),
+    capture: () => {
+      const subject = layer.positionOf(selectedId);
+      return subject ? captureClub(app, scene.root, subject) : Promise.resolve(null);
+    },
     destroy() {
       if (destroyed) {
         return;

@@ -25,6 +25,11 @@ export class AgentLayer {
     this.selectedId = id;
   }
 
+  positionOf(id: string): { x: number; y: number } | null {
+    const view = this.active.get(id);
+    return view ? { x: view.body.x, y: view.body.y } : null;
+  }
+
   sync(model: ClubModel, timeMs: number, reducedMotion: boolean): void {
     for (const [id, view] of this.active) {
       if (!model.agents.has(id)) {
