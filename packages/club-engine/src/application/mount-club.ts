@@ -7,6 +7,7 @@ import { loadSponsorLogos } from "../scene/sponsor-logo";
 import { COLOR } from "../sprites/palette";
 import { releaseTextures, retainTextures } from "../sprites/textures";
 import { applyMessage, createModel, tickModel } from "../state/club-model";
+import { captureClub } from "./capture";
 import { createViewport, WORLD_ORIGIN } from "./viewport";
 
 export type SelectedAgent = {
@@ -14,11 +15,13 @@ export type SelectedAgent = {
   readonly handle: string;
   readonly state: AgentState;
   readonly vip: boolean;
+  readonly walking: boolean;
 };
 
 export type ClubView = {
   apply(message: LiveMessage): void;
   clearSelection(): void;
+  capture(): Promise<Blob | null>;
   destroy(): void;
 };
 
@@ -83,7 +86,14 @@ export async function mountClub(
       hoveredId = over ? id : hoveredId === id ? "" : hoveredId;
       layer.setHovered(hoveredId);
     },
-    select: (id) => select(selectedId === id ? "" : id),
+    select: (id) => {
+      if (selectedId === id) {
+        select("");
+        options.onSelectAgent?.(null);
+        return;
+      }
+      select(id);
+    },
   });
   let clock = 0;
   let destroyed = false;
@@ -98,14 +108,16 @@ export async function mountClub(
       options.onSelectAgent?.(null);
       return;
     }
-    const key = `${agent.handle}|${agent.state}|${agent.vip}`;
+    const walking = agent.path.length > 0;
+    const key = `${agent.handle}|${agent.shown}|${agent.vip}|${walking}`;
     if (key !== selectedKey) {
       selectedKey = key;
       options.onSelectAgent?.({
         id: agent.id,
         handle: agent.handle,
-        state: agent.state,
+        state: agent.shown,
         vip: agent.vip,
+        walking,
       });
     }
   };
@@ -129,6 +141,7 @@ export async function mountClub(
     clearSelection() {
       select("");
     },
+    capture: () => captureClub(app),
     destroy() {
       if (destroyed) {
         return;

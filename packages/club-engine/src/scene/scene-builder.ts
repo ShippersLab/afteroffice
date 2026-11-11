@@ -118,9 +118,12 @@ function wallDecal(
   const sign = sprite(texture, baseX, baseY - lift - height / 2, 0.5, 0.5);
   makeClickable(sign, sponsor.href, onNavigate);
   back.addChild(sign);
-  const label = sponsoredLabel(0, 0, 2);
+  if (sponsor.name.length === 0) {
+    return;
+  }
+  const label = sponsoredLabel(0, 0, 1);
   const corner = (texture.width - label.width) / 2;
-  label.position.set(baseX + (side === "right" ? -corner : corner), sign.y - sign.height / 2 - 12);
+  label.position.set(baseX + (side === "right" ? corner : -corner), sign.y + sign.height / 2 + 8);
   back.addChild(label);
 }
 
@@ -143,9 +146,9 @@ function buildWalls(
   back.addChild(sprite(right, 0, -WALL_H));
   back.addChild(sprite(left, -WALL_SPAN, -WALL_H));
   wallDecal(back, "right", 6, 45, "billboard", onNavigate, logos);
-  wallDecal(back, "right", 12, 70, "neon", onNavigate, logos);
-  wallDecal(back, "left", 5.5, 40, "sponsor-slot", onNavigate, logos);
-  wallDecal(back, "left", 11, 45, "poster", onNavigate, logos);
+  wallDecal(back, "right", 12.5, 70, "neon", onNavigate, logos);
+  wallDecal(back, "left", 3.8, 40, "sponsor-slot", onNavigate, logos);
+  wallDecal(back, "left", 12.8, 45, "poster", onNavigate, logos);
   const door = cachedTexture("door", () => scaled(doorPixels(), 3, -0.5));
   const doorU = DOOR_TILE.y + 0.7;
   back.addChild(sprite(door, -doorU * 40, doorU * 20 - 51 - 4, 0.5, 0.5));
@@ -163,10 +166,12 @@ function buildFurniture(things: Container): { x: number; y: number }[] {
     }
   }
   const barRect = ZONE_RECTS.bar[0];
-  const barAnchor = tileToScreen(barRect.x + 2.5, barRect.y - 1);
-  const barLabel = sponsoredLabel(barAnchor.x, barAnchor.y - 62, 2);
-  barLabel.zIndex = BAR_LABEL_Z;
-  things.addChild(barLabel);
+  if (sponsorFor("bar").name.length > 0) {
+    const barAnchor = tileToScreen(barRect.x + 2.5, barRect.y - 1);
+    const barLabel = sponsoredLabel(barAnchor.x, barAnchor.y - 62, 1);
+    barLabel.zIndex = BAR_LABEL_Z;
+    things.addChild(barLabel);
+  }
   const stool = cachedTexture("stool", stoolPixels);
   for (const rect of ZONE_RECTS.bar) {
     for (const tile of rectTiles(rect)) {

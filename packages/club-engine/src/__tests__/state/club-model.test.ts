@@ -119,3 +119,20 @@ describe("club model", () => {
     expect(model.agents.size).toBe(80);
   });
 });
+
+describe("shown state", () => {
+  it("shows what the agent is doing where it stands", () => {
+    const model = createModel();
+    const agents = Array.from({ length: 12 }, (_, index) =>
+      agent(`sleeper${String(index).padStart(5, "0")}`, { state: "asleep-on-the-sofa" }),
+    );
+    applyMessage(model, { type: "snapshot", roomId: "floor-1", online: 12, agents });
+    const shown = [...model.agents.values()].map((entry) => entry.shown);
+    expect(shown.filter((state) => state === "asleep-on-the-sofa").length).toBeGreaterThan(0);
+    expect(shown.filter((state) => state === "dancing").length).toBeGreaterThan(0);
+    for (const entry of model.agents.values()) {
+      const onSofa = inZone("sofa", entry.tile);
+      expect(entry.shown === "asleep-on-the-sofa").toBe(onSofa);
+    }
+  });
+});

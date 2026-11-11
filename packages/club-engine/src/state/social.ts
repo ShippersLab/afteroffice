@@ -37,7 +37,7 @@ function available(model: ClubModel, agent: AgentModel): boolean {
 
 function sortedDancers(model: ClubModel): AgentModel[] {
   return [...model.agents.values()]
-    .filter((agent) => agent.state === "dancing" && !agent.vip && available(model, agent))
+    .filter((agent) => agent.shown === "dancing" && !agent.vip && available(model, agent))
     .toSorted((a, b) => (a.id < b.id ? -1 : 1));
 }
 
@@ -88,7 +88,7 @@ export function greetNewcomer(model: ClubModel, newcomerId: string): void {
     .filter(
       (agent) =>
         agent.id !== newcomerId &&
-        agent.state !== "asleep-on-the-sofa" &&
+        agent.shown !== "asleep-on-the-sofa" &&
         available(model, agent) &&
         Math.max(Math.abs(agent.tile.x - DOOR_TILE.x), Math.abs(agent.tile.y - DOOR_TILE.y)) <=
           GREET_RADIUS,
@@ -111,7 +111,7 @@ export function tickMoments(model: ClubModel, dt: number): void {
     }
     agent.moment.ttl -= dt;
     const moved = agent.path.length > 0 || agent.leaving;
-    const lostDance = agent.moment.kind !== "wave" && agent.state !== "dancing";
+    const lostDance = agent.moment.kind !== "wave" && agent.shown !== "dancing";
     if (agent.moment.ttl <= 0 || moved || lostDance) {
       agent.moment = null;
       agent.calmUntil = model.time + CALM_MS;

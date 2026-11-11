@@ -10,8 +10,8 @@ import { PartyFx } from "./party-fx";
 import { FLOOR_CENTER } from "./scene-fx";
 
 const SPARKLE_COUNT = 22;
-const EQ_U = 3.1;
-const EQ_LIFT = 105;
+const EQ_U = 8.3;
+const EQ_LIFT = 100;
 const EQ_SCALE = 3;
 
 export type PartyLayers = {
@@ -30,13 +30,13 @@ function placed(texture: Texture, x: number, y: number): Sprite {
 
 function buildEqualizer(back: Container): { sprite: Sprite; frames: Texture[] } {
   const frames = Array.from({ length: EQ_FRAMES }, (_, index) =>
-    cachedTexture(`eq-${index}`, () => scaled(equalizerPixels(index), EQ_SCALE, 0.5)),
+    cachedTexture(`eq-${index}`, () => scaled(equalizerPixels(index), EQ_SCALE, -0.5)),
   );
   const first = frames[0];
   if (!first) {
     throw new Error("Equalizer frames missing");
   }
-  const sprite = placed(first, EQ_U * 40, EQ_U * 20 - EQ_LIFT - (EQ_H * EQ_SCALE) / 2);
+  const sprite = placed(first, -EQ_U * 40, EQ_U * 20 - EQ_LIFT - (EQ_H * EQ_SCALE) / 2);
   back.addChild(sprite);
   return { sprite, frames };
 }

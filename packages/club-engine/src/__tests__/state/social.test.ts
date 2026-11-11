@@ -34,7 +34,7 @@ describe("social moments", () => {
     const model = seed(["aaaaaaaaaaaa"]);
     const only = model.agents.get("aaaaaaaaaaaa");
     if (only) {
-      only.state = "asleep-on-the-sofa";
+      only.shown = "asleep-on-the-sofa";
       only.tile = { x: 1, y: 14 };
     }
     greetNewcomer(model, "zzzzzzzzzzzz");

@@ -34,8 +34,9 @@ function zPixels(): Pixels {
 }
 
 const TAP_SLOP_PX = 12;
-const HIT_AREA = new Rectangle(-9, -19, 18, 22);
+const HIT_AREA = new Rectangle(-15, -26, 30, 32);
 const MOMENT_FADE_MS = 400;
+const RING_FADE_MS = 180;
 const RING_HOVER = 0x2ce6ff;
 const RING_SELECTED = 0xff3da6;
 
@@ -67,6 +68,8 @@ export class AgentView {
   hovered = false;
   selected = false;
   private readonly ring = new Sprite();
+  private ringLevel = 0;
+  private lastTime = 0;
   private parity = 0;
   private badgeKind: MomentKind | null = null;
   private pressed: { x: number; y: number } | null = null;
@@ -163,6 +166,7 @@ export class AgentView {
     this.hovered = false;
     this.selected = false;
     this.ring.visible = false;
+    this.ringLevel = 0;
     this.badge.visible = false;
     this.badgeKind = null;
     this.labelHandle = "";
@@ -175,27 +179,37 @@ export class AgentView {
     this.syncLabel(agent);
     const feet = feetPosition(agent);
     const walking = agent.path.length > 0;
-    const pose: AgentPose = walking || agent.leaving ? "stand" : poseForState(agent.state);
+    const pose: AgentPose = walking || agent.leaving ? "stand" : poseForState(agent.shown);
     const frame = !reducedMotion && pose === "dance" ? Math.floor(timeMs / 250) % 2 : 0;
     const breath =
       !reducedMotion && !walking && pose !== "dance" ? Math.floor(timeMs / 1000) % 2 : 0;
     const moment = walking ? null : agent.moment;
     const hop = moment && !reducedMotion ? momentHop(moment.kind, timeMs, this.parity) : 0;
-    const lift = walking ? hopOffset(agent) : seatOffset(agent.state, agent.vip) - breath - hop;
+    const lift = walking ? hopOffset(agent) : seatOffset(agent.shown, agent.vip) - breath - hop;
     this.figure.texture = agentTexture(this.look, pose, frame);
     this.body.position.set(feet.x, feet.y);
     this.body.zIndex = depthFor(agent);
     this.figure.y = lift;
     this.body.alpha = agent.fade;
-    this.puddle.visible = !walking && agent.state === "spilled-drink";
-    this.updateRing();
+    this.puddle.visible = !walking && agent.shown === "spilled-drink";
+    this.updateRing(timeMs, reducedMotion);
     this.updateSleepMark(pose, lift, timeMs, reducedMotion);
     this.updateOverlay(agent, feet.x, feet.y + lift);
     this.updateBadge(moment, feet.x, feet.y + lift, timeMs, reducedMotion);
   }
 
-  private updateRing(): void {
-    this.ring.visible = this.selected || this.hovered;
+  private updateRing(timeMs: number, reducedMotion: boolean): void {
+    const dt = Math.max(0, Math.min(100, timeMs - this.lastTime));
+    this.lastTime = timeMs;
+    const target = this.selected || this.hovered ? 1 : 0;
+    const step = reducedMotion ? 1 : dt / RING_FADE_MS;
+    this.ringLevel =
+      target > this.ringLevel
+        ? Math.min(target, this.ringLevel + step)
+        : Math.max(target, this.ringLevel - step);
+    this.ring.visible = this.ringLevel > 0;
+    this.ring.alpha = this.ringLevel;
+    this.ring.scale.set(3 * (0.7 + 0.3 * this.ringLevel));
     this.ring.tint = this.selected ? RING_SELECTED : RING_HOVER;
   }
 
