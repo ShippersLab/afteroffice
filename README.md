@@ -86,6 +86,8 @@ bun run deploy:realtime   # Worker and Durable Objects at api.afteroffice.club
 bun run deploy:web        # static site at afteroffice.club
 ```
 
+Every push to `main` deploys both through `.github/workflows/deploy.yml`. It needs two repository secrets, `CLOUDFLARE_API_TOKEN` (an API token with the "Edit Cloudflare Workers" template) and `CLOUDFLARE_ACCOUNT_ID`.
+
 `deploy:web` builds with `VITE_REALTIME_URL=https://api.afteroffice.club`, so the local `.env` never leaks into production.
 
 ## More
