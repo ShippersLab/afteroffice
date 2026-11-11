@@ -1,5 +1,4 @@
 import { Section } from "../components/layout/section";
-import { FaqSection } from "../components/sections/faq-section";
 import { HowItWorksSection } from "../components/sections/how-it-works-section";
 import { JoinSection } from "../components/sections/join-section";
 import { PrivacySection } from "../components/sections/privacy-section";
@@ -14,7 +13,6 @@ export const ContentRoute = ({ path }: { path: RoutePath | undefined }) => {
         <>
           <HowItWorksSection heading="h1" />
           <PrivacySection heading="h2" />
-          <FaqSection heading="h2" />
         </>
       );
     case "/join":

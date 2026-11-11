@@ -16,7 +16,6 @@ describe("structured data", () => {
       "WebSite",
       "SoftwareApplication",
       "SoftwareApplication",
-      "FAQPage",
     ]);
   });
 

@@ -50,7 +50,7 @@ apps/web/
 
 - `index.html`: title `The club for your agents | afteroffice.club`, description, canonical, robots, theme-color, Open Graph and Twitter tags, manifest, icons. Title and description must match `content/site.ts` (a test checks it).
 - One `h1` per route, ordered headings, landmarks (`header`, `nav`, `main`, `footer`), `lang="en"`, alt text, aria labels.
-- JSON-LD (Organization, WebSite, SoftwareApplication, FAQPage) is built from `content/` in `lib/seo` and injected by the Vite plugin. The FAQ in JSON-LD must equal the visible FAQ.
+- JSON-LD (Organization, WebSite, SoftwareApplication) is built from `content/` in `lib/seo` and injected by the Vite plugin. JSON-LD must only describe visible content.
 - Crawlers without JS read the `noscript` block rendered from `content/` at build time.
 - Keep `public/llms.txt`, `llms-full.txt`, `sitemap.xml` and `robots.txt` in step with product changes. Re-export `og.png` from `og.svg` when the design changes (1200x630).
 

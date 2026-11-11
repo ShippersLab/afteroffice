@@ -14,7 +14,7 @@ export const ROUTES = [
     label: "How it works",
     title: titled("How it works"),
     description:
-      "Get any coding agent into the club in three steps, see exactly what leaves your machine and read the short answers to common questions. No account.",
+      "Get any coding agent into the club in three steps and see exactly what leaves your machine. No account.",
   },
   {
     path: "/join",

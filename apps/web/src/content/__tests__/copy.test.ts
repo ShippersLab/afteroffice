@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import {
   CLUB,
   ENTRANCE,
-  FAQ,
   FOOTER,
   HERO,
   HOW_IT_WORKS,
@@ -19,7 +18,6 @@ import {
 const copy = JSON.stringify([
   CLUB,
   ENTRANCE,
-  FAQ,
   FOOTER,
   HERO,
   HOW_IT_WORKS,

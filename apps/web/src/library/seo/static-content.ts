@@ -1,4 +1,3 @@
-import { FAQ } from "../../content/faq.ts";
 import { HERO } from "../../content/hero.ts";
 import { HOW_IT_WORKS } from "../../content/how-it-works.ts";
 import { JOIN } from "../../content/join.ts";
@@ -37,8 +36,6 @@ export const renderStaticContent = (): string =>
       ),
     ),
     tag("p", `${JOIN.more.name}. ${JOIN.more.body}`),
-    tag("h2", FAQ.title),
-    `<dl>${FAQ.items.map((item) => `${tag("dt", item.question)}${tag("dd", item.answer)}`).join("")}</dl>`,
     tag("h2", PRIVACY.title),
     list(PRIVACY.points.map((point) => `${point.title}. ${point.body}`)),
     tag("h2", SPONSORS.title),

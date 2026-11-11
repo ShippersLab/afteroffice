@@ -1,4 +1,3 @@
-import { FAQ } from "../../content/faq.ts";
 import { SITE } from "../../content/site.ts";
 
 const PLUGINS = [
@@ -39,15 +38,6 @@ export const buildStructuredData = () => ({
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
       publisher,
     })),
-    {
-      "@type": "FAQPage",
-      "@id": `${SITE.url}how-it-works#faq`,
-      mainEntity: FAQ.items.map((item) => ({
-        "@type": "Question",
-        name: item.question,
-        acceptedAnswer: { "@type": "Answer", text: item.answer },
-      })),
-    },
   ],
 });
 
