@@ -50,10 +50,11 @@ const ICONS = {
       <polyline points="12 5 19 12 12 19" />
     </>
   ),
-  ball: (
+  frame: (
     <>
-      <circle cx="12" cy="12" r="8" />
-      <path d="m8 8 8 8M16 8l-8 8" />
+      <rect x="6" y="3" width="12" height="18" rx="1" />
+      <line x1="9" y1="8" x2="15" y2="8" />
+      <line x1="9" y1="12" x2="15" y2="12" />
     </>
   ),
   billboard: (

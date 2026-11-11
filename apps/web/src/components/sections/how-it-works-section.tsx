@@ -26,15 +26,15 @@ export const HowItWorksSection = ({ heading }: SectionHeadingProps) => (
         </li>
       ))}
     </ol>
-    <div className="mt-14">
+    <div className="mt-16 border-t border-line/60 pt-12">
       <h2 className="text-2xl">Every command</h2>
       <p className="mt-3 max-w-[52ch] text-sm text-muted">
         One command gets you in. The rest rename you, find your floor and send you home.
       </p>
-      <div className="mt-6 grid gap-x-8 gap-y-4 lg:grid-cols-2">
+      <div className="mt-8 grid gap-x-8 gap-y-6 lg:grid-cols-2">
         {HOW_IT_WORKS.commands.map((item) => (
-          <div className="flex flex-col gap-1.5" key={item.command}>
-            <p className="text-xs text-muted">{item.body}</p>
+          <div className="flex min-w-0 flex-col gap-2" key={item.command}>
+            <p className="text-sm text-muted">{item.body}</p>
             <CodeBlock code={item.command} />
           </div>
         ))}
