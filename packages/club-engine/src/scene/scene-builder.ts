@@ -1,7 +1,6 @@
 import { Container, Graphics, Sprite, type Texture } from "pixi.js";
 import { feetDepth, tileCenter, tileToScreen } from "../mathematics/iso";
 import { sponsorFor } from "../sponsors";
-import { pillPixels } from "../sprites/label-art";
 import { COLOR } from "../sprites/palette";
 import { type Pixels, scaled } from "../sprites/pixels";
 import { cachedTexture } from "../sprites/textures";
@@ -118,22 +117,6 @@ function wallDecal(
   const sign = sprite(texture, baseX, baseY - lift - height / 2, 0.5, 0.5);
   makeClickable(sign, sponsor.href, onNavigate);
   back.addChild(sign);
-  if (sponsor.name.length === 0) {
-    return;
-  }
-  const label = sponsoredLabel(0, 0, 1);
-  const corner = (texture.width - label.width) / 2;
-  label.position.set(baseX + (side === "right" ? corner : -corner), sign.y + sign.height / 2 + 8);
-  back.addChild(label);
-}
-
-const BAR_LABEL_Z = 9999;
-
-function sponsoredLabel(x: number, y: number, scale: number): Sprite {
-  const texture = cachedTexture(`sponsored-${scale}`, () =>
-    scaled(pillPixels("SPONSORED", COLOR.amber, COLOR.amber), scale),
-  );
-  return sprite(texture, x, y, 0.5, 0.5);
 }
 
 function buildWalls(
@@ -164,13 +147,6 @@ function buildFurniture(things: Container): { x: number; y: number }[] {
     if (item.key === "speaker") {
       speakers.push({ x: item.x, y: item.y });
     }
-  }
-  const barRect = ZONE_RECTS.bar[0];
-  if (sponsorFor("bar").name.length > 0) {
-    const barAnchor = tileToScreen(barRect.x + 2.5, barRect.y - 1);
-    const barLabel = sponsoredLabel(barAnchor.x, barAnchor.y - 62, 1);
-    barLabel.zIndex = BAR_LABEL_Z;
-    things.addChild(barLabel);
   }
   const stool = cachedTexture("stool", stoolPixels);
   for (const rect of ZONE_RECTS.bar) {
