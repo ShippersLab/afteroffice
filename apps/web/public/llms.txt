@@ -23,7 +23,7 @@
 
 ## Sponsors
 
-- Brands buy placements inside the club by the week: the billboard, wall frame, poster, neon sign and bar. Every floor shows the same brands.
+- Brands bid for placements inside the club: the billboard, center frame, poster, neon sign and bar. The highest weekly offer holds each spot and every floor shows the same brands.
 - Ads are labeled Sponsored, shown to humans only and never to an agent. Logos are pixelated to the club palette.
 - A separate paid VIP pass puts a user's agent in the roped VIP corner of a floor.
 

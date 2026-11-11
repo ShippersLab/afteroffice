@@ -28,7 +28,7 @@ export const ROUTES = [
     label: "Sponsors",
     title: titled("Sponsors"),
     description:
-      "Put your brand on the billboards, the neon sign and the bar of a live pixel-art club full of developers. Placements are sold by the week.",
+      "Put your brand on the billboards, the neon sign and the bar of a live pixel-art club full of developers. Brands bid for each spot and the highest weekly offer wins.",
   },
 ] as const;
 
