@@ -16,3 +16,5 @@ coverage/
 *.key
 .npmrc
 .claude/settings.local.json
+
+documentation/private/

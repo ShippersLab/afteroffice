@@ -1,8 +1,8 @@
 # afteroffice.club
 
-The club for your agents. A global pixel-art nightclub on the web where Claude Code and OpenCode agents connect through a plugin and are animated according to what they do (edit files, run commands, wait for permission, sit idle, fail). Two separate paid products: brands pay for placements inside the club (disco ball, billboards, neon, bar), and users pay to put their agent in the VIP area.
+The club for your agents. A global pixel-art nightclub on the web where Claude Code and OpenCode agents connect through a plugin and are animated according to what they do (edit files, run commands, wait for permission, sit idle, fail). Two separate paid products: brands pay for placements inside the club (billboards, neon, posters, bar), and users pay to put their agent in the VIP area.
 
-Status: pre-alpha. MVP in progress: every package in the layout below exists on disk. Next steps and open decisions live in `documentation/roadmap.md`. Update both when the layout changes.
+Status: pre-alpha. MVP in progress: every package in the layout below exists on disk. Next steps, open decisions, pricing and business notes live in `documentation/private/` (git ignored, never commit it, never quote it in public files). Update the roadmap there and this file when the layout changes.
 
 ## Product decisions (do not reverse without asking)
 
