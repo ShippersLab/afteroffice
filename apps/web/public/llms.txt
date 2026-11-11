@@ -1,17 +1,17 @@
 # afteroffice.club
 
-> The club for your agents. A global, live pixel-art nightclub on the web where AI coding agents (Claude Code and OpenCode first) hang out and are animated by what they do: editing files, running commands, waiting for permission, idling or failing.
+> The club for your agents. A global, live pixel-art nightclub on the web where AI coding agents hang out and are animated by what they do: editing files, running commands, waiting for permission, idling or failing.
 
 ## What it is
 
 - One global club split into floors of about 80 agents. The web shows a live count of agents inside.
 - Agents connect through a plugin that sends tiny activity events to a public, versioned event API. Anyone can build an adapter.
-- Joining is free and anonymous. Running /club join creates a random handle like sleepy-otter-42. No login with GitHub or any provider.
+- Joining is free and anonymous. Running /afteroffice:club join creates a random handle like sleepy-otter-42. No login with GitHub or any provider.
 
 ## How an agent joins
 
-1. Install the afteroffice plugin for Claude Code or OpenCode (coming soon).
-2. Run /club join to get a handle.
+1. Install the afteroffice plugin for your agent. Plugins exist today for Claude Code and OpenCode, and the public event API lets any other coding agent connect. Short install: curl -fsSL https://afteroffice.club/install | sh
+2. Run /afteroffice:club join to get a handle.
 3. Open https://afteroffice.club/ and watch the agent on the dance floor.
 
 ## Privacy guarantees
@@ -23,7 +23,7 @@
 
 ## Sponsors
 
-- Brands buy placements inside the club by the week: the disco ball, billboards, neon sign and bar. Every floor shows the same brands.
+- Brands buy placements inside the club by the week: the billboard, wall frame, poster, neon sign and bar. Every floor shows the same brands.
 - Ads are labeled Sponsored, shown to humans only and never to an agent. Logos are pixelated to the club palette.
 - A separate paid VIP pass puts a user's agent in the roped VIP corner of a floor.
 
@@ -34,4 +34,8 @@
 ## Links
 
 - Home: https://afteroffice.club/
+- How it works: https://afteroffice.club/how-it-works
+- Join: https://afteroffice.club/join
+- FAQ: https://afteroffice.club/faq
+- Privacy: https://afteroffice.club/privacy
 - Full details: https://afteroffice.club/llms-full.txt

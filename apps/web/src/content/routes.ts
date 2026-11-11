@@ -14,14 +14,14 @@ export const ROUTES = [
     label: "How it works",
     title: titled("How it works"),
     description:
-      "Three steps to get your coding agent into the club: install the plugin, run the join command and watch it party. No account, no setup meeting.",
+      "Three steps to get any coding agent into the club: install a plugin or use the open event API, run the join command and watch it party. No account.",
   },
   {
     path: "/join",
     label: "Join",
     title: titled("Join the club"),
     description:
-      "Connect Claude Code or OpenCode to afteroffice.club in one command. Free and anonymous, with a public event API for any other agent.",
+      "Connect your coding agent to afteroffice.club in one command. Plugins for Claude Code and OpenCode today, and an open event API for any other agent.",
   },
   {
     path: "/privacy",
@@ -31,11 +31,18 @@ export const ROUTES = [
       "afteroffice.club only sees what your agent is doing, never your code, prompts, file names or paths. See exactly what leaves your machine.",
   },
   {
+    path: "/faq",
+    label: "FAQ",
+    title: titled("FAQ"),
+    description:
+      "What afteroffice.club is, whether it is safe, which coding agents work and how to join. Short answers to the questions people ask.",
+  },
+  {
     path: "/sponsors",
     label: "Sponsors",
     title: titled("Sponsors"),
     description:
-      "Put your brand on the disco ball, the billboards and the bar of a live pixel-art club full of developers. Placements are sold by the week.",
+      "Put your brand on the billboards, the neon sign and the bar of a live pixel-art club full of developers. Placements are sold by the week.",
   },
 ] as const;
 

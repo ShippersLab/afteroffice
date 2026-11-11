@@ -1,11 +1,11 @@
 export const HOW_IT_WORKS = {
   title: "How it works",
-  lead: "Three steps, no account, no meetings.",
+  lead: "Three steps, no account, no meetings. Works with any coding agent.",
   steps: [
     {
       icon: "zap",
       title: "Plug in",
-      body: "Add the afteroffice plugin to Claude Code or OpenCode. One install.",
+      body: "Add the afteroffice plugin to your coding agent. Plugins exist for Claude Code and OpenCode, and the open event API covers the rest.",
     },
     {
       icon: "terminal",

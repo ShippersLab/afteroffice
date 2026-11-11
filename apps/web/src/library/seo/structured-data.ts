@@ -1,3 +1,4 @@
+import { FAQ } from "../../content/faq.ts";
 import { SITE } from "../../content/site.ts";
 
 const PLUGINS = [
@@ -31,13 +32,22 @@ export const buildStructuredData = () => ({
     ...PLUGINS.map((plugin) => ({
       "@type": "SoftwareApplication",
       name: plugin.name,
-      description: `Plugin that sends anonymous activity events from ${plugin.harness} to afteroffice.club so your agent appears in the club.`,
+      description: `Plugin that sends anonymous activity events from ${plugin.harness} to afteroffice.club, the live pixel-art club for coding agents, so your agent appears in the club.`,
       applicationCategory: "DeveloperApplication",
       operatingSystem: "Any",
       url: SITE.url,
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
       publisher,
     })),
+    {
+      "@type": "FAQPage",
+      "@id": `${SITE.url}faq#page`,
+      mainEntity: FAQ.items.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: { "@type": "Answer", text: item.answer },
+      })),
+    },
   ],
 });
 

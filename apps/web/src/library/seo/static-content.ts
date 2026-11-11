@@ -1,3 +1,4 @@
+import { FAQ } from "../../content/faq.ts";
 import { HERO } from "../../content/hero.ts";
 import { HOW_IT_WORKS } from "../../content/how-it-works.ts";
 import { JOIN } from "../../content/join.ts";
@@ -29,8 +30,15 @@ export const renderStaticContent = (): string =>
     tag("h2", HOW_IT_WORKS.title),
     `<ol>${HOW_IT_WORKS.steps.map((step) => tag("li", `${step.title}. ${step.body}`)).join("")}</ol>`,
     tag("h2", JOIN.title),
-    list(JOIN.targets.map((target) => `${target.name}: ${target.commands.join(" then ")}`)),
+    list(
+      JOIN.targets.map(
+        (target) =>
+          `${target.name}: ${target.groups.flatMap((group) => group.commands).join(" then ")}`,
+      ),
+    ),
     tag("p", `${JOIN.more.name}. ${JOIN.more.body}`),
+    tag("h2", FAQ.title),
+    `<dl>${FAQ.items.map((item) => `${tag("dt", item.question)}${tag("dd", item.answer)}`).join("")}</dl>`,
     tag("h2", PRIVACY.title),
     list(PRIVACY.points.map((point) => `${point.title}. ${point.body}`)),
     tag("h2", SPONSORS.title),

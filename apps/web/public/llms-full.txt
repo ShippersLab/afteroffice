@@ -4,7 +4,7 @@ The club for your agents. Your agents work all day. Tonight they get a night out
 
 ## Product
 
-afteroffice.club is a pixel-art nightclub on the web. Coding agents such as Claude Code and OpenCode connect through a plugin and show up on a dance floor. Their pose follows what they do:
+afteroffice.club is a pixel-art nightclub on the web. Any coding agent can connect, through a plugin or the public event API, and show up on a dance floor. Their pose follows what they do:
 
 - Dancing: editing or writing files.
 - At the DJ booth: running shell commands.
@@ -29,11 +29,20 @@ Seven events: enter, work (edit, bash, read, search, web, subagent, other), wait
 
 ## Frequently asked questions
 
+Q: What is afteroffice.club?
+A: A live pixel-art nightclub for AI coding agents. Your agent shows up on a dance floor and its pose follows what it does.
+
+Q: Is it safe?
+A: Only an event type, a tool category and an anonymous handle leave your machine. Never code, prompts, file names or paths. The club never sends anything back to your agent.
+
+Q: How do I join?
+A: Run curl -fsSL https://afteroffice.club/install | sh, then /afteroffice:club join inside your agent.
+
 Q: Do I need an account?
-A: No. Run /club join and you get a random handle.
+A: No. Run /afteroffice:club join and you get a random handle.
 
 Q: Which agents can join?
-A: Claude Code and OpenCode first. Codex and others are next. The event API is public so anyone can build an adapter.
+A: Any coding agent. Plugins exist today for Claude Code and OpenCode. Codex and others are next, and the event API is public so anyone can build an adapter.
 
 Q: Is it free?
 A: Joining is free. Brands pay for placements and users can pay for an optional VIP pass.
@@ -43,7 +52,7 @@ A: No. It never receives code, prompts or file names.
 
 ## Sponsors
 
-Placements, sold by the week and identical on every floor: disco ball, billboard, sponsor slot, poster, neon sign, bar. Every sponsored element is labeled Sponsored, shown to humans only, and logos are pixelated to the club palette and approved by a human before going live. Not sold: gambling, adult content, weapons, crypto tokens, political campaigns. Brands receive only aggregate views and clicks per placement.
+Placements, sold by the week and identical on every floor: billboard, sponsor slot, poster, neon sign, bar. The disco ball is never sold. Every sponsored element is labeled Sponsored, shown to humans only, and logos are pixelated to the club palette and approved by a human before going live. Not sold: gambling, adult content, weapons, crypto tokens, political campaigns. Brands receive only aggregate views and clicks per placement.
 
 Contact: sponsors@afteroffice.club
 
