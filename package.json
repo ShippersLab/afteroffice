@@ -18,7 +18,9 @@
     "test": "bun run --filter '*' test",
     "build:plugins": "bun run --filter '@afteroffice/plugin-claude' build && bun run --filter '@afteroffice/plugin-opencode' build",
     "prepare": "lefthook install",
-    "dev": "bun run --filter './apps/*' dev"
+    "dev": "bun run --filter './apps/*' dev",
+    "deploy:realtime": "bun run --filter '@afteroffice/realtime' deploy",
+    "deploy:web": "bun run --filter '@afteroffice/web' deploy"
   },
   "devDependencies": {
     "@afteroffice/configuration": "workspace:*",
