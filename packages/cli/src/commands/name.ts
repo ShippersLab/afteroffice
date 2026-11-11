@@ -32,6 +32,6 @@ export async function runName(args: readonly string[]): Promise<number> {
     return 1;
   }
   const renamed = result.identity.handle;
-  process.stdout.write(`Renamed to ${renamed}\n${webUrl()}/@${renamed}\n`);
+  process.stdout.write(`Renamed to ${renamed}\n${webUrl()}\n`);
   return 0;
 }

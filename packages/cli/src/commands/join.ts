@@ -3,14 +3,10 @@ import { readIdentity } from "../storage/identity-store";
 import { webUrl } from "../storage/paths";
 import { failureText } from "../utilities/failure-text";
 
-function profileLink(handle: string): string {
-  return `${webUrl()}/@${handle}`;
-}
-
 export async function runJoin(): Promise<number> {
   const existing = await readIdentity();
   if (existing !== undefined) {
-    process.stdout.write(`Already joined as ${existing.handle}\n${profileLink(existing.handle)}\n`);
+    process.stdout.write(`Already joined as ${existing.handle}\n${webUrl()}\n`);
     return 0;
   }
   const result = await join();
@@ -19,6 +15,6 @@ export async function runJoin(): Promise<number> {
     return 1;
   }
   const { handle } = result.identity;
-  process.stdout.write(`Joined the club as ${handle}\n${profileLink(handle)}\n`);
+  process.stdout.write(`Joined the club as ${handle}\n${webUrl()}\n`);
   return 0;
 }

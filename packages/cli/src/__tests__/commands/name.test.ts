@@ -56,7 +56,7 @@ describe("runName", () => {
       });
     });
     expect(await runName(["new-name"])).toBe(0);
-    expect(stdout).toBe("Renamed to new-name\nhttps://club.test/@new-name\n");
+    expect(stdout).toBe("Renamed to new-name\nhttps://club.test\n");
     expect((await readIdentity())?.handle).toBe("new-name");
     expect(requests[0]?.url).toBe(`${identity.url}/v1/name`);
     expect(requests[0]?.init?.headers).toMatchObject({ authorization: `Bearer ${TOKEN}` });

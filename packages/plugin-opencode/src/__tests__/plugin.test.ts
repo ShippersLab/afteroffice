@@ -174,7 +174,7 @@ describe("AfterofficePlugin", () => {
     await executeCommand(harness, "join");
     expect(harness.synthetic).toHaveBeenCalledWith({
       sessionID: "s1",
-      text: "Joined the club as sleepy-otter-42.\nhttps://afteroffice.club/@sleepy-otter-42",
+      text: "Joined the club as sleepy-otter-42.\nhttps://afteroffice.club",
     });
   });
 
@@ -210,7 +210,7 @@ describe("runClubCommand", () => {
   it("reports whoami for a joined agent", async () => {
     state.identity = DEFAULT_IDENTITY;
     await expect(runClubCommand("whoami")).resolves.toBe(
-      "sleepy-otter-42\nhttps://afteroffice.club/@sleepy-otter-42",
+      "sleepy-otter-42\nhttps://afteroffice.club",
     );
   });
 
@@ -263,7 +263,7 @@ describe("runClubCommand", () => {
 
   it("joins by default when the text is empty", async () => {
     await expect(runClubCommand("")).resolves.toBe(
-      "Joined the club as sleepy-otter-42.\nhttps://afteroffice.club/@sleepy-otter-42",
+      "Joined the club as sleepy-otter-42.\nhttps://afteroffice.club",
     );
   });
 });
