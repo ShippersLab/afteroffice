@@ -1,6 +1,13 @@
 import type { Application, PointData, Ticker } from "pixi.js";
 import { Viewport } from "pixi-viewport";
-import { clampZoom, fitZoom, stepZoom, tweenZoom, ZOOM_TWEEN_MS } from "../mathematics/zoom";
+import {
+  boundZoom,
+  clampZoom,
+  fitZoom,
+  stepZoom,
+  tweenZoom,
+  ZOOM_TWEEN_MS,
+} from "../mathematics/zoom";
 import { GRID_SIZE } from "../state/layout";
 
 const MIN_X = -(GRID_SIZE - 1) * 40;
@@ -159,15 +166,89 @@ export function createViewport(
     // Retarget from the live scale so a new wheel event never snaps the view.
     tween = { from: viewport.scale.x, elapsed: 0, px, py, world: viewport.toWorld(px, py) };
   };
-  // Capture phase: the club root also holds pointer-events-auto HUD overlays,
-  // so listening on the host catches wheel over both the canvas and the HTML.
   wheelTarget.addEventListener("wheel", onWheel, { passive: false, capture: true });
+
+  const touches = new Map<number, PointData>();
+  let pinch: { distance: number; zoom: number; world: PointData } | undefined;
+  let pinchCenter: PointData = { x: 0, y: 0 };
+
+  const measureTouches = (): { distance: number; center: PointData } => {
+    const [a, b] = [...touches.values()];
+    const rect = app.canvas.getBoundingClientRect();
+    if (!a || !b) {
+      return { distance: 1, center: pinchCenter };
+    }
+    return {
+      distance: Math.max(1, Math.hypot(a.x - b.x, a.y - b.y)),
+      center: { x: (a.x + b.x) / 2 - rect.left, y: (a.y + b.y) / 2 - rect.top },
+    };
+  };
+
+  const onTouchDown = (event: PointerEvent): void => {
+    if (event.pointerType !== "touch") {
+      return;
+    }
+    touches.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    if (touches.size !== 2) {
+      return;
+    }
+    const { distance, center } = measureTouches();
+    tween = undefined;
+    pinchCenter = center;
+    pinch = { distance, zoom: viewport.scale.x, world: viewport.toWorld(center.x, center.y) };
+    viewport.plugins.pause("drag");
+  };
+
+  const onTouchMove = (event: PointerEvent): void => {
+    if (!touches.has(event.pointerId)) {
+      return;
+    }
+    touches.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    if (!pinch || touches.size < 2) {
+      return;
+    }
+    const { distance, center } = measureTouches();
+    pinchCenter = center;
+    const zoom = boundZoom(pinch.zoom * (distance / pinch.distance));
+    placeAt(viewport, zoom, pinch.world, center.x, center.y, false);
+  };
+
+  const onTouchUp = (event: PointerEvent): void => {
+    if (!touches.delete(event.pointerId) || !pinch || touches.size >= 2) {
+      return;
+    }
+    pinch = undefined;
+    viewport.plugins.resume("drag");
+    userMoved = true;
+    targetZoom = clampZoom(viewport.scale.x);
+    const world = viewport.toWorld(pinchCenter.x, pinchCenter.y);
+    if (reducedMotion) {
+      placeAt(viewport, targetZoom, world, pinchCenter.x, pinchCenter.y, true);
+      return;
+    }
+    tween = {
+      from: viewport.scale.x,
+      elapsed: 0,
+      px: pinchCenter.x,
+      py: pinchCenter.y,
+      world,
+    };
+  };
+
+  wheelTarget.addEventListener("pointerdown", onTouchDown, { capture: true });
+  window.addEventListener("pointermove", onTouchMove);
+  window.addEventListener("pointerup", onTouchUp);
+  window.addEventListener("pointercancel", onTouchUp);
 
   return {
     viewport,
     dispose: () => {
       app.renderer.off("resize", onResize);
       wheelTarget.removeEventListener("wheel", onWheel, { capture: true });
+      wheelTarget.removeEventListener("pointerdown", onTouchDown, { capture: true });
+      window.removeEventListener("pointermove", onTouchMove);
+      window.removeEventListener("pointerup", onTouchUp);
+      window.removeEventListener("pointercancel", onTouchUp);
       app.ticker.remove(onZoomTick);
     },
   };

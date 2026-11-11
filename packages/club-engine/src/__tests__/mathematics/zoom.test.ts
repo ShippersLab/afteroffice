@@ -2,21 +2,24 @@ import { describe, expect, it } from "vitest";
 import { clampZoom, easeOutCubic, fitZoom, stepZoom, tweenZoom } from "../../mathematics/zoom";
 
 describe("zoom", () => {
-  it("clamps to integer steps", () => {
-    expect(clampZoom(0.3)).toBe(1);
+  it("snaps to the nearest step", () => {
+    expect(clampZoom(0.1)).toBe(0.5);
+    expect(clampZoom(0.8)).toBe(1);
     expect(clampZoom(2.4)).toBe(2);
     expect(clampZoom(99)).toBe(4);
   });
 
   it("steps up and down within bounds", () => {
     expect(stepZoom(1, 1)).toBe(2);
-    expect(stepZoom(1, -1)).toBe(1);
+    expect(stepZoom(1, -1)).toBe(0.5);
+    expect(stepZoom(0.5, -1)).toBe(0.5);
     expect(stepZoom(4, 1)).toBe(4);
   });
 
-  it("fits the largest integer zoom", () => {
+  it("fits the largest step and starts phones zoomed out", () => {
     expect(fitZoom(3000, 2000, 1000, 800)).toBe(2);
-    expect(fitZoom(500, 500, 1000, 800)).toBe(1);
+    expect(fitZoom(1440, 900, 1560, 1010)).toBe(1);
+    expect(fitZoom(390, 844, 1560, 1010)).toBe(0.5);
   });
 
   it("eases out between 0 and 1", () => {

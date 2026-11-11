@@ -1,13 +1,24 @@
-export const ZOOM_STEPS: readonly number[] = [1, 2, 3, 4];
+export const ZOOM_STEPS: readonly number[] = [0.5, 1, 2, 3, 4];
+
+const MIN_ZOOM = 0.5;
+const MAX_ZOOM = 4;
+const COMPACT_SCREEN_PX = 680;
 
 export function clampZoom(zoom: number): number {
-  const first = ZOOM_STEPS[0] ?? 1;
-  const last = ZOOM_STEPS[ZOOM_STEPS.length - 1] ?? first;
-  return Math.min(last, Math.max(first, Math.round(zoom)));
+  const bounded = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom));
+  return ZOOM_STEPS.reduce((best, step) =>
+    Math.abs(step - bounded) < Math.abs(best - bounded) ? step : best,
+  );
+}
+
+export function boundZoom(zoom: number): number {
+  return Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom));
 }
 
 export function stepZoom(current: number, direction: 1 | -1): number {
-  return clampZoom(Math.round(current) + direction);
+  const index = ZOOM_STEPS.indexOf(clampZoom(current));
+  const next = ZOOM_STEPS[index + direction];
+  return next ?? clampZoom(current);
 }
 
 export function fitZoom(
@@ -17,6 +28,9 @@ export function fitZoom(
   worldHeight: number,
 ): number {
   const fit = Math.min(screenWidth / worldWidth, screenHeight / worldHeight);
+  if (fit < 1) {
+    return screenWidth < COMPACT_SCREEN_PX ? MIN_ZOOM : 1;
+  }
   return clampZoom(Math.floor(fit));
 }
 
