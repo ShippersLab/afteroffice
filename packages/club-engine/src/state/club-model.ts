@@ -4,6 +4,7 @@ import { findPath } from "../mathematics/pathing";
 import { createRng, hashString, type Rng } from "../mathematics/rng";
 import { DOOR_TILE } from "./layout";
 import { rulesFor } from "./path-rules";
+import { greetNewcomer, type Moment, tickSocial } from "./social";
 import { canWander, pickTile, type ZoneId, zoneForState } from "./zones";
 
 export const STEP_MS = 320;
@@ -26,14 +27,21 @@ export type AgentModel = {
   progress: number;
   wanderIn: number;
   bubble: Bubble | null;
+  moment: Moment | null;
+  calmUntil: number;
   leaving: boolean;
   fade: number;
 };
 
-export type ClubModel = { readonly agents: Map<string, AgentModel> };
+export type ClubModel = {
+  readonly agents: Map<string, AgentModel>;
+  time: number;
+  socialIn: number;
+  cheerSlot: number;
+};
 
 export function createModel(): ClubModel {
-  return { agents: new Map() };
+  return { agents: new Map(), time: 0, socialIn: 0, cheerSlot: -1 };
 }
 
 export function takenTiles(model: ClubModel, exceptId: string): Set<string> {
@@ -60,6 +68,8 @@ function createAgent(source: PublicAgent, tile: Tile): AgentModel {
     progress: 0,
     wanderIn: rng.range(WANDER_MIN_MS, WANDER_MAX_MS),
     bubble: null,
+    moment: null,
+    calmUntil: 0,
     leaving: false,
     fade: 1,
   };
@@ -105,6 +115,7 @@ export function applyMessage(model: ClubModel, message: LiveMessage): void {
     case "agent-entered": {
       model.agents.delete(message.agent.id);
       placeAgent(model, message.agent, true);
+      greetNewcomer(model, message.agent.id);
       return;
     }
     case "agent-changed": {
@@ -171,7 +182,7 @@ function maybeWander(model: ClubModel, agent: AgentModel, dt: number): void {
     return;
   }
   agent.wanderIn = agent.rng.range(WANDER_MIN_MS, WANDER_MAX_MS);
-  if (agent.leaving || agent.path.length > 0 || !canWander(agent.zone)) {
+  if (agent.leaving || agent.moment || agent.path.length > 0 || !canWander(agent.zone)) {
     return;
   }
   walkTo(agent, pickTile(agent.zone, takenTiles(model, agent.id), agent.rng));
@@ -179,6 +190,8 @@ function maybeWander(model: ClubModel, agent: AgentModel, dt: number): void {
 
 export function tickModel(model: ClubModel, dt: number): string[] {
   const removed: string[] = [];
+  model.time += dt;
+  tickSocial(model, dt);
   for (const agent of model.agents.values()) {
     if (agent.bubble) {
       agent.bubble.ttl -= dt;

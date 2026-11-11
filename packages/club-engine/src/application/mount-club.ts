@@ -1,4 +1,4 @@
-import type { LiveMessage } from "@afteroffice/core";
+import type { AgentState, LiveMessage } from "@afteroffice/core";
 import { Application, type Ticker } from "pixi.js";
 import "pixi.js/unsafe-eval";
 import { AgentLayer } from "../agents/agent-layer";
@@ -9,14 +9,23 @@ import { releaseTextures, retainTextures } from "../sprites/textures";
 import { applyMessage, createModel, tickModel } from "../state/club-model";
 import { createViewport, WORLD_ORIGIN } from "./viewport";
 
+export type SelectedAgent = {
+  readonly id: string;
+  readonly handle: string;
+  readonly state: AgentState;
+  readonly vip: boolean;
+};
+
 export type ClubView = {
   apply(message: LiveMessage): void;
+  clearSelection(): void;
   destroy(): void;
 };
 
 export type MountClubOptions = {
   reducedMotion?: boolean;
   onNavigate?: (href: string) => void;
+  onSelectAgent?: (agent: SelectedAgent | null) => void;
 };
 
 const MAX_FRAME_MS = 100;
@@ -61,9 +70,45 @@ export async function mountClub(
   app.stage.addChild(viewport);
 
   const model = createModel();
-  const layer = new AgentLayer(scene.things, scene.overlay);
+  let hoveredId = "";
+  let selectedId = "";
+  let selectedKey = "";
+  const select = (id: string): void => {
+    selectedId = id;
+    selectedKey = "";
+    layer.setSelected(id);
+  };
+  const layer: AgentLayer = new AgentLayer(scene.things, scene.overlay, {
+    hover: (id, over) => {
+      hoveredId = over ? id : hoveredId === id ? "" : hoveredId;
+      layer.setHovered(hoveredId);
+    },
+    select: (id) => select(selectedId === id ? "" : id),
+  });
   let clock = 0;
   let destroyed = false;
+
+  const announceSelection = (): void => {
+    if (selectedId === "") {
+      return;
+    }
+    const agent = model.agents.get(selectedId);
+    if (!agent || agent.leaving) {
+      select("");
+      options.onSelectAgent?.(null);
+      return;
+    }
+    const key = `${agent.handle}|${agent.state}|${agent.vip}`;
+    if (key !== selectedKey) {
+      selectedKey = key;
+      options.onSelectAgent?.({
+        id: agent.id,
+        handle: agent.handle,
+        state: agent.state,
+        vip: agent.vip,
+      });
+    }
+  };
 
   const onTick = (ticker: Ticker): void => {
     const dt = Math.min(ticker.deltaMS, MAX_FRAME_MS);
@@ -71,6 +116,7 @@ export async function mountClub(
     tickModel(model, dt);
     scene.fx.update(clock, reducedMotion);
     layer.sync(model, clock, reducedMotion);
+    announceSelection();
   };
   app.ticker.add(onTick);
 
@@ -79,6 +125,9 @@ export async function mountClub(
       if (!destroyed) {
         applyMessage(model, message);
       }
+    },
+    clearSelection() {
+      select("");
     },
     destroy() {
       if (destroyed) {
