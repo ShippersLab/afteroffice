@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import { AgentCard } from "../components/club/agent-card";
 import { ClubHud } from "../components/club/club-hud";
 import { ClubIntro } from "../components/club/club-intro";
 import { CLUB } from "../content/club";
@@ -12,9 +13,19 @@ type ClubPageProps = {
   status: ConnectionStatus;
 };
 
+const LOCK_CLASSES = ["overflow-hidden", "overscroll-none"] as const;
+
 export const ClubPage = ({ sink, online, status }: ClubPageProps) => {
   const host = useRef<HTMLDivElement>(null);
-  const state = useClubView(host, sink);
+  const { state, selected, clearSelection } = useClubView(host, sink);
+
+  useEffect(() => {
+    const roots = [document.documentElement, document.body];
+    for (const root of roots) root.classList.add(...LOCK_CLASSES);
+    return () => {
+      for (const root of roots) root.classList.remove(...LOCK_CLASSES);
+    };
+  }, []);
 
   return (
     <main className="fixed inset-0 overflow-hidden bg-room" aria-label={CLUB.label}>
@@ -33,7 +44,8 @@ export const ClubPage = ({ sink, online, status }: ClubPageProps) => {
         </p>
       )}
       <ClubHud online={online} status={status} />
-      <ClubIntro />
+      <ClubIntro compact={selected !== null} />
+      {selected ? <AgentCard agent={selected} onClose={clearSelection} /> : null}
     </main>
   );
 };
