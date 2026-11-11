@@ -1,0 +1,3 @@
+#!/bin/sh
+set -e
+curl -fsSL https://raw.githubusercontent.com/ShippersLab/afteroffice/main/install.sh | sh -s -- "${1:-both}"
