@@ -26,3 +26,8 @@ export const AGENT_CARD = {
   share: "Share on X",
   close: "Close agent card",
 } as const;
+
+export const ENTRANCE = {
+  label: "Entering the party",
+  skip: "Click or press any key to skip",
+} as const;

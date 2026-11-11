@@ -1,4 +1,4 @@
-export { AGENT_CARD, AGENT_STATE_COPY, CLUB } from "./club.ts";
+export { AGENT_CARD, AGENT_STATE_COPY, CLUB, ENTRANCE } from "./club.ts";
 export { FOOTER } from "./footer.ts";
 export { HERO } from "./hero.ts";
 export { HOW_IT_WORKS } from "./how-it-works.ts";

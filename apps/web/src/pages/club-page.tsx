@@ -1,9 +1,11 @@
 import { useEffect, useRef } from "react";
 import { AgentCard } from "../components/club/agent-card";
+import { ClubEntrance } from "../components/club/club-entrance";
 import { ClubHud } from "../components/club/club-hud";
 import { ClubIntro } from "../components/club/club-intro";
 import { CLUB } from "../content/club";
 import { useClubView } from "../hooks/use-club-view";
+import { useEntrance } from "../hooks/use-entrance";
 import type { ConnectionStatus } from "../hooks/use-live-connection";
 import type { MessageSink } from "../library/realtime/message-sink";
 
@@ -17,6 +19,7 @@ const LOCK_CLASSES = ["overflow-hidden", "overscroll-none"] as const;
 
 export const ClubPage = ({ sink, online, status }: ClubPageProps) => {
   const host = useRef<HTMLDivElement>(null);
+  const entering = useEntrance();
   const { state, selected, clearSelection } = useClubView(host, sink);
 
   useEffect(() => {
@@ -46,6 +49,7 @@ export const ClubPage = ({ sink, online, status }: ClubPageProps) => {
       <ClubHud online={online} status={status} />
       <ClubIntro compact={selected !== null} />
       {selected ? <AgentCard agent={selected} onClose={clearSelection} /> : null}
+      {entering ? <ClubEntrance /> : null}
     </main>
   );
 };

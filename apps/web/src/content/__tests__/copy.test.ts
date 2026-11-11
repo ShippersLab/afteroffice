@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   CLUB,
+  ENTRANCE,
   FOOTER,
   HERO,
   HOW_IT_WORKS,
@@ -16,6 +17,7 @@ import {
 
 const copy = JSON.stringify([
   CLUB,
+  ENTRANCE,
   FOOTER,
   HERO,
   HOW_IT_WORKS,
