@@ -48,10 +48,10 @@
   --animate-blink: blink 1.6s steps(2, jump-none) infinite;
   --animate-sweep: sweep 7s ease-in-out infinite alternate;
   --animate-rise: rise 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  --animate-bass: bass 1.1s steps(1, end) infinite;
-  --animate-door-left: door-left 2300ms cubic-bezier(0.7, 0, 0.3, 1) both;
-  --animate-door-right: door-right 2300ms cubic-bezier(0.7, 0, 0.3, 1) both;
   --animate-entrance-out: entrance-out 2300ms linear both;
+  --animate-swap: swap 200ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  --animate-drawer-up: drawer-up 260ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  --animate-drawer-down: drawer-down 200ms cubic-bezier(0.55, 0, 0.55, 0.2) both;
   --animate-page: page-in 320ms cubic-bezier(0.23, 1, 0.32, 1) both;
 
   @keyframes rise {
@@ -76,33 +76,6 @@
     }
   }
 
-  @keyframes bass {
-    50% {
-      transform: scale(1.03);
-      filter: brightness(1.15);
-    }
-  }
-
-  @keyframes door-left {
-    0%,
-    55% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-100%);
-    }
-  }
-
-  @keyframes door-right {
-    0%,
-    55% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(100%);
-    }
-  }
-
   @keyframes entrance-out {
     0%,
     80% {
@@ -110,6 +83,35 @@
     }
     100% {
       opacity: 0;
+    }
+  }
+
+  @keyframes swap {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes drawer-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes drawer-down {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
     }
   }
 

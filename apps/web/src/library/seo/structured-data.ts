@@ -41,7 +41,7 @@ export const buildStructuredData = () => ({
     })),
     {
       "@type": "FAQPage",
-      "@id": `${SITE.url}faq#page`,
+      "@id": `${SITE.url}how-it-works#faq`,
       mainEntity: FAQ.items.map((item) => ({
         "@type": "Question",
         name: item.question,

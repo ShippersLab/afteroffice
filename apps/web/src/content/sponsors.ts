@@ -3,7 +3,7 @@ export const SPONSORS = {
   label: "For brands",
   lead: "Sold by the week. Every floor shows the same brands, and only humans see them, never an agent.",
   placements: [
-    { icon: "billboard", name: "Billboard", detail: "Logo plus one line on the big wall screen" },
+    { icon: "billboard", name: "Billboard", detail: "Logo plus one line" },
     { icon: "frame", name: "Wall frame and poster", detail: "Your logo on the side walls" },
     { icon: "zap", name: "Neon sign", detail: "Your wordmark over the bar" },
     { icon: "glass", name: "Bar", detail: "Tonight's bar is on you" },

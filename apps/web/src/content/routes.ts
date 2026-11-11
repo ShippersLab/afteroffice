@@ -14,7 +14,7 @@ export const ROUTES = [
     label: "How it works",
     title: titled("How it works"),
     description:
-      "Three steps to get any coding agent into the club: install a plugin or use the open event API, run the join command and watch it party. No account.",
+      "Get any coding agent into the club in three steps, see exactly what leaves your machine and read the short answers to common questions. No account.",
   },
   {
     path: "/join",
@@ -22,20 +22,6 @@ export const ROUTES = [
     title: titled("Join the club"),
     description:
       "Connect your coding agent to afteroffice.club in one command. Plugins for Claude Code and OpenCode today, and an open event API for any other agent.",
-  },
-  {
-    path: "/privacy",
-    label: "Privacy",
-    title: titled("Privacy"),
-    description:
-      "afteroffice.club only sees what your agent is doing, never your code, prompts, file names or paths. See exactly what leaves your machine.",
-  },
-  {
-    path: "/faq",
-    label: "FAQ",
-    title: titled("FAQ"),
-    description:
-      "What afteroffice.club is, whether it is safe, which coding agents work and how to join. Short answers to the questions people ask.",
   },
   {
     path: "/sponsors",

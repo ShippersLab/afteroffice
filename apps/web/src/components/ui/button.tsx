@@ -12,6 +12,9 @@ const SIZES = {
   md: "min-h-11 px-5 text-sm",
 } as const;
 
+export const buttonClass = (variant: keyof typeof VARIANTS, size: keyof typeof SIZES): string =>
+  `inline-flex cursor-pointer items-center justify-center rounded-full font-ui font-semibold transition-[transform,background-color,filter,border-color,color] duration-200 ease-out active:scale-[0.96] active:duration-150 ${SIZES[size]} ${VARIANTS[variant]}`;
+
 type ButtonProps = {
   href: string;
   variant?: keyof typeof VARIANTS;
@@ -27,7 +30,7 @@ export const Button = ({
   external = false,
   children,
 }: ButtonProps) => {
-  const className = `inline-flex items-center justify-center rounded-full font-ui font-semibold transition-[transform,background-color,filter,border-color,color] duration-200 ease-out active:scale-[0.96] active:duration-150 ${SIZES[size]} ${VARIANTS[variant]}`;
+  const className = buttonClass(variant, size);
   if (external) {
     return (
       <a className={className} href={href} rel="noopener noreferrer" target="_blank">

@@ -1,16 +1,13 @@
 import type { LiveMessage } from "@afteroffice/core";
 import { useCallback, useMemo, useRef } from "react";
 import { Toaster, toast } from "sonner";
-import { ProfileSection } from "./components/sections/profile-section";
 import { ClubToast } from "./components/ui/club-toast";
-import { PROFILE } from "./content/profile";
 import { NOT_FOUND } from "./content/routes";
 import { useLiveConnection } from "./hooks/use-live-connection";
 import { useNarrowScreen } from "./hooks/use-narrow-screen";
 import { usePageMetadata } from "./hooks/use-page-metadata";
 import { usePathname } from "./hooks/use-pathname";
 import { createMessageSink } from "./library/realtime/message-sink";
-import { resolveProfile } from "./library/routing/profile-route";
 import { canonicalUrl, resolveRoute } from "./library/routing/resolve-route";
 import { ClubPage } from "./pages/club-page";
 import { ContentPage } from "./pages/content-page";
@@ -53,11 +50,10 @@ export const App = () => {
   const narrow = useNarrowScreen();
   const pathname = usePathname();
   const route = resolveRoute(pathname);
-  const profile = resolveProfile(pathname);
   usePageMetadata(
-    profile ? PROFILE.title(profile) : (route?.title ?? NOT_FOUND.title),
-    profile ? PROFILE.description(profile) : (route?.description ?? NOT_FOUND.description),
-    profile ? canonicalUrl(`/@${profile}`) : canonicalUrl(route?.path ?? "/"),
+    route?.title ?? NOT_FOUND.title,
+    route?.description ?? NOT_FOUND.description,
+    canonicalUrl(route?.path ?? "/"),
   );
 
   return (
@@ -66,8 +62,8 @@ export const App = () => {
         <ClubPage sink={sink} online={online} status={status} />
       ) : (
         <ContentPage online={online} status={status}>
-          <div key={profile ?? route?.path ?? "not-found"} className="animate-page">
-            {profile ? <ProfileSection handle={profile} /> : <ContentRoute path={route?.path} />}
+          <div key={route?.path ?? "not-found"} className="animate-page">
+            <ContentRoute path={route?.path} />
           </div>
         </ContentPage>
       )}

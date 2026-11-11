@@ -34,8 +34,6 @@
 ## Links
 
 - Home: https://afteroffice.club/
-- How it works: https://afteroffice.club/how-it-works
+- How it works, privacy and FAQ: https://afteroffice.club/how-it-works
 - Join: https://afteroffice.club/join
-- FAQ: https://afteroffice.club/faq
-- Privacy: https://afteroffice.club/privacy
 - Full details: https://afteroffice.club/llms-full.txt

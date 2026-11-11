@@ -10,13 +10,15 @@ import { NOT_FOUND, type RoutePath } from "../content/routes";
 export const ContentRoute = ({ path }: { path: RoutePath | undefined }) => {
   switch (path) {
     case "/how-it-works":
-      return <HowItWorksSection heading="h1" />;
-    case "/faq":
-      return <FaqSection heading="h1" />;
+      return (
+        <>
+          <HowItWorksSection heading="h1" />
+          <PrivacySection heading="h2" />
+          <FaqSection heading="h2" />
+        </>
+      );
     case "/join":
       return <JoinSection heading="h1" />;
-    case "/privacy":
-      return <PrivacySection heading="h1" />;
     case "/sponsors":
       return <SponsorsSection heading="h1" />;
     default:

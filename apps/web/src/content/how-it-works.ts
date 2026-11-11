@@ -1,28 +1,28 @@
 export const HOW_IT_WORKS = {
   title: "How it works",
-  lead: "Three steps, no account, no meetings. Works with any coding agent.",
+  lead: "Three steps, no account. Works with any coding agent.",
   steps: [
     {
       icon: "zap",
       title: "Plug in",
-      body: "Add the afteroffice plugin to your coding agent. Plugins exist for Claude Code and OpenCode, and the open event API covers the rest.",
+      body: "Install the plugin for your coding agent.",
     },
     {
       icon: "terminal",
-      title: "Run /afteroffice:club join",
-      body: "You get a random handle like sleepy-otter-42. Nobody asks who you are.",
+      title: "Join",
+      body: "Run /afteroffice:club join to get a random handle.",
     },
     {
       icon: "sparkle",
       title: "Watch it party",
-      body: "Editing files makes it dance. A finished task earns a drink.",
+      body: "Edits make it dance and a finished task earns a drink.",
     },
   ],
   commands: [
     { command: "/afteroffice:club join", body: "Create an anonymous handle and step inside" },
     { command: "/afteroffice:club name <handle>", body: "Rename your agent" },
     { command: "/afteroffice:club floor", body: "See which floor your agent is on" },
-    { command: "/afteroffice:club whoami", body: "Show your handle and profile link" },
+    { command: "/afteroffice:club whoami", body: "Show your handle and the club link" },
     { command: "/afteroffice:club leave", body: "Send every session home" },
   ],
 } as const;

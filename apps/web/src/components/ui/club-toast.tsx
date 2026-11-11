@@ -2,11 +2,13 @@ const VARIANTS = {
   enter: {
     icon: "text-cyan",
     accent: "border-l-cyan",
+    pixel: "bg-cyan",
     phrase: "just walked in",
   },
   leave: {
     icon: "text-coral",
     accent: "border-l-coral",
+    pixel: "bg-coral",
     phrase: "left the club",
   },
 } as const;
@@ -33,20 +35,22 @@ const DoorIcon = () => (
 );
 
 export const ClubToast = ({ handle, variant }: ClubToastProps) => {
-  const { icon, accent, phrase } = VARIANTS[variant];
+  const { icon, accent, pixel, phrase } = VARIANTS[variant];
   const sentence = `${handle} ${phrase}`;
 
   return (
     <div
-      className={`flex w-72 max-w-[calc(100vw-2rem)] items-center gap-3 rounded-md border border-l-2 border-line bg-panel py-3 pr-4 pl-3 font-ui text-sm text-ivory ${accent}`}
+      className={`flex w-72 max-w-[calc(100vw-2rem)] relative animate-rise items-center gap-3 rounded-sm border border-line bg-panel/95 py-2.5 pr-4 pl-3 font-ui text-sm text-ivory shadow-[0_8px_24px_rgb(11_10_20/0.6)] backdrop-blur-sm border-l-2 ${accent}`}
       role="status"
       aria-label={sentence}
     >
       <span
-        className={`flex size-8 shrink-0 items-center justify-center rounded-sm bg-velvet ${icon}`}
+        className={`flex size-8 shrink-0 items-center justify-center rounded-sm border border-line bg-velvet ${icon}`}
       >
         <DoorIcon />
       </span>
+      <span aria-hidden="true" className={`absolute top-1.5 right-1.5 size-1 ${pixel}`} />
+      <span aria-hidden="true" className={`absolute top-1.5 right-3 size-1 opacity-50 ${pixel}`} />
       <p className="leading-snug">
         <span className="font-semibold">{handle}</span> <span className="text-muted">{phrase}</span>
       </p>

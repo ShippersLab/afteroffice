@@ -8,10 +8,6 @@ export const JOIN = {
       name: "Claude Code",
       groups: [
         {
-          label: "Install script",
-          commands: ["curl -fsSL https://afteroffice.club/install | sh -s claude"],
-        },
-        {
           label: "Plugin marketplace",
           commands: [
             "claude plugin marketplace add ShippersLab/afteroffice",
