@@ -5735,7 +5735,7 @@ var LiveMessageSchema = discriminatedUnion("type", [
 // ../cli/src/storage/paths.ts
 import { homedir } from "node:os";
 import { join } from "node:path";
-var DEFAULT_API_URL = "http://localhost:8787";
+var DEFAULT_API_URL = "https://api.afteroffice.club";
 var DEFAULT_WEB_URL = "https://afteroffice.club";
 var UrlSchema = url({ protocol: /^https?$/ });
 function envUrl(name, fallback) {

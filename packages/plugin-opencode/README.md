@@ -52,7 +52,7 @@ Run the command in any OpenCode session:
 
 ## Watch the club
 
-The profile link uses `https://afteroffice.club` by default. Set `AFTEROFFICE_WEB_URL` to point at another web instance. The plugin talks to the club server at `http://localhost:8787` by default, and `AFTEROFFICE_URL` overrides it. Local data lives in `~/.afteroffice`, and `AFTEROFFICE_HOME` moves it.
+The profile link uses `https://afteroffice.club` by default. Set `AFTEROFFICE_WEB_URL` to point at another web instance. The plugin talks to the club server at `https://api.afteroffice.club` by default, and `AFTEROFFICE_URL` overrides it. Local data lives in `~/.afteroffice`, and `AFTEROFFICE_HOME` moves it.
 
 ## Requirements and updates
 

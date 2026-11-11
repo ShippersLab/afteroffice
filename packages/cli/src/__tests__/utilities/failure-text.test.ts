@@ -3,7 +3,7 @@ import { failureText } from "../../utilities/failure-text";
 
 describe("failureText", () => {
   it("names the club url when the network fails", () => {
-    expect(failureText("network")).toContain("http://localhost:8787");
+    expect(failureText("network")).toContain("https://api.afteroffice.club");
     expect(failureText("network")).toContain("AFTEROFFICE_URL");
   });
 
