@@ -27,16 +27,17 @@ The club only ever renders the approved pixel version.
 
 ## 3. Placements
 
+The disco ball is never sold. It stays the club mark and is always free of brands.
+
 Sizes are in pixel cells at 1x. The engine draws them at the room's integer scale.
 
 | Id | Where | Grid | Content |
 |---|---|---|---|
-| `ball` | The disco ball | 14x14 facets | Brand colors on the facets, mark on the front face, "Tonight's ball by [BRAND]" pill under it |
 | `billboard` | Big right wall screen | 48x32 | Logo plus one line |
 | `sponsor-slot` | Center wall frame | 24x32 | Logo only |
 | `poster` | Left wall poster | 20x28 | Logo plus one line |
 | `neon` | Neon sign above the bar | 64x12 | Wordmark redrawn as neon tubes |
-| `bar` | Bar front | 32x8 | "Tonight's bar is on [BRAND]" |
+| `bar` | Bar front | 44x9 | "Tonight's bar is on [BRAND]", with a Sponsored label floating above the counter |
 
 ## 4. How we sell them in the first version
 

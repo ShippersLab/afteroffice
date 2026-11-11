@@ -8,7 +8,7 @@ Keep this file short and update it when a step lands.
 - Product decisions, design system, sponsor placements (`documentation/design/sponsors.md`) and VIP area (`documentation/design/vip.md`).
 - Bun workspaces with oxlint, Biome (format only), strict TypeScript and Vitest in `__tests__` folders (`packages/configuration`), CI in `.github/workflows`, pinned dependencies and a 3 day release age.
 - Event protocol in `packages/core`: zod schemas, floor room ids, enter response with the VIP flag, event to agent state mapping, limits, `agent-renamed` live message.
-- Club engine (`packages/club-engine`): PixiJS v8 isometric floor with walls, dance floor, bar, sofa, DJ booth, door, disco ball, VIP corner, the six placements, fake agent cycling and rename handling.
+- Club engine (`packages/club-engine`): PixiJS v8 isometric floor with walls, dance floor, bar, sofa, DJ booth, door, disco ball, VIP corner, the five placements, fake agent cycling and rename handling.
 - Web app (`apps/web`): landing, club view, `/@handle` page.
 - Realtime (`apps/realtime`): Worker with the public `/v1` event API, join, events, handle rename (`/v1/name`), live WebSocket, stats, directory and floor Durable Objects, rate limiting.
 - Identity and data (`packages/database`): Supabase Postgres with Drizzle, handles, token hashes.
