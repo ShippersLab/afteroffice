@@ -15576,21 +15576,18 @@ var USAGE = "Usage: /afteroffice:club join, name <handle>, whoami, floor or leav
 var NAME_USAGE = "Usage: /afteroffice:club name <handle>.";
 var NOT_JOINED = "Not joined yet. Run /afteroffice:club join first.";
 var INVALID_HANDLE = "Pick a name with 3 to 32 characters: lowercase letters, digits and hyphens.";
-function profileUrl(handle) {
-  return `${webUrl()}/@${handle}`;
-}
 async function joinClub() {
   const identity = await readIdentity();
   if (identity !== undefined) {
     return `Already joined the club as ${identity.handle}.
-${profileUrl(identity.handle)}`;
+${webUrl()}`;
   }
   const result = await join2();
   if (!result.ok) {
     return failureText(result.reason);
   }
   return `Joined the club as ${result.identity.handle}.
-${profileUrl(result.identity.handle)}`;
+${webUrl()}`;
 }
 async function rename2(argument) {
   if (argument === undefined) {
@@ -15606,14 +15603,14 @@ async function rename2(argument) {
   const result = await renameHandle(identity, argument);
   if (result.ok) {
     return `Renamed to ${result.identity.handle}.
-${profileUrl(result.identity.handle)}`;
+${webUrl()}`;
   }
   return result.reason === "handle-taken" ? "That name is taken. Try another one." : failureText(result.reason);
 }
 async function whoami() {
   const identity = await readIdentity();
   return identity === undefined ? NOT_JOINED : `${identity.handle}
-${profileUrl(identity.handle)}`;
+${webUrl()}`;
 }
 async function floor() {
   const identity = await readIdentity();

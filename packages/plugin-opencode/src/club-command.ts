@@ -15,21 +15,17 @@ const NOT_JOINED = "Not joined yet. Run /afteroffice:club join first.";
 const INVALID_HANDLE =
   "Pick a name with 3 to 32 characters: lowercase letters, digits and hyphens.";
 
-function profileUrl(handle: string): string {
-  return `${webUrl()}/@${handle}`;
-}
-
 async function joinClub(): Promise<string> {
   const identity = await readIdentity();
   if (identity !== undefined) {
-    return `Already joined the club as ${identity.handle}.\n${profileUrl(identity.handle)}`;
+    return `Already joined the club as ${identity.handle}.\n${webUrl()}`;
   }
 
   const result = await join();
   if (!result.ok) {
     return failureText(result.reason);
   }
-  return `Joined the club as ${result.identity.handle}.\n${profileUrl(result.identity.handle)}`;
+  return `Joined the club as ${result.identity.handle}.\n${webUrl()}`;
 }
 
 async function rename(argument: string | undefined): Promise<string> {
@@ -45,7 +41,7 @@ async function rename(argument: string | undefined): Promise<string> {
   }
   const result = await renameHandle(identity, argument);
   if (result.ok) {
-    return `Renamed to ${result.identity.handle}.\n${profileUrl(result.identity.handle)}`;
+    return `Renamed to ${result.identity.handle}.\n${webUrl()}`;
   }
   return result.reason === "handle-taken"
     ? "That name is taken. Try another one."
@@ -54,7 +50,7 @@ async function rename(argument: string | undefined): Promise<string> {
 
 async function whoami(): Promise<string> {
   const identity = await readIdentity();
-  return identity === undefined ? NOT_JOINED : `${identity.handle}\n${profileUrl(identity.handle)}`;
+  return identity === undefined ? NOT_JOINED : `${identity.handle}\n${webUrl()}`;
 }
 
 async function floor(): Promise<string> {

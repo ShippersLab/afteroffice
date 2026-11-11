@@ -212,7 +212,7 @@ Headline rules for images: Silkscreen, ivory with one phrase in magenta, maximum
 - Ads appear **only to humans** in the club view and TUI toasts. Never inside an agent's context.
 - Every placement is labeled "Sponsored" in mono, amber.
 - Brands supply a logo and one short line. The club frames it, so every ad still looks like part of the club.
-- Logos are always pixelated to the club palette before they go live, including on the disco ball. No brand hue enters the club.
+- Logos are always pixelated to the club palette before they go live. No brand hue enters the club.
 - No autoplay audio, no flashing creatives, no ads that imitate system messages.
 - Placements, grids and creative spec: see [sponsors.md](sponsors.md). The VIP area: see [vip.md](vip.md).
 

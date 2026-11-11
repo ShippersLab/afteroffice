@@ -1,10 +1,11 @@
 import type { AgentState, LiveMessage, PublicAgent } from "@afteroffice/core";
-import { type Tile, tileKey } from "../mathematics/iso";
+import { sameTile, type Tile, tileKey } from "../mathematics/iso";
 import { findPath } from "../mathematics/pathing";
 import { createRng, hashString, type Rng } from "../mathematics/rng";
 import { DOOR_TILE } from "./layout";
 import { rulesFor } from "./path-rules";
-import { canWander, pickTile, type ZoneId, zoneForState } from "./zones";
+import { greetNewcomer, type Moment, tickSocial } from "./social";
+import { canWander, pickTile, ZONE_TILES, type ZoneId, zoneForState } from "./zones";
 
 export const STEP_MS = 320;
 export const BUBBLE_MS = 4000;
@@ -20,20 +21,28 @@ export type AgentModel = {
   readonly vip: boolean;
   readonly rng: Rng;
   state: AgentState;
+  shown: AgentState;
   zone: ZoneId;
   tile: Tile;
   path: Tile[];
   progress: number;
   wanderIn: number;
   bubble: Bubble | null;
+  moment: Moment | null;
+  calmUntil: number;
   leaving: boolean;
   fade: number;
 };
 
-export type ClubModel = { readonly agents: Map<string, AgentModel> };
+export type ClubModel = {
+  readonly agents: Map<string, AgentModel>;
+  time: number;
+  socialIn: number;
+  cheerSlot: number;
+};
 
 export function createModel(): ClubModel {
-  return { agents: new Map() };
+  return { agents: new Map(), time: 0, socialIn: 0, cheerSlot: -1 };
 }
 
 export function takenTiles(model: ClubModel, exceptId: string): Set<string> {
@@ -54,15 +63,25 @@ function createAgent(source: PublicAgent, tile: Tile): AgentModel {
     vip: source.vip,
     rng,
     state: source.state,
+    shown: source.state,
     zone: zoneForState(source.state, source.vip),
     tile,
     path: [],
     progress: 0,
     wanderIn: rng.range(WANDER_MIN_MS, WANDER_MAX_MS),
     bubble: null,
+    moment: null,
+    calmUntil: 0,
     leaving: false,
     fade: 1,
   };
+}
+
+function chooseTile(model: ClubModel, agent: AgentModel, zone: ZoneId): Tile {
+  const tile = pickTile(zone, takenTiles(model, agent.id), agent.rng);
+  const inOwnZone = ZONE_TILES[zone].some((candidate) => sameTile(candidate, tile));
+  agent.shown = inOwnZone ? agent.state : "dancing";
+  return tile;
 }
 
 function walkTo(agent: AgentModel, target: Tile): void {
@@ -84,8 +103,8 @@ function walkTo(agent: AgentModel, target: Tile): void {
 function placeAgent(model: ClubModel, source: PublicAgent, atDoor: boolean): void {
   const zone = zoneForState(source.state, source.vip);
   const draft = createAgent(source, DOOR_TILE);
-  const target = pickTile(zone, takenTiles(model, source.id), draft.rng);
   model.agents.set(source.id, draft);
+  const target = chooseTile(model, draft, zone);
   if (atDoor) {
     walkTo(draft, target);
   } else {
@@ -105,6 +124,7 @@ export function applyMessage(model: ClubModel, message: LiveMessage): void {
     case "agent-entered": {
       model.agents.delete(message.agent.id);
       placeAgent(model, message.agent, true);
+      greetNewcomer(model, message.agent.id);
       return;
     }
     case "agent-changed": {
@@ -116,7 +136,9 @@ export function applyMessage(model: ClubModel, message: LiveMessage): void {
       const zone = zoneForState(message.state, agent.vip);
       if (zone !== agent.zone) {
         agent.zone = zone;
-        walkTo(agent, pickTile(zone, takenTiles(model, agent.id), agent.rng));
+        walkTo(agent, chooseTile(model, agent, zone));
+      } else {
+        agent.shown = message.state;
       }
       return;
     }
@@ -171,14 +193,16 @@ function maybeWander(model: ClubModel, agent: AgentModel, dt: number): void {
     return;
   }
   agent.wanderIn = agent.rng.range(WANDER_MIN_MS, WANDER_MAX_MS);
-  if (agent.leaving || agent.path.length > 0 || !canWander(agent.zone)) {
+  if (agent.leaving || agent.moment || agent.path.length > 0 || !canWander(agent.zone)) {
     return;
   }
-  walkTo(agent, pickTile(agent.zone, takenTiles(model, agent.id), agent.rng));
+  walkTo(agent, chooseTile(model, agent, agent.zone));
 }
 
 export function tickModel(model: ClubModel, dt: number): string[] {
   const removed: string[] = [];
+  model.time += dt;
+  tickSocial(model, dt);
   for (const agent of model.agents.values()) {
     if (agent.bubble) {
       agent.bubble.ttl -= dt;

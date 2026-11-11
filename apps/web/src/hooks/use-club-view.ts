@@ -1,16 +1,38 @@
-import type { ClubView } from "@afteroffice/club-engine";
-import { type RefObject, useEffect, useState } from "react";
+import type { ClubView, SelectedAgent } from "@afteroffice/club-engine";
+import { type RefObject, useCallback, useEffect, useRef, useState } from "react";
 import type { MessageSink } from "../library/realtime/message-sink";
 import { navigate } from "../library/routing/navigation";
 import { prefersReducedMotion } from "../utilities/reduced-motion";
 
 export type ClubViewState = "loading" | "ready" | "failed";
 
+export type ClubViewHandle = {
+  state: ClubViewState;
+  selected: SelectedAgent | null;
+  clearSelection: (id?: string) => void;
+  capture: () => Promise<Blob | null>;
+};
+
 export const useClubView = (
   host: RefObject<HTMLDivElement | null>,
   sink: MessageSink,
-): ClubViewState => {
+): ClubViewHandle => {
   const [state, setState] = useState<ClubViewState>("loading");
+  const [selected, setSelected] = useState<SelectedAgent | null>(null);
+  const mounted = useRef<ClubView | undefined>(undefined);
+  const current = useRef<SelectedAgent | null>(null);
+
+  const clearSelection = useCallback((id?: string) => {
+    if (id !== undefined && current.current?.id !== id) return;
+    mounted.current?.clearSelection();
+    current.current = null;
+    setSelected(null);
+  }, []);
+
+  const track = useCallback((agent: SelectedAgent | null) => {
+    current.current = agent;
+    setSelected(agent);
+  }, []);
 
   useEffect(() => {
     const element = host.current;
@@ -22,8 +44,9 @@ export const useClubView = (
       try {
         const engine = await import("@afteroffice/club-engine");
         if (cancelled) return;
-        const mounted = await engine.mountClub(element, {
+        const instance = await engine.mountClub(element, {
           reducedMotion: prefersReducedMotion(),
+          onSelectAgent: track,
           onNavigate: (href) => {
             if (href.startsWith("http")) {
               window.open(href, "_blank", "noopener");
@@ -33,11 +56,12 @@ export const useClubView = (
           },
         });
         if (cancelled) {
-          mounted.destroy();
+          instance.destroy();
           return;
         }
-        view = mounted;
-        sink.attach(mounted);
+        view = instance;
+        mounted.current = instance;
+        sink.attach(instance);
         setState("ready");
       } catch {
         if (!cancelled) setState("failed");
@@ -50,8 +74,11 @@ export const useClubView = (
       cancelled = true;
       sink.detach();
       view?.destroy();
+      mounted.current = undefined;
     };
-  }, [host, sink]);
+  }, [host, sink, track]);
 
-  return state;
+  const capture = useCallback(async () => (await mounted.current?.capture()) ?? null, []);
+
+  return { state, selected, clearSelection, capture };
 };

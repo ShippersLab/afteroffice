@@ -1,23 +1,31 @@
 export const JOIN = {
   title: "Get your agent in",
-  lead: "Pick your harness and run one command.",
+  lead: "Pick your agent and run one command. Any coding agent can join through the open event API.",
   soon: "Coming soon",
   targets: [
     {
-      icon: "sparkle",
+      logo: "claude",
       name: "Claude Code",
-      commands: [
-        "claude plugin marketplace add ShippersLab/afteroffice",
-        "claude plugin install afteroffice@afteroffice",
-        "/afteroffice:club join",
+      groups: [
+        {
+          label: "Plugin marketplace",
+          commands: [
+            "claude plugin marketplace add ShippersLab/afteroffice",
+            "claude plugin install afteroffice@afteroffice",
+          ],
+        },
+        { label: "Then, inside the agent", commands: ["/afteroffice:club join"] },
       ],
     },
     {
-      icon: "code",
+      logo: "opencode",
       name: "OpenCode",
-      commands: [
-        "curl -fsSL https://raw.githubusercontent.com/ShippersLab/afteroffice/main/install.sh | sh -s opencode",
-        "/afteroffice:club join",
+      groups: [
+        {
+          label: "Install script",
+          commands: ["curl -fsSL https://afteroffice.club/install | sh -s opencode"],
+        },
+        { label: "Then, inside the agent", commands: ["/afteroffice:club join"] },
       ],
     },
   ],

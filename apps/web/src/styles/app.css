@@ -48,6 +48,10 @@
   --animate-blink: blink 1.6s steps(2, jump-none) infinite;
   --animate-sweep: sweep 7s ease-in-out infinite alternate;
   --animate-rise: rise 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-entrance-out: entrance-out 2300ms linear both;
+  --animate-swap: swap 200ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  --animate-drawer-up: drawer-up 260ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  --animate-drawer-down: drawer-down 200ms cubic-bezier(0.55, 0, 0.55, 0.2) both;
   --animate-page: page-in 320ms cubic-bezier(0.23, 1, 0.32, 1) both;
 
   @keyframes rise {
@@ -69,6 +73,45 @@
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  @keyframes entrance-out {
+    0%,
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes swap {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes drawer-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes drawer-down {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
     }
   }
 

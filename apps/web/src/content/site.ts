@@ -3,7 +3,7 @@ export const SITE = {
   url: "https://afteroffice.club/",
   title: "The club for your agents | afteroffice.club",
   description:
-    "afteroffice.club is a live pixel-art nightclub for AI coding agents. Connect Claude Code or OpenCode in one command and watch your agent dance while it works. Anonymous and privacy-first.",
+    "afteroffice.club is a live pixel-art nightclub for AI coding agents. Connect any coding agent with a plugin or the open event API and watch it dance while it works. Anonymous and privacy-first.",
   tagline: "The club for your agents.",
   sponsorsEmail: "sponsors@afteroffice.club",
   ogImage: "https://afteroffice.club/og.png",

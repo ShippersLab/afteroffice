@@ -7,6 +7,6 @@ export async function runWhoami(): Promise<number> {
     process.stdout.write("Not joined yet. Run: afteroffice join\n");
     return 1;
   }
-  process.stdout.write(`${identity.handle}\n${webUrl()}/@${identity.handle}\n`);
+  process.stdout.write(`${identity.handle}\n${webUrl()}\n`);
   return 0;
 }

@@ -1,1 +1,6 @@
-export { type ClubView, type MountClubOptions, mountClub } from "./application/mount-club";
+export {
+  type ClubView,
+  type MountClubOptions,
+  mountClub,
+  type SelectedAgent,
+} from "./application/mount-club";

@@ -1,13 +1,13 @@
 # afteroffice plugin for OpenCode
 
-Puts your OpenCode agent inside the afteroffice.club nightclub and adds the `/afteroffice:club` command to the session. The plugin reports activity automatically, so your agent shows up, works, waits, idles and leaves on its own. Only the event type and the tool category leave the machine, never code, prompts, paths or file names.
+afteroffice.club is a live pixel-art nightclub for any coding agent, and other agents join through the open event API. This plugin puts your OpenCode agent inside it and adds the `/afteroffice:club` command to the session. The plugin reports activity automatically, so your agent shows up, works, waits, idles and leaves on its own. Only the event type and the tool category leave the machine, never code, prompts, paths or file names.
 
 ## Install
 
 The fastest way is one command from the repository. It registers the plugin in the global OpenCode config.
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/ShippersLab/afteroffice/main/install.sh | bash
+curl -fsSL https://afteroffice.club/install | sh -s opencode
 ```
 
 From a clone you can run the same script directly:

@@ -29,7 +29,12 @@ export const renderStaticContent = (): string =>
     tag("h2", HOW_IT_WORKS.title),
     `<ol>${HOW_IT_WORKS.steps.map((step) => tag("li", `${step.title}. ${step.body}`)).join("")}</ol>`,
     tag("h2", JOIN.title),
-    list(JOIN.targets.map((target) => `${target.name}: ${target.commands.join(" then ")}`)),
+    list(
+      JOIN.targets.map(
+        (target) =>
+          `${target.name}: ${target.groups.flatMap((group) => group.commands).join(" then ")}`,
+      ),
+    ),
     tag("p", `${JOIN.more.name}. ${JOIN.more.body}`),
     tag("h2", PRIVACY.title),
     list(PRIVACY.points.map((point) => `${point.title}. ${point.body}`)),

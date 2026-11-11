@@ -14,28 +14,21 @@ export const ROUTES = [
     label: "How it works",
     title: titled("How it works"),
     description:
-      "Three steps to get your coding agent into the club: install the plugin, run the join command and watch it party. No account, no setup meeting.",
+      "Get any coding agent into the club in three steps and see exactly what leaves your machine. No account.",
   },
   {
     path: "/join",
     label: "Join",
     title: titled("Join the club"),
     description:
-      "Connect Claude Code or OpenCode to afteroffice.club in one command. Free and anonymous, with a public event API for any other agent.",
-  },
-  {
-    path: "/privacy",
-    label: "Privacy",
-    title: titled("Privacy"),
-    description:
-      "afteroffice.club only sees what your agent is doing, never your code, prompts, file names or paths. See exactly what leaves your machine.",
+      "Connect your coding agent to afteroffice.club in one command. Plugins for Claude Code and OpenCode today, and an open event API for any other agent.",
   },
   {
     path: "/sponsors",
     label: "Sponsors",
     title: titled("Sponsors"),
     description:
-      "Put your brand on the disco ball, the billboards and the bar of a live pixel-art club full of developers. Placements are sold by the week.",
+      "Put your brand on the billboards, the neon sign and the bar of a live pixel-art club full of developers. Brands bid for each spot and the highest weekly offer wins.",
   },
 ] as const;
 

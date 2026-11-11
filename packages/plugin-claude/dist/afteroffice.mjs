@@ -6210,14 +6210,11 @@ function failureText(reason) {
 }
 
 // ../cli/src/commands/join.ts
-function profileLink(handle) {
-  return `${webUrl()}/@${handle}`;
-}
 async function runJoin() {
   const existing = await readIdentity();
   if (existing !== undefined) {
     process.stdout.write(`Already joined as ${existing.handle}
-${profileLink(existing.handle)}
+${webUrl()}
 `);
     return 0;
   }
@@ -6229,7 +6226,7 @@ ${profileLink(existing.handle)}
   }
   const { handle } = result.identity;
   process.stdout.write(`Joined the club as ${handle}
-${profileLink(handle)}
+${webUrl()}
 `);
   return 0;
 }
@@ -6294,7 +6291,7 @@ async function runName(args) {
   }
   const renamed = result.identity.handle;
   process.stdout.write(`Renamed to ${renamed}
-${webUrl()}/@${renamed}
+${webUrl()}
 `);
   return 0;
 }
@@ -6398,7 +6395,7 @@ async function runWhoami() {
     return 1;
   }
   process.stdout.write(`${identity.handle}
-${webUrl()}/@${identity.handle}
+${webUrl()}
 `);
   return 0;
 }

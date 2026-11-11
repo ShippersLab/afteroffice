@@ -1,4 +1,4 @@
-export { CLUB } from "./club.ts";
+export { AGENT_CARD, AGENT_STATE_COPY, CLUB, ENTRANCE } from "./club.ts";
 export { FOOTER } from "./footer.ts";
 export { HERO } from "./hero.ts";
 export { HOW_IT_WORKS } from "./how-it-works.ts";
@@ -6,5 +6,6 @@ export { JOIN } from "./join.ts";
 export { NAV_LINKS, NAVBAR_LINKS, SITE_LINKS } from "./nav.ts";
 export { PRIVACY } from "./privacy.ts";
 export { NOT_FOUND, ROUTES, type Route, type RoutePath } from "./routes.ts";
+export { SHARE } from "./share.ts";
 export { SITE } from "./site.ts";
 export { SPONSORS } from "./sponsors.ts";

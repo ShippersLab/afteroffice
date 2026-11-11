@@ -1,9 +1,10 @@
 import { feetDepth, TILE_H, TILE_W, tileToScreen } from "../mathematics/iso";
+import { sponsorFor } from "../sponsors";
 import { COLOR } from "../sprites/palette";
 import { type Pixels, scaled } from "../sprites/pixels";
 import { discPixels, floorTile } from "./floor-art";
 import { type BoxColors, isoBox } from "./iso-box";
-import { PLACEMENTS, placeholderPixels } from "./placements";
+import { PLACEMENTS, placeholderPixels, sponsorSignPixels } from "./placements";
 
 export type FurnitureItem = {
   readonly key: string;
@@ -71,6 +72,7 @@ function decorateSpeaker(box: Pixels): void {
   box.blit(discPixels(6, 4, COLOR.line), 17, 33, { shear: 0.5 });
 }
 
+const BAR_SIGN = { x: 72, y: 54 };
 const BOTTLE_COLORS = [COLOR.cyan, COLOR.magenta, COLOR.lilac, COLOR.cyan, COLOR.magenta] as const;
 
 function decorateBar(box: Pixels): void {
@@ -80,7 +82,12 @@ function decorateBar(box: Pixels): void {
     box.fillRect(p.x - 1, p.y - 12, 2, 3, color);
     box.fillRect(p.x - 2, p.y - 9, 1, 8, COLOR.ink);
   });
-  box.blit(placeholderPixels(PLACEMENTS.bar), 72, 50, { scale: 2, shear: 0.5 });
+  const sponsor = sponsorFor("bar");
+  const sign =
+    sponsor.name.length > 0
+      ? sponsorSignPixels(sponsor.name, PLACEMENTS.bar)
+      : placeholderPixels(PLACEMENTS.bar);
+  box.blit(sign, BAR_SIGN.x, BAR_SIGN.y, { scale: 2, shear: 0.5 });
 }
 
 function decorateVipBar(box: Pixels): void {

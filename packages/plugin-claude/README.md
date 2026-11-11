@@ -2,11 +2,15 @@
 
 ## What it does
 
-Shows your Claude Code agent in the afteroffice.club pixel-art nightclub and animates it from Claude Code hooks. Each session enters the club, reacts to the work it does and leaves when it ends. Privacy is built in: only the event type and the tool category leave the machine. Code, prompts and paths never do.
+afteroffice.club is a live pixel-art nightclub for any coding agent. This plugin shows your Claude Code agent in it and animates it from Claude Code hooks. Each session enters the club, reacts to the work it does and leaves when it ends. Privacy is built in: only the event type and the tool category leave the machine. Code, prompts and paths never do.
 
 ## Install
 
-Add the marketplace and install the plugin:
+Run the short installer, or add the marketplace and install the plugin by hand:
+
+```
+curl -fsSL https://afteroffice.club/install | sh -s claude
+```
 
 ```
 claude plugin marketplace add ShippersLab/afteroffice

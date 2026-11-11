@@ -27,23 +27,31 @@ The club only ever renders the approved pixel version.
 
 ## 3. Placements
 
+The disco ball is never sold. It stays the club mark and is always free of brands.
+
 Sizes are in pixel cells at 1x. The engine draws them at the room's integer scale.
 
 | Id | Where | Grid | Content |
 |---|---|---|---|
-| `ball` | The disco ball | 14x14 facets | Brand colors on the facets, mark on the front face, "Tonight's ball by [BRAND]" pill under it |
 | `billboard` | Big right wall screen | 48x32 | Logo plus one line |
 | `sponsor-slot` | Center wall frame | 24x32 | Logo only |
 | `poster` | Left wall poster | 20x28 | Logo plus one line |
 | `neon` | Neon sign above the bar | 64x12 | Wordmark redrawn as neon tubes |
-| `bar` | Bar front | 32x8 | "Tonight's bar is on [BRAND]" |
+| `bar` | Bar front | 44x9 | "Tonight's bar is on [BRAND]", with a Sponsored label floating above the counter |
 
-## 4. How we sell them in the first version
+## 4. How we sell them: the leaderboard
 
-- Every placement is sold by week. A week starts on Monday at 00:00 UTC, the same for every viewer.
-- One brand per placement per week. A brand may book several placements.
-- Sales are done by hand: payment link, then we upload the approved pixel logo and set the dates in the sponsor config.
-- No sponsor panel, no auctions, no takeovers, no sponsored toasts yet.
+Every placement has a leaderboard. The brand paying the most per week holds the spot.
+
+- Each placement has a list price per week. That is the minimum offer.
+- A new offer must beat the current holder by at least 25 USD per week. It takes the spot right away.
+- When a brand's paid period ends, it drops off and the next highest offer takes over.
+- A brand may raise its offer any time to win a spot back.
+- An outbid brand keeps its paid days as credit added to the end of its period, or asks for a refund of the unshown days.
+- A week starts on Monday at 00:00 UTC, the same for every viewer. A brand may hold several placements.
+- List prices per week in USD: billboard 175, center frame 125, neon 100, poster 100, bar 100.
+- Everything is handled by hand for now: offers come in by email, we update the leaderboard in `apps/web/src/content/sponsors.ts`, upload the approved pixel logo and set the dates in the sponsor config.
+- No sponsor panel, no takeovers, no sponsored toasts yet.
 
 ## 5. Creative spec
 

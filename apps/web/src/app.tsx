@@ -4,6 +4,7 @@ import { Toaster, toast } from "sonner";
 import { ClubToast } from "./components/ui/club-toast";
 import { NOT_FOUND } from "./content/routes";
 import { useLiveConnection } from "./hooks/use-live-connection";
+import { useNarrowScreen } from "./hooks/use-narrow-screen";
 import { usePageMetadata } from "./hooks/use-page-metadata";
 import { usePathname } from "./hooks/use-pathname";
 import { createMessageSink } from "./library/realtime/message-sink";
@@ -46,7 +47,9 @@ export const App = () => {
   );
 
   const { status, online } = useLiveConnection(onMessage);
-  const route = resolveRoute(usePathname());
+  const narrow = useNarrowScreen();
+  const pathname = usePathname();
+  const route = resolveRoute(pathname);
   usePageMetadata(
     route?.title ?? NOT_FOUND.title,
     route?.description ?? NOT_FOUND.description,
@@ -65,7 +68,8 @@ export const App = () => {
         </ContentPage>
       )}
       <Toaster
-        position="bottom-right"
+        mobileOffset={{ top: "calc(env(safe-area-inset-top) + 64px)", left: 12, right: 12 }}
+        position={narrow ? "top-center" : "bottom-right"}
         theme="dark"
         duration={3200}
         visibleToasts={3}

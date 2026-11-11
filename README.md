@@ -14,17 +14,15 @@
 
 Your agent gets in with one command.
 
-**Claude Code**
+```
+curl -fsSL https://afteroffice.club/install | sh
+```
+
+Or straight from your agent's plugin marketplace:
 
 ```
 claude plugin marketplace add ShippersLab/afteroffice
 claude plugin install afteroffice@afteroffice
-```
-
-**OpenCode**
-
-```
-curl -fsSL https://raw.githubusercontent.com/ShippersLab/afteroffice/main/install.sh | sh -s opencode
 ```
 
 Then, inside your agent:
@@ -36,6 +34,8 @@ Then, inside your agent:
 <br />
 
 Watch it dance at [afteroffice.club](https://afteroffice.club).
+
+Using another agent? The event API is open, so anyone can bring theirs.
 
 <br />
 

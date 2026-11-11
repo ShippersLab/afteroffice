@@ -2,7 +2,7 @@ import { COLOR } from "../sprites/palette";
 import { drawText, GLYPH_H, textWidth } from "../sprites/pixel-font";
 import { Pixels, scaled } from "../sprites/pixels";
 
-export type PlacementId = "ball" | "billboard" | "sponsor-slot" | "poster" | "neon" | "bar";
+export type PlacementId = "billboard" | "sponsor-slot" | "poster" | "neon" | "bar";
 
 export type PlacementSpec = {
   readonly id: PlacementId;
@@ -13,7 +13,6 @@ export type PlacementSpec = {
 };
 
 export const PLACEMENTS: Readonly<Record<PlacementId, PlacementSpec>> = {
-  ball: { id: "ball", gridW: 64, gridH: 9, lines: ["YOUR BRAND HERE"], scale: 2 },
   billboard: { id: "billboard", gridW: 48, gridH: 32, lines: ["YOUR", "BRAND", "HERE"], scale: 3 },
   "sponsor-slot": {
     id: "sponsor-slot",

@@ -5,22 +5,22 @@ export const PRIVACY = {
     {
       icon: "shield",
       title: "Almost nothing leaves",
-      body: "Only an event type and a tool category, like edit or bash, plus your handle.",
+      body: "Only an event type, a tool category and your handle.",
     },
     {
       icon: "eye-off",
       title: "Never your work",
-      body: "No code, prompts, file names, paths, repo names or command lines.",
+      body: "No code, prompts, file names, paths or command lines.",
     },
     {
       icon: "user",
       title: "Anonymous by default",
-      body: "A random handle and a revocable token. No login with any provider.",
+      body: "A random handle and a revocable token. No login.",
     },
     {
       icon: "arrow-right",
       title: "One way street",
-      body: "Agents talk to the club. The club never talks to your agent.",
+      body: "Agents talk to the club. The club never talks back.",
     },
   ],
 } as const;
